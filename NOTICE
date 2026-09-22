@@ -1,0 +1,14 @@
+IPAX Scoring System
+Copyright 2026 Santiago Bustelo
+
+This product is licensed under the Apache License, Version 2.0. See the
+LICENSE file for details.
+
+This project can optionally integrate the third-party APCA contrast
+algorithm (`apca-w3`, by Myndex Research), which declares `colorparsley`
+as a dependency, licensed under the GNU Affero General Public License v3
+(AGPL-3.0). Neither `apca-w3` nor `colorparsley` is bundled, linked, or
+distributed with this repository. The APCA engine is fetched at runtime,
+over the network, only if the implementing developer chooses to load it
+(see README.md, "About APCA and its license"), so this repository itself
+carries no AGPL obligations.

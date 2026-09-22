@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPAX Score - Minimal Example</title>
+    <link rel="stylesheet" href="css/tester.css">
+    
+    <!-- Application logic is fully encapsulated in UI Controller -->
+    <script type="module" src="js/ui-app.js"></script>
+</head>
+<body>
+
+    <main class="ipx-app js-app">
+        <h1>IPAX Score Tester</h1>
+        
+        <p>
+            This example demonstrates how to integrate the IPAX Scoring System. 
+            For clean integration code, see <code>js/ipax-integration.js</code>.
+        </p>
+
+        <div class="ipx-header-panel">
+            <div class="ipx-controls">
+                
+                <div class="ipx-input-group">
+                    <div class="ipx-combo">
+                        <input type="color" class="ipx-picker js-picker-fg" value="#FFFFFF">
+                        <input type="text" class="ipx-input-hex js-input-fg-text" value="#FFFFFF" maxlength="7" spellcheck="false">
+                    </div>
+                    <label class="ipx-label">Text Color</label>
+                </div>
+                
+                <button class="ipx-btn-swap js-btn-swap" title="Swap colors">⇄</button>
+                
+                <div class="ipx-input-group">
+                    <div class="ipx-combo">
+                        <input type="color" class="ipx-picker js-picker-bg" value="#000000">
+                        <input type="text" class="ipx-input-hex js-input-bg-text" value="#000000" maxlength="7" spellcheck="false">
+                    </div>
+                    <label class="ipx-label">Surface Color</label>
+                </div>
+
+            </div>
+
+            <div class="ipx-preview js-preview-box">
+                <!-- Se inyecta dinámicamente desde ui-app.js -->
+            </div>
+        </div>
+
+        <!-- Interpretation Box -->
+        <div class="ipx-interpretation js-interpretation">
+            <span class="ipx-message">Initializing Engine...</span>
+        </div>
+
+        <!-- Reference Table -->
+        <details class="ipx-reference">
+            <summary>View Score Reference Table</summary>
+            <table class="ipx-table">
+                <thead>
+                    <tr>
+                        <th>IPAX Score</th>
+                        <th>APCA Grade</th>
+                        <th>WCAG Grade</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>5</td><td>Gold (≥ Lc 90)</td><td>-</td><td>Optimal optical comfort.</td></tr>
+                    <tr><td>4</td><td>Silver (≥ Lc 75)</td><td>-</td><td>Stable for sustained reading.</td></tr>
+                    <tr><td>3</td><td>Bronze (≥ Lc 60)</td><td>AAA (7.0:1)</td><td>Maximum compliance threshold.</td></tr>
+                    <tr><td>2</td><td>Basic (≥ Lc 45)</td><td>AA (4.5:1)</td><td>Baseline legal compliance.</td></tr>
+                    <tr><td>1</td><td>Large (≥ Lc 30)</td><td>Large (3.0:1)</td><td>Restricted to large text.</td></tr>
+                    <tr><td>X</td><td>Fail</td><td>Fail (<3.0:1)</td><td>Does not meet contrast minimums.</td></tr>
+                </tbody>
+            </table>
+        </details>
+
+        <h2>Orchestrator Output (Raw Data)</h2>
+        <div class="ipx-output-container js-output">
+            <span class="ipx-message">Awaiting calculation...</span>
+        </div>
+    </main>
+
+</body>
+</html>

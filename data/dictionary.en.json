@@ -1,0 +1,101 @@
+{
+  "penalties": [
+    {
+      "slug": "apca_unavailable",
+      "label": "APCA Engine Unavailable",
+      "description": "The official APCA contrast library was not detected. The exact cause (missing <script> tag, network/CORS failure, or invalid file path) cannot be determined from this context. As a result, the score is capped at 3.0 (WCAG only). Solution: Ensure 'apca-w3.js' is loaded in your document and passed to the Orchestrator via config.env.apcaEngine.",
+      "references": []
+    },
+    {
+      "slug": "jitter",
+      "label": "Isoluminant Jitter",
+      "description": "Lack of luminance contrast blinds the magnocellular pathway. Edges vibrate and cannot be spatially anchored, even if chroma difference is high.",
+      "references": [
+        "Livingstone, M., & Hubel, D. (1988). Segregation of form, color, movement, and depth. Science."
+      ]
+    },
+    {
+      "slug": "chromostereopsis",
+      "label": "Chromostereopsis (Hue Clash)",
+      "description": "Depth illusion triggered by adjacent highly saturated opposing hues. The varying refractive index of the eye forces ciliary muscle spasms.",
+      "references": [
+        "Einthoven, W. (1885). Stereoscopie durch Farbendifferenz.",
+        "Thibos, L. N. (1992). The chromatic eye."
+      ]
+    },
+    {
+      "slug": "s_cone",
+      "label": "Foveal S-Cone Strain",
+      "description": "The fovea (center of sharpest vision) lacks S-cones. Pure blue text causes severe chromatic aberration and cannot be focused sharply, straining the visual system.",
+      "references": [
+        "Roorda, A., & Williams, D. R. (1999). The arrangement of the three cone classes in the living human eye. Nature."
+      ]
+    },
+    {
+      "slug": "sim_contrast",
+      "label": "Hue Induction",
+      "description": "A highly chromatic background distorts the perceived color of a neutral text element (Simultaneous Contrast), demanding extra cognitive processing.",
+      "references": [
+        "Shevell, S. K., & Kingdom, F. A. (2008). Color in complex scenes. Annual Review of Psychology."
+      ]
+    },
+    {
+      "slug": "halation",
+      "label": "Irradiation (Halation)",
+      "description": "High-luminance photons from bright text scatter within the ocular media and bleed into dark retinal areas. Causes glowing edges that destroy counter forms.",
+      "references": [
+        "Von Helmholtz, H. (1867). Handbuch der physiologischen Optik."
+      ]
+    },
+    {
+      "slug": "mydriasis",
+      "label": "Mydriatic Aberration",
+      "description": "Pure black backgrounds (#000000) force maximum pupil dilation (mydriasis), exposing the periphery of the lens. This maximizes astigmatism.",
+      "references": [
+        "Campbell, F. W., & Gregory, A. H. (1960). Effect of size of pupil on visual acuity."
+      ]
+    },
+    {
+      "slug": "glare",
+      "label": "Macular Glare",
+      "description": "Exposure to near-pure white backgrounds (Luminance > 0.96) acts as an absolute light source, causing intraocular straylight.",
+      "references": [
+        "Van den Berg, T. J. (1990). On the relation between glare and straylight."
+      ]
+    },
+    {
+      "slug": "hk_effect",
+      "label": "H-K Inflation",
+      "description": "The Helmholtz-Kohlrausch effect. Perceived lightness relies heavily on high-chroma wavelengths, artificially inflating base contrast models.",
+      "references": [
+        "High, C., et al. (2023). Modeling the Helmholtz-Kohlrausch effect for color appearance."
+      ]
+    }
+  ],
+  "rewards": [
+    {
+      "slug": "paper_tone",
+      "label": "Paper Tone",
+      "description": "Using a warm, off-white background (L: 0.88-0.95) minimizes macular glare while preserving positive polarity.",
+      "references": [
+        "Piepenbrock, C., et al. (2013). Positive display polarity is advantageous."
+      ]
+    },
+    {
+      "slug": "chromatic_relief",
+      "label": "Chromatic Relief",
+      "description": "A completely neutral background eliminates chromatic adaptation load. Full visual processing resources remain available for text discrimination.",
+      "references": [
+        "Von Kries, J. (1902). Chromatic adaptation."
+      ]
+    },
+    {
+      "slug": "achromatic_tint_contrast",
+      "label": "Achromatic Text on Tint",
+      "description": "Separates brand identity (chromatic background field) from the reading element (achromatic neutral text). Eliminates chromatic aberration on typography.",
+      "references": [
+        "Rubin, E. (1921). Visuell wahrgenommene Figuren (Figure and Ground)."
+      ]
+    }
+  ]
+}

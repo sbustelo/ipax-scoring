@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+type: software
+title: "IPAX Scoring System"
+authors:
+  - family-names: Bustelo
+    given-names: Santiago
+    affiliation: Kambrica
+    website: "https://www.bustelo.com.ar/"
+url: "https://ipax.bustelo.com.ar/"
+license:
+  - Apache-2.0
+  - CC-BY-4.0
+version: 0.1.03
+date-released: 2026-09-22
+references:
+  - type: video
+    title: "Bridging the Gap Between Compliance and Design Quality"
+    authors:
+      - family-names: Bustelo
+        given-names: Santiago
+        affiliation: Kambrica
+    url: "https://rosenverse.rosenfeldmedia.com/videos/bridging-the-gap-between-compliance-and-design-quality"
+    date-released: 2026-07-02
+    conference:
+      name: "Rosenverse (Rosenfeld Media)"
