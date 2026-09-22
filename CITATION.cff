@@ -8,6 +8,7 @@ authors:
     affiliation: Kambrica
     website: "https://www.bustelo.com.ar/"
 url: "https://ipax.bustelo.com.ar/"
+repository-code: "https://github.com/sbustelo/ipax-scoring"
 license:
   - Apache-2.0
   - CC-BY-4.0
