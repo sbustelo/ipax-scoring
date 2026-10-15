@@ -2,7 +2,6 @@
 .DS_Store
 Thumbs.db
 
-
 # Ignorar directorios de dependencias
 vendor/
 node_modules/
@@ -25,3 +24,5 @@ _*
 # Ignorar archivos de dump generados
 *.dump
 *.nodump
+example/.DS_Store
+

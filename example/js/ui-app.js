@@ -23,26 +23,30 @@ const getGradeLabel = (score) => {
     }
 };
 
+
+
 const renderInterpretation = (result) => {
-    const scoreInt = Math.floor(Math.round(result.score * 10.0) / 10.0);
+    const scoreInt = Math.floor(Math.round(result.finalScore * 10.0) / 10.0);
     const gradeLabel = getGradeLabel(scoreInt);
 
-    const wcagString = result.wcag.score > 0 
-        ? `passes WCAG 2: ${result.wcag.grade} (≥ ${trunc2(result.wcag.ratio)}:1)` 
+    const wcagString = result.wcagScore > 0 
+        ? `passes WCAG 2: ${result.wcagGrade} (≥ ${trunc2(result.wcagRatio)}:1)` 
         : `Fails WCAG 2`;
         
-    const apcaString = result.apca.lc !== null 
-        ? `APCA grade: ${result.apca.grade} (≥ Lc ${trunc2(Math.abs(result.apca.lc))})` 
+    const apcaAvail = (result.raw && result.raw.apcaLc !== null);
+    const apcaString = apcaAvail 
+        ? `APCA grade: ${result.apcaGrade} (≥ Lc ${trunc2(Math.abs(result.raw.apcaLc))})` 
         : `<span class="ipx-text-warning">APCA Unavailable</span>`;
 
     let html = `
-        <h2 class="ipx-score-title">IPAX Score: ${result.string} (${gradeLabel})</h2>
+        <h2 class="ipx-score-title">IPAX Score: ${result.finalScore.toFixed(1)} (${gradeLabel})</h2>
         <p class="ipx-score-subtitle">This pair ${wcagString}; ${apcaString}.</p>
     `;
 
-    if (result.string.includes('(')) {
-        const legalScoreStr = result.string.split('(')[1].replace(')', '');
-        const legalScore = legalScoreStr === 'X' ? 0 : parseInt(legalScoreStr, 10);
+    const legalScore = apcaAvail ? Math.floor(Math.min(result.wcagScore, result.apcaScore)) : result.wcagScore;
+
+    if (legalScore > scoreInt) {
+        const legalScoreStr = legalScore === 0 ? 'X' : legalScore;
         const legalLabel = getGradeLabel(legalScore);
         const degradedChar = scoreInt === 0 ? 'X' : scoreInt;
         
@@ -63,7 +67,7 @@ const renderPreview = (resNormal, resBold, fgVal, bgVal) => {
     
     let html = '';
     
-    if (resNormal.score < 1) {
+    if (resNormal.finalScore < 1) {
         // Overlay de Falla Absoluta
         html = `
             <div class="ipx-preview-overlay">
@@ -76,16 +80,15 @@ const renderPreview = (resNormal, resBold, fgVal, bgVal) => {
         `;
     } else {
         const renderLine = (res, weight) => {
-            const isApca = res.apca.lc !== null;
+            const isApca = res.raw && res.raw.apcaLc !== null;
             const weightLabel = weight === 700 ? "Bold weight" : "Normal weight";
             let size = 16;
             let text = "";
             
-            if (isApca && res.apca.font && res.apca.font.sizePx) {
-                size = res.apca.font.sizePx;
-                text = `${size}px minimum for ${weightLabel} (APCA)`;
-            } else if (res.wcag.score > 0) {
-                size = res.wcag.fontSize || 16;
+            if (isApca && res.apcaScore > 0) {
+                text = `Complies with APCA for ${weightLabel}`;
+            } else if (res.wcagScore > 0) {
+                size = res.wcagFontSize || 16;
                 text = `${size}px minimum for ${weightLabel} (WCAG)`;
             } else {
                 return ""; // Falla en este peso específico

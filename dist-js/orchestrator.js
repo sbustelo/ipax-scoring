@@ -118,29 +118,64 @@ export const IPAXOrchestrator = {
             penalties: mapDictionary(rawMap.penalties, dict.penalties),
             rewards: mapDictionary(rawMap.rewards, dict.rewards)
         };
-
-        // JS Math.round (* 10 / 10) maps to roundX(val, 1) to prevent integer contradictions.
+        
+		
+		// JS Math.round (* 10 / 10) maps to roundX(val, 1) to prevent integer contradictions.
         const roundedScore = Math.round(rawMap.finalScore * 10.0) / 10.0;
         const wcagScore = rawMap.wcagScore;
         const ipaxInt = Math.floor(roundedScore);
         
         const ipaxChar = ipaxInt < 1 ? 'X' : ipaxInt.toString();
         const wcagChar = wcagScore < 1 ? 'X' : wcagScore.toString();
-        const ipaxString = (ipaxInt < wcagScore) ? `${ipaxChar}(${wcagChar})` : ipaxChar;
+        const isDegraded = (ipaxInt < wcagScore);
+
+        const ipaxString = isDegraded ? `${ipaxChar}(${wcagChar})` : ipaxChar;
+        const ipaxStringAnalytic = roundedScore.toString();
+
+        // --- INICIO LÓGICA SYMBOLIC GRADE ---
+		
+        // Umbral para considerar que el score tiene inercia hacia el próximo nivel.
+        // 0.5 es el centro neutro. 0.7 representa cruzar el 70% de la distancia al próximo entero.
+        const THRESHOLD_PLUS = 0.7; 
+        
+        let ipaxSymbolic = "";
+        if (isDegraded) {
+            // Si hay penalidad que perfora la base legal, el símbolo es la base legal con un "menos".
+            // Ej: WCAG 2, IPAX 1.8 -> "2-"
+            ipaxSymbolic = `${wcagChar}-`;
+        } else {
+            // Si es sólido, evaluamos si el excedente decimal amerita un "+".
+            // Se usa .toFixed(1) y resta para evitar errores de precisión de punto flotante en JS.
+            const decimalSurplus = Math.round((roundedScore - ipaxInt) * 10) / 10;
+            if (decimalSurplus >= THRESHOLD_PLUS && ipaxInt >= 1) {
+                ipaxSymbolic = `${ipaxChar}+`;
+            } else {
+                ipaxSymbolic = ipaxChar;
+            }
+        }
+        // --- FIN LÓGICA SYMBOLIC GRADE ---
+
+        const truncWcag = Math.trunc(rawMap.wcagRatio * 100) / 100;
+        const truncApca = apcaAvailable ? (Math.trunc(apcaLc * 10) / 10) : null;
 
         return {
             input: { text: tHex, bg: bHex, darkMode: rawMap.isDarkContext },
-            score: rawMap.finalScore, // Full precision in output
-            string: ipaxString,
+            score: roundedScore,
+            string: ipaxString, // Mantenido por retrocompatibilidad temporal
+            grades: {
+                structural: ipaxString,
+                analytical: ipaxStringAnalytic,
+                symbolic: ipaxSymbolic
+            },
             wcag: {
                 score: rawMap.wcagScore,
-                ratio: rawMap.wcagRatio,
+                ratio: truncWcag,
                 grade: rawMap.wcagGrade,
                 fontSize: rawMap.wcagFontSize
             },
             apca: {
                 score: rawMap.apcaScore,
-                lc: apcaAvailable ? apcaLc : null,
+                lc: truncApca,
                 grade: rawMap.apcaGrade,
                 font: fontData
             },

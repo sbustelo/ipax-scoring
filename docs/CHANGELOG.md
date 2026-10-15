@@ -1,12 +1,40 @@
 # IPAX Scoring System — Changelog
 
-## Roadmap — v0.1.04 (JSOL Parity)
+## Roadmap — IPAX 1.x (Continuous Biological Model)
+
+The immediate focus is refactoring the current engine to eliminate all mathematical discontinuities (if/else thresholds) and replace them with continuous biological curves (sigmoid, exponential, smoothstep).
+
+-   **Branchless Ergonomics:** Complete removal of hard thresholds for penalties and rewards, enabling smooth interpolation.
+-   **Redefinition of Excellence (Scores 4 & 5):** Considering a shift from APCA-dictated thresholds to strictly ergonomic definitions. Score 4: "no active aggression" (adequate contrast, zero significant penalties). Score 5: "actively supports reading" (robust across environments and observers).
+-   **Subthreshold Value Exposure:** Ergonomic penalties (e.g. halation under 0.15, glare) will no longer be silently discarded below the reporting floor. The core will calculate and expose every value; presentation layers may decide how to handle them.
+    
+
+## Roadmap — IPAX 2.0 (Environmental & Physiological Simulator)
+
+Evolving the engine from a color-contrast calculator into a full perceptual simulator based on the physical properties of light and the human eye. As a first step in this direction, we developed the IPAX Simulator, which models how light and color are perceived based on temperature, paper or screen quality, illumination, reflections, shadows, and adaptation to bright, indoor, or scotopic light:
+
+-   [Color in Design Systems (Kambrica)](https://www.kambrica.com/en/color-in-design-systems/)
+-   [Dark Mode vs Night Mode (Kambrica)](https://www.kambrica.com/en/dark-mode-vs-night-mode/)
+-   **Thermodynamic Fatigue:** Modeling glare, halation, and mydriasis by crossing OKLCH lightness with maximum/minimum nits and ambient lux.
+-   **Ciliary Muscular Effort:** Calculating legibility through spatial frequency (arcminutes) and 2D optical mass instead of CSS pixels.
+-   **Pathology Tensors:** Supporting clinical conditions (cataracts, astigmatism, maculopathy, photophobia) as physical light-degradation multipliers.
+
+
+## Roadmap — Future (JSOL Parity)
 
 The core scoring pipeline is planned to be rewritten in JSOL and verified, via JSOL's own contract system, to produce identical results across every target (JavaScript, PHP, Python).
 
-* **JSOL Transpilation:** Full rewrite of the core scoring pipeline into [pure JSOL](https://jsol.bustelo.com.ar/), spawned directly by IPAX's need to port its color math with guaranteed cross-language consistency.
-* **Redefinition of Excellence (Scores 4 & 5):** Considering a shift from APCA-dictated thresholds to strictly ergonomic definitions. Score 4: "no active aggression" (adequate contrast, zero significant penalties). Score 5: "actively supports reading" (robust across environments and observers).
-* **Subthreshold Value Exposure:** Ergonomic penalties (e.g. halation under 0.15, glare) will no longer be silently discarded below the reporting floor. The core will calculate and expose every value; presentation layers may decide how to handle them.
+-   **JSOL Transpilation:** Full rewrite of the core scoring pipeline into [pure JSOL](https://jsol.bustelo.com.ar/), spawned directly by IPAX's need to port its color math with guaranteed cross-language consistency.
+
+
+
+---
+
+## v0.1.04 - September 22 / ongoing, 2026
+* **Iterating scoring & grading:** Evaluating if smoothing curves for penalties and rewards, if  supported by literature, can improve experience. Grading styles: 1.8 vs 1.8(2) vs. 1(2).
+* Legacy object (scoring string) is deprecated.
+* If APCA is unavailable, use WCAG for levels 4 & 5 (contrast 10:1 and 15:1 respectively).
+* Example UI updated to consume the new raw data structure instead of the legacy scoring string.
 
 ---
 
