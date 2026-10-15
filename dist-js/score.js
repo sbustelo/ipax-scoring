@@ -97,10 +97,10 @@ export const IPAX_CORE = {
         }
 
         // STEP 6: PENALTY ACCUMULATION (ERGONOMIC FLAWS)
-        let $nTotalPenalty = 0.0;
+		let $nTotalPenalty = 0.0;
         let $aPenalties = [];
 
-        if (!$bApcaAvailable) {$aPenalties.push({ slug: 'apca_unavailable', val: 1.0 });
+        if (!$bApcaAvailable) {$aPenalties.push({ slug: 'apca_unavailable', val: 0.0 });
         }
 
         const $nDeltaL = Math.abs($mTxtOklch.l -$mBgOklch.l);
