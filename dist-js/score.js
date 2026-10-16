@@ -22,18 +22,24 @@ export const IPAX_CORE = {
         }
 
         // STEP 2: WCAG 2.x EVALUATION
-        // Calculate standard contrast ratio and determine base score (0 to 5).
+        // Calculate standard contrast ratio and determine base score.
         const $nWcagRatio = ColorMath.calculateWcagContrast($nTxtY,$nBgY);
 
         let $nWcagScore = 0;
         let $sWcagGrade = "Fail";
         let $nWcagFontSize = null;
 
-        if ($nWcagRatio >= 15.0) {$nWcagScore = 5; $sWcagGrade = "AAA (Max)"; $nWcagFontSize = 16; }
-        else if ($nWcagRatio >= 10.0) {$nWcagScore = 4; $sWcagGrade = "AAA (High)"; $nWcagFontSize = 16; }
-        else if ($nWcagRatio >= 7.0) {$nWcagScore = 3; $sWcagGrade = "AAA"; $nWcagFontSize = 16; }
-        else if ($nWcagRatio >= 4.5) {$nWcagScore = 2; $sWcagGrade = "AA"; $nWcagFontSize = 16; }
-        else if ($nWcagRatio >= 3.0) {$nWcagScore = 1; $sWcagGrade = "AA (Large text)"; $nWcagFontSize = 24; }
+        if (!$bApcaAvailable) {
+            if ($nWcagRatio >= 15.0) {$nWcagScore = 5; $sWcagGrade = "AAA (Max)"; $nWcagFontSize = 16; }
+            else if ($nWcagRatio >= 10.0) {$nWcagScore = 4; $sWcagGrade = "AAA (High)"; $nWcagFontSize = 16; }
+            else if ($nWcagRatio >= 7.0) {$nWcagScore = 3; $sWcagGrade = "AAA"; $nWcagFontSize = 16; }
+            else if ($nWcagRatio >= 4.5) {$nWcagScore = 2; $sWcagGrade = "AA"; $nWcagFontSize = 16; }
+            else if ($nWcagRatio >= 3.0) {$nWcagScore = 1; $sWcagGrade = "AA (Large text)"; $nWcagFontSize = 24; }
+        } else {
+            if ($nWcagRatio >= 7.0) {$nWcagScore = 3; $sWcagGrade = "AAA"; $nWcagFontSize = 16; }
+            else if ($nWcagRatio >= 4.5) {$nWcagScore = 2; $sWcagGrade = "AA"; $nWcagFontSize = 16; }
+            else if ($nWcagRatio >= 3.0) {$nWcagScore = 1; $sWcagGrade = "AA (Large text)"; $nWcagFontSize = 24; }
+        }
 
         // STEP 3: APCA EVALUATION
         // Process Lightness Contrast (Lc) if the external engine is available.
@@ -58,7 +64,7 @@ export const IPAX_CORE = {
         let $nRawScore = 0.0;
 
         // Helper for linear interpolation to provide granular decimal scoring within a level.
-        const $fGetDec = function ($nV,$nLvl, $nLo1,$nHi1, $nLo2,$nHi2, $nLo3,$nHi3, $nLo4,$nHi4) {
+        const $fGetDec = function ($nV,$nLvl, $nLo1,$nHi1, $nLo2,$nHi2) {
             if ($nLvl === 1) {
                 if ($nV >=$nHi1) return 0.9;
                 if ($nV <=$nLo1) return 0.0;
@@ -67,25 +73,32 @@ export const IPAX_CORE = {
                 if ($nV >=$nHi2) return 0.9;
                 if ($nV <=$nLo2) return 0.0;
                 return Math.round(((($nV -$nLo2) / ($nHi2 -$nLo2)) * 0.9) * 10.0) / 10.0;
-            } else if ($nLvl === 3) {
-                if ($nV >=$nHi3) return 0.9;
-                if ($nV <=$nLo3) return 0.0;
-                return Math.round(((($nV -$nLo3) / ($nHi3 -$nLo3)) * 0.9) * 10.0) / 10.0;
-            } else if ($nLvl === 4) {
-                if ($nV >=$nHi4) return 0.9;
-                if ($nV <=$nLo4) return 0.0;
-                return Math.round(((($nV -$nLo4) / ($nHi4 -$nLo4)) * 0.9) * 10.0) / 10.0;
             }
             return 0.0;
         };
 
         // STEP 5: FRACTIONAL RAW SCORE CALCULATION
-        if ($nComplianceLevel < 5) {
-            const $nWcagDec = $fGetDec($nWcagRatio, $nComplianceLevel, 3.0, 4.5, 4.5, 7.0, 7.0, 10.0, 10.0, 15.0);
-            const $nApcaDec = $bApcaAvailable ? $fGetDec($nAbsLc, $nComplianceLevel, 30.0, 45.0, 45.0, 60.0, 60.0, 75.0, 75.0, 90.0) : $nWcagDec;
-            $nRawScore = $nComplianceLevel + Math.min($nWcagDec, $nApcaDec);
+        if ($bApcaAvailable) {
+            if ($nComplianceLevel < 3) {
+                const $nWcagDec = $fGetDec($nWcagRatio, $nComplianceLevel, 3.0, 4.5, 4.5, 7.0);
+                const $nApcaDec = $fGetDec($nAbsLc, $nComplianceLevel, 30.0, 60.0, 60.0, 75.0);
+                $nRawScore = $nComplianceLevel + Math.min($nWcagDec, $nApcaDec);
+            } else if ($nAbsLc < 75.0) {
+                $nRawScore = 3.0 + Math.min(0.9, Math.max(0.0, ($nAbsLc - 60.0) / 15.0) * 0.9);
+            } else {
+                $nRawScore = $nAbsLc >= 90.0 ? 5.0 : 4.0;
+            }
         } else {
-            $nRawScore = 5.0;
+            if ($nComplianceLevel < 3) {
+                const $nWcagDec = $fGetDec($nWcagRatio, $nComplianceLevel, 3.0, 4.5, 4.5, 7.0);
+                $nRawScore = $nComplianceLevel + $nWcagDec;
+            } else if ($nWcagRatio < 10.0) {
+                $nRawScore = 3.0 + Math.min(0.9, Math.max(0.0, ($nWcagRatio - 7.0) / 3.0) * 0.9);
+            } else if ($nWcagRatio < 15.0) {
+                $nRawScore = 4.0 + Math.min(0.9, Math.max(0.0, ($nWcagRatio - 10.0) / 5.0) * 0.9);
+            } else {
+                $nRawScore = 5.0;
+            }
         }
 
         // Determine visual polarity context (Light/Dark mode)
@@ -140,10 +153,18 @@ export const IPAX_CORE = {
         if ($mRewardData.totalReward > 0.0) {
             let $nBoostedScore = $nFinalScore +$mRewardData.totalReward;
 
-            if ($nComplianceLevel < 5) {
-                $nFinalScore = Math.min($nComplianceLevel + 0.9, $nBoostedScore);
+            if ($bApcaAvailable) {
+                if ($nComplianceLevel < 3) {
+                    $nFinalScore = Math.min($nComplianceLevel + 0.9, $nBoostedScore);
+                } else {
+                    $nFinalScore = Math.min(5.0, $nBoostedScore);
+                }
             } else {
-                $nFinalScore = Math.min(5.0, $nBoostedScore);
+                if ($nComplianceLevel < 5) {
+                    $nFinalScore = Math.min($nComplianceLevel + 0.9, $nBoostedScore);
+                } else {
+                    $nFinalScore = Math.min(5.0, $nBoostedScore);
+                }
             }
 
             for (let $j = 0; $j < $mRewardData.bonuses.length; $j = $j + 1) {$aRewards.push($mRewardData.bonuses[$j]);

@@ -64,16 +64,21 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr><td>5</td><td>Gold (≥ Lc 90)</td><td>AAA Max (15.0:1)</td><td>Optimal optical comfort.</td></tr>
-                    <tr><td>4</td><td>Silver (≥ Lc 75)</td><td>AAA High (10.0:1)</td><td>Stable for sustained reading.</td></tr>
-                    <tr><td>3</td><td>Bronze (≥ Lc 60)</td><td>AAA (7.0:1)</td><td>Maximum compliance threshold.</td></tr>
-                    <tr><td>2</td><td>Basic (≥ Lc 45)</td><td>AA (4.5:1)</td><td>Baseline legal compliance.</td></tr>
-                    <tr><td>1</td><td>Large (≥ Lc 30)</td><td>Large (3.0:1)</td><td>Restricted to large text.</td></tr>
-                    <tr><td>X</td><td>Fail</td><td>Fail (<3.0:1)</td><td>Does not meet contrast minimums.</td></tr>
+                <tbody id="ipx-table-body">
+                    <!-- Hidratado vía JS desde dictionary.*.json -->
+                    <tr><td colspan="4">Loading reference table...</td></tr>
                 </tbody>
             </table>
         </details>
+
+        <template id="ipx-row-template">
+            <tr>
+                <td class="js-col-score"></td>
+                <td class="js-col-apca"></td>
+                <td class="js-col-wcag"></td>
+                <td class="js-col-status"></td>
+            </tr>
+        </template>
 
         <h2>Orchestrator Output (Raw Data)</h2>
         <div class="ipx-output-container js-output">

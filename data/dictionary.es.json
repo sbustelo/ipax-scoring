@@ -1,0 +1,151 @@
+{
+  "penalties": [
+    {
+      "slug": "apca_unavailable",
+      "label": "Motor APCA no disponible",
+      "description": "No se detectó la librería oficial de contraste APCA. La causa exacta (etiqueta <script> faltante, falla de red/CORS o ruta inválida) no se puede determinar. Solución: Asegúrese de que 'apca-w3.js' esté cargado y se pase al Orchestrator a través de config.env.apcaEngine.",
+      "references": []
+    },
+    {
+      "slug": "jitter",
+      "label": "Vibración Isoluminante",
+      "description": "La falta de contraste de luminancia ciega la vía magnocelular. Los bordes vibran y no pueden anclarse espacialmente, incluso si la diferencia de croma es alta.",
+      "references": [
+        "Livingstone, M., & Hubel, D. (1988). Segregation of form, color, movement, and depth. Science."
+      ]
+    },
+    {
+      "slug": "chromostereopsis",
+      "label": "Cromoestereopsis (Choque de Tonos)",
+      "description": "Ilusión de profundidad desencadenada por tonos opuestos altamente saturados. El índice de refracción variable del ojo fuerza espasmos en el músculo ciliar.",
+      "references": [
+        "Einthoven, W. (1885). Stereoscopie durch Farbendifferenz.",
+        "Thibos, L. N. (1992). The chromatic eye."
+      ]
+    },
+    {
+      "slug": "s_cone",
+      "label": "Tensión Foveal de Conos S",
+      "description": "La fóvea carece de conos S. El texto azul puro causa aberración cromática severa y no puede enfocarse con nitidez, fatigando el sistema visual.",
+      "references": [
+        "Roorda, A., & Williams, D. R. (1999). The arrangement of the three cone classes in the living human eye. Nature."
+      ]
+    },
+    {
+      "slug": "sim_contrast",
+      "label": "Inducción de Tono",
+      "description": "Un fondo altamente cromático distorsiona el color percibido de un texto neutro (Contraste Simultáneo), exigiendo procesamiento cognitivo extra.",
+      "references": [
+        "Shevell, S. K., & Kingdom, F. A. (2008). Color in complex scenes. Annual Review of Psychology."
+      ]
+    },
+    {
+      "slug": "halation",
+      "label": "Irradiación (Halación)",
+      "description": "Los fotones de alta luminancia del texto brillante se dispersan en los medios oculares e invaden áreas retinianas oscuras. Destruye las contraformas tipográficas.",
+      "references": [
+        "Von Helmholtz, H. (1867). Handbuch der physiologischen Optik."
+      ]
+    },
+    {
+      "slug": "mydriasis",
+      "label": "Aberración Midriática",
+      "description": "Los fondos negros puros (#000000) fuerzan la dilatación máxima de la pupila, exponiendo la periferia del cristalino y maximizando el astigmatismo.",
+      "references": [
+        "Campbell, F. W., & Gregory, A. H. (1960). Effect of size of pupil on visual acuity."
+      ]
+    },
+    {
+      "slug": "glare",
+      "label": "Deslumbramiento Macular",
+      "description": "La exposición a fondos casi blancos (Luminancia > 0.96) actúa como una fuente de luz absoluta, causando luz difusa intraocular.",
+      "references": [
+        "Van den Berg, T. J. (1990). On the relation between glare and straylight."
+      ]
+    },
+    {
+      "slug": "hk_effect",
+      "label": "Inflación H-K",
+      "description": "Efecto Helmholtz-Kohlrausch. La claridad percibida depende en gran medida de longitudes de onda de alto croma, inflando artificialmente los modelos de contraste base.",
+      "references": [
+        "High, C., et al. (2023). Modeling the Helmholtz-Kohlrausch effect for color appearance."
+      ]
+    }
+  ],
+  "rewards": [
+    {
+      "slug": "paper_tone",
+      "label": "Tono Papel",
+      "description": "El uso de un fondo cálido roto (L: 0.88-0.95) minimiza el deslumbramiento macular preservando la polaridad positiva.",
+      "references": [
+        "Piepenbrock, C., et al. (2013). Positive display polarity is advantageous."
+      ]
+    },
+    {
+      "slug": "chromatic_relief",
+      "label": "Alivio Cromático",
+      "description": "Un fondo neutro elimina la carga de adaptación cromática. Todos los recursos visuales quedan disponibles para discriminar el texto.",
+      "references": [
+        "Von Kries, J. (1902). Chromatic adaptation."
+      ]
+    },
+    {
+      "slug": "achromatic_tint_contrast",
+      "label": "Texto Acromático sobre Tinte",
+      "description": "Separa la identidad de marca (fondo cromático) del elemento de lectura (texto neutro acromático). Elimina la aberración cromática sobre la tipografía.",
+      "references": [
+        "Rubin, E. (1921). Visuell wahrgenommene Figuren (Figure and Ground)."
+      ]
+    }
+  ],
+  "scale": [
+    {
+      "score": 5,
+      "name": "Excelente",
+      "category": "design_quality",
+      "apca": { "grade": "Oro", "min_value": 90 },
+      "wcag": { "grade": "AAA Max", "min_value": 15.0 },
+      "description": "Contraste óptimo. Ergonómicamente impecable."
+    },
+    {
+      "score": 4,
+      "name": "Muy Bueno",
+      "category": "design_quality",
+      "apca": { "grade": "Plata", "min_value": 75 },
+      "wcag": { "grade": "AAA Alto", "min_value": 10.0 },
+      "description": "Supera los requisitos legales."
+    },
+    {
+      "score": 3,
+      "name": "Aceptable",
+      "category": "compliance",
+      "apca": { "grade": "Bronce", "min_value": 60 },
+      "wcag": { "grade": "AAA", "min_value": 7.0 },
+      "description": "Estándar legal más estricto (WCAG AAA)."
+    },
+    {
+      "score": 2,
+      "name": "Funcional",
+      "category": "compliance",
+      "apca": { "grade": "Básico", "min_value": 45 },
+      "wcag": { "grade": "AA", "min_value": 4.5 },
+      "description": "Legal para texto de cuerpo estándar (WCAG AA)."
+    },
+    {
+      "score": 1,
+      "name": "Bajo",
+      "category": "compliance",
+      "apca": { "grade": "Grande", "min_value": 30 },
+      "wcag": { "grade": "Grande", "min_value": 3.0 },
+      "description": "Solo texto grande y elementos decorativos."
+    },
+    {
+      "score": 0,
+      "name": "Falla",
+      "category": "compliance",
+      "apca": { "grade": "Falla", "min_value": null },
+      "wcag": { "grade": "Falla", "min_value": null },
+      "description": "Ilegible."
+    }
+  ]
+}

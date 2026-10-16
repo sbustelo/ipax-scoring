@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPAX Score - Minimal Integration</title>
+    <link rel="stylesheet" href="css/tester.css">
+    <script type="module" src="js/simple-app.js"></script>
+</head>
+<body>
+
+    <main class="ipx-app js-app">
+        <h1>IPAX Score — Minimal Example</h1>
+        <p>Minimal boilerplate demonstrating direct integration with <code>runIpax</code>.</p>
+
+        <form class="ipx-controls js-form" onsubmit="return false;">
+            <div class="ipx-input-group">
+                <div class="ipx-combo">
+                    <input type="text" class="ipx-input-hex js-input-fg" value="#FFFFFF" maxlength="7" spellcheck="false">
+                </div>
+                <label class="ipx-label">Text Color</label>
+            </div>
+
+            <div class="ipx-input-group">
+                <div class="ipx-combo">
+                    <input type="text" class="ipx-input-hex js-input-bg" value="#000000" maxlength="7" spellcheck="false">
+                </div>
+                <label class="ipx-label">Surface Color</label>
+            </div>
+
+            <button type="submit" class="js-btn-submit">Calculate</button>
+        </form>
+
+        <div class="ipx-interpretation js-output">
+            <span class="ipx-message">Awaiting calculation...</span>
+        </div>
+    </main>
+
+</body>
+</html>

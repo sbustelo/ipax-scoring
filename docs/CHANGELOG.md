@@ -30,7 +30,26 @@ The core scoring pipeline is planned to be rewritten in JSOL and verified, via J
 
 ---
 
-## v0.1.04 - September 22 / ongoing, 2026
+## v0.1.05 - October 15, 2026
+This release finalizes the architecture of the examples, centralizing all semantic definitions in the JSON dictionary and establishing clear integration patterns.
+
+### Added
+- Created `example/simple.html` as a minimal integration boilerplate for developers.
+- Implemented `example/index.es.html` to demonstrate dynamic localization via the HTML `lang` attribute.
+
+### Changed
+- Converted `dictionary.[lang].json` into the strict Single Source of Truth (SSOT) for the scoring reference table.
+- Refactored `example/index.html` to use a native `<template>` tag for hydrating the score reference table, eradicating HTML string injection in JavaScript.
+- Updated `example/js/ipax-integration.js` to dynamically resolve language dictionaries with a robust iterative fallback to English if network or file system fails.
+- Extracted grade labels in the UI directly from the SSOT (`dictionaryObject.scale`), ensuring parity across languages and environments.
+
+### Fixed
+- Fixed visual bug in `ipax-scene-pair.js` and `example/index.html` where the "APCA Engine Unavailable" warning was silently filtered out of the active penalties list.
+- Fixed WCAG minimum ratio formatting in the reference table to consistently include the "≥" symbol.
+
+---
+
+## v0.1.04 - September 22 / October 15, 2026
 * **Iterating scoring & grading:** Evaluating if smoothing curves for penalties and rewards, if  supported by literature, can improve experience. Grading styles: 1.8 vs 1.8(2) vs. 1(2).
 * Legacy object (scoring string) is deprecated.
 * If APCA is unavailable, use WCAG for levels 4 & 5 (contrast 10:1 and 15:1 respectively).

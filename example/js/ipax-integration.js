@@ -1,21 +1,39 @@
 /**
- * IPAX Integration Example
- * This file demonstrates how to initialize and use the IPAX Orchestrator.
- * It is completely decoupled from the DOM.
+ * IPAX Integration Layer
+ * Connects the host environment to the IPAX Orchestrator.
+ * Dynamically resolves language dictionary via loop and fallback.
  */
 import { IPAXOrchestrator } from '../../dist-js/orchestrator.js';
 import { apcaEngine } from './apca-bridge.js';
 
-let dictionaryObject = { penalties: [], rewards: [] };
+let dictionaryObject = { penalties: [], rewards: [], scale: [] };
 
-try {
-    const response = await fetch('../data/dictionary.en.json');
-    if (response.ok) {
-        dictionaryObject = await response.json();
+async function loadDictionary() {
+    const docLang = (typeof document !== 'undefined' && document.documentElement.lang) 
+        ? document.documentElement.lang.split('-')[0].toLowerCase() 
+        : 'en';
+        
+    const langsToTry = docLang === 'en' ? ['en'] : [docLang, 'en'];
+
+    for (const l of langsToTry) {
+        try {
+            const res = await fetch(`../data/dictionary.${l}.json`);
+            if (res.ok) {
+                dictionaryObject = await res.json();
+                return; // Corta ejecución al primer éxito
+            }
+        } catch (err) {
+            // Falla de red/CORS silenciosa, continúa al siguiente idioma del loop
+        }
     }
-} catch (err) {
-    console.error("IPAX Integration: Failed to load dictionary.en.json", err);
+    
+    console.warn("IPAX Integration: Failed to load any dictionary JSON. Semantic descriptions will be missing.");
 }
+
+// Inicialización asíncrona bloqueante en carga de módulo (Top-Level Await)
+await loadDictionary();
+
+export { dictionaryObject };
 
 /**
  * Calculates the IPAX Score for a given color pair and font weight.

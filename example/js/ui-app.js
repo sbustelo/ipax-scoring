@@ -1,4 +1,4 @@
-import { runIpax } from './ipax-integration.js';
+import { runIpax, dictionaryObject } from './ipax-integration.js';
 
 const out = document.querySelector('.js-output');
 const interpretationBox = document.querySelector('.js-interpretation');
@@ -12,38 +12,53 @@ const btnSwap = document.querySelector('.js-btn-swap');
 const validateHex = (hex) => /^#[0-9A-F]{6}$/i.test(hex);
 const trunc2 = (val) => Math.trunc(val * 100) / 100;
 
-const getGradeLabel = (score) => {
-    switch (score) {
-        case 5: return "Excellent";
-        case 4: return "Very Good";
-        case 3: return "Acceptable";
-        case 2: return "Functional";
-        case 1: return "Low";
-        default: return "Fail";
-    }
+const isEs = (typeof document !== 'undefined' && document.documentElement.lang?.startsWith('es'));
+const t = {
+    passes: isEs ? "cumple WCAG 2" : "passes WCAG 2",
+    fails: isEs ? "Falla WCAG 2" : "Fails WCAG 2",
+    apcaGrade: isEs ? "Grado APCA" : "APCA grade",
+    apcaUnavail: isEs ? "APCA No Disponible" : "APCA Unavailable",
+    score: isEs ? "Puntaje IPAX" : "IPAX Score",
+    thisPair: isEs ? "Este par" : "This pair",
+    normative: isEs ? "El cumplimiento normativo es" : "Normative compliance is",
+    lvl: isEs ? "Nivel" : "Level",
+    butDegraded: isEs ? "pero IPAX degradó el puntaje a" : "but IPAX degraded the score to",
+    dueTo: isEs ? "debido a penalidades ergonómicas. Como recomendación de calidad de diseño, no use esta combinación para lectura continua, incluso si está legalmente permitida." : "due to ergonomic penalties. As a design quality recommendation, do not use this combination for continuous reading, even if legally permitted.",
+    failAbs: isEs ? "La combinación falla los requisitos<br>mínimos de contraste" : "Combination fails minimum<br>contrast requirements",
+    compliesApca: isEs ? "Cumple con APCA para" : "Complies with APCA for",
+    minFor: isEs ? "mínimo para" : "minimum for",
+    bold: isEs ? "peso Bold" : "Bold weight",
+    normal: isEs ? "peso Normal" : "Normal weight",
+    open: isEs ? "Abrir en IPAX Sampler ↗" : "Open in IPAX Sampler ↗"
 };
 
-
+const getGradeLabel = (score) => {
+    if (dictionaryObject && dictionaryObject.scale) {
+        const match = dictionaryObject.scale.find(x => x.score === score);
+        if (match) return match.name;
+    }
+    return isEs ? "Falla" : "Fail";
+};
 
 const renderInterpretation = (result) => {
-    const scoreInt = Math.floor(Math.round(result.finalScore * 10.0) / 10.0);
+    const scoreInt = Math.floor(Math.round(result.score * 10.0) / 10.0);
     const gradeLabel = getGradeLabel(scoreInt);
 
-    const wcagString = result.wcagScore > 0 
-        ? `passes WCAG 2: ${result.wcagGrade} (≥ ${trunc2(result.wcagRatio)}:1)` 
-        : `Fails WCAG 2`;
+    const wcagString = result.wcag.score > 0 
+        ? `${t.passes}: ${result.wcag.grade} (≥ ${trunc2(result.wcag.ratio)}:1)` 
+        : t.fails;
         
-    const apcaAvail = (result.raw && result.raw.apcaLc !== null);
+    const apcaAvail = (result.apca.lc !== null);
     const apcaString = apcaAvail 
-        ? `APCA grade: ${result.apcaGrade} (≥ Lc ${trunc2(Math.abs(result.raw.apcaLc))})` 
-        : `<span class="ipx-text-warning">APCA Unavailable</span>`;
+        ? `${t.apcaGrade}: ${result.apca.grade} (≥ Lc ${trunc2(Math.abs(result.apca.lc))})` 
+        : `<span class="ipx-text-warning">${t.apcaUnavail}</span>`;
 
     let html = `
-        <h2 class="ipx-score-title">IPAX Score: ${result.finalScore.toFixed(1)} (${gradeLabel})</h2>
-        <p class="ipx-score-subtitle">This pair ${wcagString}; ${apcaString}.</p>
+        <h2 class="ipx-score-title">${t.score}: ${result.score.toFixed(1)} (${gradeLabel})</h2>
+        <p class="ipx-score-subtitle">${t.thisPair} ${wcagString}; ${apcaString}.</p>
     `;
 
-    const legalScore = apcaAvail ? Math.floor(Math.min(result.wcagScore, result.apcaScore)) : result.wcagScore;
+    const legalScore = apcaAvail ? Math.floor(Math.min(result.wcag.score, result.apca.score)) : result.wcag.score;
 
     if (legalScore > scoreInt) {
         const legalScoreStr = legalScore === 0 ? 'X' : legalScore;
@@ -52,7 +67,7 @@ const renderInterpretation = (result) => {
         
         html += `
         <div class="ipx-warning-box">
-            Normative compliance is <strong>Level ${legalScoreStr} (${legalLabel})</strong>, but IPAX degraded the score to <strong>Level ${degradedChar} (${gradeLabel})</strong> due to ergonomic penalties. As a design quality recommendation, do not use this combination for continuous reading, even if legally permitted.
+            ${t.normative} <strong>${t.lvl} ${legalScoreStr} (${legalLabel})</strong>, ${t.butDegraded} <strong>${t.lvl} ${degradedChar} (${gradeLabel})</strong> ${t.dueTo}
         </div>
         `;
     }
@@ -67,12 +82,12 @@ const renderPreview = (resNormal, resBold, fgVal, bgVal) => {
     
     let html = '';
     
-    if (resNormal.finalScore < 1) {
+    if (resNormal.score < 1) {
         // Overlay de Falla Absoluta
         html = `
             <div class="ipx-preview-overlay">
                 <span class="ipx-overlay-icon">⊘</span>
-                <span class="ipx-overlay-text">Combination fails minimum<br>contrast requirements</span>
+                <span class="ipx-overlay-text">${t.failAbs}</span>
             </div>
             <p class="ipx-preview-text" style="font-weight: 400; font-size: 128px; margin: -24px 0 0 0; color: ${fgVal};">
                 XXXX
@@ -80,16 +95,16 @@ const renderPreview = (resNormal, resBold, fgVal, bgVal) => {
         `;
     } else {
         const renderLine = (res, weight) => {
-            const isApca = res.raw && res.raw.apcaLc !== null;
-            const weightLabel = weight === 700 ? "Bold weight" : "Normal weight";
+            const isApca = res.apca.lc !== null;
+            const weightLabel = weight === 700 ? t.bold : t.normal;
             let size = 16;
             let text = "";
             
-            if (isApca && res.apcaScore > 0) {
-                text = `Complies with APCA for ${weightLabel}`;
-            } else if (res.wcagScore > 0) {
-                size = res.wcagFontSize || 16;
-                text = `${size}px minimum for ${weightLabel} (WCAG)`;
+            if (isApca && res.apca.score > 0) {
+                text = `${t.compliesApca} ${weightLabel}`;
+            } else if (res.wcag.score > 0) {
+                size = res.wcag.fontSize || 16;
+                text = `${size}px ${t.minFor} ${weightLabel} (WCAG)`;
             } else {
                 return ""; // Falla en este peso específico
             }
@@ -106,9 +121,9 @@ const renderPreview = (resNormal, resBold, fgVal, bgVal) => {
     
     html += `
         <a href="https://ipax.bustelo.com.ar/sampler.php?m=sample&bg=${cleanBg}&txt=${cleanFg}" 
-           class="ipx-preview-more" target="_blank" title="Open in Typography Sampler"
+           class="ipx-preview-more" target="_blank" title="${t.open}"
            style="color: ${linkColor}">
-            Open in IPAX Sampler ↗
+            ${t.open}
         </a>
     `;
 
@@ -215,7 +230,36 @@ const bindInput = (picker, textInput) => {
     textInput.addEventListener('change', handleTextChange);
 };
 
+const renderReferenceTable = () => {
+    const tbody = document.getElementById('ipx-table-body');
+    const tpl = document.getElementById('ipx-row-template');
+    
+    if (!tbody || !tpl || !dictionaryObject || !dictionaryObject.scale) return;
+
+    tbody.innerHTML = ''; // Limpiar fallback inicial
+    
+    if (dictionaryObject.scale.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4">Reference table unavailable.</td></tr>';
+        return;
+    }
+
+    dictionaryObject.scale.forEach(lvl => {
+        const row = tpl.content.cloneNode(true);
+        const scoreChar = lvl.score === 0 ? 'X' : lvl.score;
+        const apcaStr = lvl.apca.min_value !== null ? `${lvl.apca.grade} (≥ Lc ${lvl.apca.min_value})` : lvl.apca.grade;
+        const wcagStr = lvl.wcag.min_value !== null ? `${lvl.wcag.grade} (≥ ${lvl.wcag.min_value.toFixed(1)}:1)` : lvl.wcag.grade;
+
+        row.querySelector('.js-col-score').textContent = `${scoreChar}. ${lvl.name}`;
+        row.querySelector('.js-col-apca').textContent = apcaStr;
+        row.querySelector('.js-col-wcag').textContent = wcagStr;
+        row.querySelector('.js-col-status').textContent = lvl.description;
+        
+        tbody.appendChild(row);
+    });
+};
+
 // Initialize UI
+renderReferenceTable();
 bindInput(pickerFg, hexFg);
 bindInput(pickerBg, hexBg);
 

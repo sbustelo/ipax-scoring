@@ -3,7 +3,7 @@
     {
       "slug": "apca_unavailable",
       "label": "APCA Engine Unavailable",
-      "description": "The official APCA contrast library was not detected. The exact cause (missing <script> tag, network/CORS failure, or invalid file path) cannot be determined from this context. As a result, the score is capped at 3.0 (WCAG only). Solution: Ensure 'apca-w3.js' is loaded in your document and passed to the Orchestrator via config.env.apcaEngine.",
+      "description": "The official APCA contrast library was not detected. The exact cause (missing <script> tag, network/CORS failure, or invalid file path) cannot be determined from this context. Solution: Ensure 'apca-w3.js' is loaded in your document and passed to the Orchestrator via config.env.apcaEngine.",
       "references": []
     },
     {
@@ -96,6 +96,56 @@
       "references": [
         "Rubin, E. (1921). Visuell wahrgenommene Figuren (Figure and Ground)."
       ]
+    }
+  ],
+  "scale": [
+    {
+      "score": 5,
+      "name": "Excellent",
+      "category": "design_quality",
+      "apca": { "grade": "Gold", "min_value": 90 },
+      "wcag": { "grade": "AAA Max", "min_value": 15.0 },
+      "description": "Optimal contrast. Ergonomically clean."
+    },
+    {
+      "score": 4,
+      "name": "Very Good",
+      "category": "design_quality",
+      "apca": { "grade": "Silver", "min_value": 75 },
+      "wcag": { "grade": "AAA High", "min_value": 10.0 },
+      "description": "Exceeds legal requirements."
+    },
+    {
+      "score": 3,
+      "name": "Acceptable",
+      "category": "compliance",
+      "apca": { "grade": "Bronze", "min_value": 60 },
+      "wcag": { "grade": "AAA", "min_value": 7.0 },
+      "description": "Highest legal standard (WCAG AAA)."
+    },
+    {
+      "score": 2,
+      "name": "Functional",
+      "category": "compliance",
+      "apca": { "grade": "Basic", "min_value": 45 },
+      "wcag": { "grade": "AA", "min_value": 4.5 },
+      "description": "Legal for standard body text (WCAG AA)."
+    },
+    {
+      "score": 1,
+      "name": "Low",
+      "category": "compliance",
+      "apca": { "grade": "Large", "min_value": 30 },
+      "wcag": { "grade": "Large", "min_value": 3.0 },
+      "description": "Large text and decorative elements only."
+    },
+    {
+      "score": 0,
+      "name": "Fail",
+      "category": "compliance",
+      "apca": { "grade": "Fail", "min_value": null },
+      "wcag": { "grade": "Fail", "min_value": null },
+      "description": "Unreadable."
     }
   ]
 }
