@@ -15,6 +15,13 @@ const result = IPAXOrchestrator.getScore({
 });
 ```
 
+## Philosophy: The Legal Floor & Code Simplicity
+
+IPAX operates under a strict separation of concerns between **legal compliance** and **design quality** (ergonomics):
+
+1. **The Law is the Law:** As of today, WCAG 2.x is the active legislation in most jurisdictions. Therefore, WCAG 2.x acts as the absolute, non-negotiable floor for the IPAX score. If a color pair fails WCAG 2.x, it fails IPAX, even if modern continuous algorithms (like APCA) deem it ergonomically safe. IPAX will always evaluate the worst-case legal scenario.
+2. **No Future-Predicting:** Following *Code Simplicity* principles, IPAX does not attempt to predict future legal landscapes (e.g., WCAG 3 adopting APCA). The system is built to reflect the realities of current standards. The architecture is modular and documented so that when legislation eventually changes, the normative constraints can be updated seamlessly without altering the core ergonomic biological engine.
+
 ## The IPAX Score
 
 Scores X to 3 indicate adherence to technical readability thresholds. Scores 4 and 5 indicate optical stability and reduction of visual fatigue under sustained use.

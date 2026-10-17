@@ -13,22 +13,22 @@
         <h1>IPAX Score — Minimal Example</h1>
         <p>Minimal boilerplate demonstrating direct integration with <code>runIpax</code>.</p>
 
-        <form class="ipx-controls js-form" onsubmit="return false;">
-            <div class="ipx-input-group">
-                <div class="ipx-combo">
-                    <input type="text" class="ipx-input-hex js-input-fg" value="#FFFFFF" maxlength="7" spellcheck="false">
+        <form class="ipx-simple-controls js-form" onsubmit="return false;">
+            <div class="ipx-simple-group">
+                <div class="ipx-simple-combo">
+                    <input type="text" class="ipx-simple-hex js-input-fg" value="#FFFFFF" maxlength="7" spellcheck="false">
                 </div>
-                <label class="ipx-label">Text Color</label>
+                <label class="ipx-simple-label">Text Color</label>
             </div>
 
-            <div class="ipx-input-group">
-                <div class="ipx-combo">
-                    <input type="text" class="ipx-input-hex js-input-bg" value="#000000" maxlength="7" spellcheck="false">
+            <div class="ipx-simple-group">
+                <div class="ipx-simple-combo">
+                    <input type="text" class="ipx-simple-hex js-input-bg" value="#000000" maxlength="7" spellcheck="false">
                 </div>
-                <label class="ipx-label">Surface Color</label>
+                <label class="ipx-simple-label">Surface Color</label>
             </div>
 
-            <button type="submit" class="js-btn-submit">Calculate</button>
+            <button type="submit" class="ipx-simple-btn js-btn-submit">Calculate</button>
         </form>
 
         <div class="ipx-interpretation js-output">

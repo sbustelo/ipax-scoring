@@ -48,10 +48,8 @@ const getApcaFontData = (lc, weight, lookupFn) => {
         }
     }
 
-    // Heuristic fallback if no lookup array is available.
-    let baseSize = (850 / (absLc - 25)) + 3;
-    let weightFactor = weight < 400 ? Math.pow(400 / weight, 1.5) : Math.pow(400 / weight, 0.8);
-    usage.sizePx = Math.max(12, Math.round(baseSize * weightFactor));
+    // APCA lookup unavailable or failed.
+    // Fallback: Return null to allow inheritance of WCAG legal floor in the orchestration phase.
     return usage;
 };
 

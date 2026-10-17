@@ -1,4 +1,4 @@
-# Origins
+# IPAX Origins
 
 IPAX is the result of more than a year of standalone research in color, accessibility, design systems and design quality, as well as the models and frameworks needed to build and iterate every piece, with several parallel lines that later converged.
 
@@ -52,3 +52,8 @@ The thread underneath all of this: updating Swiss School design principles to mo
 **August 2026** — JSOL was born directly out of IPAX's own needs: porting the color math so it produces guaranteed-identical results across every language IPAX could run in, verified through JSOL's own contract system.
 
 That’s a limitation APCA has (as sept. 19, 2026) being published only in JavaScript with a restrictive license to prevent math drift. Looking for a way to overcome this limitation and finding only over engineered solutions unsuitable for a lightweight pipeline, I decided to build my own.
+
+
+---
+
+*IPAX Scoring System v0.1.06 • 2026-10-16, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data).*

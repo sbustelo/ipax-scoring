@@ -26,7 +26,18 @@ The core scoring pipeline is planned to be rewritten in JSOL and verified, via J
 
 -   **JSOL Transpilation:** Full rewrite of the core scoring pipeline into [pure JSOL](https://jsol.bustelo.com.ar/), spawned directly by IPAX's need to port its color math with guaranteed cross-language consistency.
 
+---
 
+## v0.1.06 - October 16, 2026
+This release solidifies the typographic intersection logic.
+
+### Added
+- Created `docs/TYPOGRAPHY.md` to document the architectural decoupling and intersection logic between WCAG normative sizing and APCA ergonomic sizing.
+
+### Changed
+- Eradicated heuristic fallback for APCA font sizes in `dist-js/orchestrator.js`.
+- Implemented a strict legal clamp: if APCA recommends a font size smaller than the WCAG minimum for the "Large Text" zone (3.0:1 to 4.49:1), the output is clamped to the WCAG legal requirement (24px for Normal, 18.5px for Bold).
+- If the APCA matrix is unavailable, the Orchestrator again gracefully defaults to WCAG sizing rules instead of synthesizing approximate numbers.
 
 ---
 
@@ -87,3 +98,7 @@ First stable engine [presented at Rosenverse (Rosenfeld Media)](https://rosenver
 * **Reward Gating:** Introduced multiplicative smoothstep gating, allowing ergonomic rewards (e.g. Paper Tone) to gracefully fade in only if the biological score is healthy, revoking them entirely if severe scatter penalties exist.
 
 Features: Sandbox, Sampler, Font sizer.
+
+---
+
+*IPAX Scoring System v0.1.06 • 2026-10-16, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data).*

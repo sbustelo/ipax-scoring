@@ -29,16 +29,18 @@ export const IPAX_CORE = {
         let $sWcagGrade = "Fail";
         let $nWcagFontSize = null;
 
+        const $nLargeTextPx = $nFontWeight >= 700 ? 18.5 : 24;
+
         if (!$bApcaAvailable) {
-            if ($nWcagRatio >= 15.0) {$nWcagScore = 5; $sWcagGrade = "AAA (Max)"; $nWcagFontSize = 16; }
-            else if ($nWcagRatio >= 10.0) {$nWcagScore = 4; $sWcagGrade = "AAA (High)"; $nWcagFontSize = 16; }
-            else if ($nWcagRatio >= 7.0) {$nWcagScore = 3; $sWcagGrade = "AAA"; $nWcagFontSize = 16; }
-            else if ($nWcagRatio >= 4.5) {$nWcagScore = 2; $sWcagGrade = "AA"; $nWcagFontSize = 16; }
-            else if ($nWcagRatio >= 3.0) {$nWcagScore = 1; $sWcagGrade = "AA (Large text)"; $nWcagFontSize = 24; }
+            if ($nWcagRatio >= 15.0) {$nWcagScore = 5; $sWcagGrade = "AAA (Max)"; }
+            else if ($nWcagRatio >= 10.0) {$nWcagScore = 4; $sWcagGrade = "AAA (High)"; }
+            else if ($nWcagRatio >= 7.0) {$nWcagScore = 3; $sWcagGrade = "AAA"; }
+            else if ($nWcagRatio >= 4.5) {$nWcagScore = 2; $sWcagGrade = "AA"; }
+            else if ($nWcagRatio >= 3.0) {$nWcagScore = 1; $sWcagGrade = "AA (Large text)"; $nWcagFontSize = $nLargeTextPx; }
         } else {
-            if ($nWcagRatio >= 7.0) {$nWcagScore = 3; $sWcagGrade = "AAA"; $nWcagFontSize = 16; }
-            else if ($nWcagRatio >= 4.5) {$nWcagScore = 2; $sWcagGrade = "AA"; $nWcagFontSize = 16; }
-            else if ($nWcagRatio >= 3.0) {$nWcagScore = 1; $sWcagGrade = "AA (Large text)"; $nWcagFontSize = 24; }
+            if ($nWcagRatio >= 7.0) {$nWcagScore = 3; $sWcagGrade = "AAA"; }
+            else if ($nWcagRatio >= 4.5) {$nWcagScore = 2; $sWcagGrade = "AA"; }
+            else if ($nWcagRatio >= 3.0) {$nWcagScore = 1; $sWcagGrade = "AA (Large text)"; $nWcagFontSize = $nLargeTextPx; }
         }
 
         // STEP 3: APCA EVALUATION
