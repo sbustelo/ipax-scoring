@@ -1,7 +1,19 @@
 /**
- * IPAX Scoring System - Orchestrator (SSOT Public API)
+ * IPAX Scoring System - Orchestrator (SSOT Public API)  (continuous edition, rebased on v0.1.06)
  * Connects the pure core (JSOL-style) with the host environment: handles I/O,
  * the optional external APCA dependency (IoC), and semantic dictionary mapping.
+ *
+ * PRESENTATION LAYER. This is the only place where the continuous score is
+ * quantized (0.1 rounding, integer grades, "+" symbol, "N(M)" degraded string).
+ * Those are display rules; the numeric score (scoreExact) stays continuous.
+ *
+ * Design notes (docs/DECISIONS.md, D-04, D-13):
+ *   - context.baseMode ('auto' default | 'wcag') is forwarded to the core.
+ *   - scoreExact (unrounded) is exposed for audit and for continuity tests.
+ *   - Output schema is otherwise unchanged (ui-app.js works as is).
+ *   - getApcaY / getApcaFontData remain APCA TELEMETRY (host-level, discrete by nature).
+ *   - When the APCA font table is unavailable, getApcaFontData returns sizePx: null and the host applies the
+ *     WCAG legal floor (no heuristic size is synthesized).
  */
 import { IPAX_CORE } from './score.js';
 
@@ -85,6 +97,7 @@ export const IPAXOrchestrator = {
         const bHex = config.colors.bg.toUpperCase();
         const fCtx = (config.context && config.context.forceContext) ? config.context.forceContext : 'auto';
         const fWt = (config.context && config.context.fontWeight) ? config.context.fontWeight : 400;
+        const fBase = (config.context && config.context.baseMode === 'wcag') ? 'wcag' : 'auto';
 
         let apcaLc = 0;
         let apcaAvailable = false;
@@ -103,7 +116,7 @@ export const IPAXOrchestrator = {
             );
         }
 
-        const rawMap = IPAX_CORE.getScore(tHex, bHex, apcaLc, apcaAvailable, fWt, fCtx);
+        const rawMap = IPAX_CORE.getScore(tHex, bHex, apcaLc, apcaAvailable, fWt, fCtx, fBase);
 
         if (rawMap === null) {
             throw new Error("IPAX Orchestrator: Invalid HEX color(s) provided.");
@@ -159,6 +172,7 @@ export const IPAXOrchestrator = {
         return {
             input: { text: tHex, bg: bHex, darkMode: rawMap.isDarkContext },
             score: roundedScore,
+            scoreExact: rawMap.finalScore,
             string: ipaxString, // Mantenido por retrocompatibilidad temporal
             grades: {
                 structural: ipaxString,

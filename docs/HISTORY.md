@@ -4,8 +4,7 @@ IPAX is the result of more than a year of standalone research in color, accessib
 
 ## The Tricontrast line
 
-**August 2025** — Original investigation into what I called the _Tricontrast color space_: accessible design systems built on just 3 tokens (white, black, accent), where
-the accent holds a 4.5:1 contrast ratio simultaneously against pure white and pure black. This research produced two distinct outcomes:
+**August 2025** — Original investigation into what I called the _Tricontrast color space_: accessible design systems built on just 3 tokens (white, black, accent), where the accent holds a 4.5:1 contrast ratio simultaneously against pure white and pure black. This research produced two distinct outcomes:
 
 1. The design now running live on bustelo.com.ar, using 3 colors (paper/ink/accent), light and dark modes, and a user-selectable accent. It started as a curated set of accent options; later, learnings from building IPAX fed back into it, so the accent can now also be defined as a calculated _Tricontrast_ color.
 2. The idea of how to develop Tricontrast as a tool, whicih became the theoretical foundation of IPAX.

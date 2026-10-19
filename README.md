@@ -41,9 +41,9 @@ Scores X to 3 indicate adherence to technical readability thresholds. Scores 4 a
 2.  **WCAG Evaluation ($nWcagScore):** Calculates the standard contrast ratio (0 to 21). Segments the result into scores: 0 (Fail), 1 (Large), 2 (AA), 3 (AAA).
 3.  **APCA Evaluation ($nApcaScore):** Extracts the absolute Lc value. Segments the result into scores: 0 (Fail), 1 (Large), 2 (Basic), 3 (Bronze), 4 (Silver), 5 (Gold).
 4.  **Normative Intersection ($nComplianceLevel):** Takes the strict **minimum** between the WCAG and APCA scores: `Math.floor(Math.min($nWcagScore, $nApcaScore))`. If _either_ system fails (0), the entire baseline compliance is immediately set to 0.
-5.  **Fractional Calculation ($nRawScore):** If the baseline compliance is level 1 or 2, linear interpolation (`$fGetDec`) is applied within that level's boundaries (e.g., resulting in 1.4 or 2.7). This provides granular scoring without jumping to the next integer bracket.
-6.  **Penalty Accumulation ($nTotalPenalty):** Evaluates ergonomic flaws (Jitter, Glare, Halation, Chromostereopsis, etc.) based on the OKLCH model. These values are always subtracted from the score.
-7.  **Defensive Floor Application ($nFloor):** The raw score (`$nRawScore`) is reduced by the penalties. If `$nComplianceLevel` is >= 1 (meaning it passed BOTH WCAG and APCA minimums), the final score is clamped so it cannot drop below 1.0. If `$nComplianceLevel` was already 0 (a fail in either system), the floor is 0.
+5.  **Base Score Calculation ($nBase):** A continuous, granular base score is computed using piecewise-linear interpolation over the contrast ratios. This translates discrete brackets into a smooth mathematical curve (e.g., resulting in 1.4 or 2.7) without abrupt step jumps.
+6.  **Continuous Penalty Accumulation ($nTotalPenalty):** Evaluates ergonomic flaws (Jitter, Glare, Halation, Chromostereopsis, etc.) based on the OKLCH model. Penalties are driven by continuous curves (smoothsteps and gaussians) rather than hard thresholds, ensuring smooth transitions across the color space. These values are accumulated and subtracted from the base score.
+7.  **Defensive Legal Ceiling:** The core ensures that no matter the rewards applied, the final grade cannot structurally exceed the legal tier determined by WCAG. The legal level dictates the hard ceiling for the final score.
 8.  **Rewards and Ceilings:** Bonus points for fatigue reduction (e.g., Paper Tone) are added to the post-penalty score. Upper bounds (max 3.0 or 5.0) are applied to ensure bonuses do not artificially inflate a score beyond its APCA capability limit.
 
 ## About APCA and its license
@@ -65,4 +65,4 @@ Entirely optional, never required.
 
 ---
 
-*IPAX v0.1.03 — 2026-09-22, Santiago Bustelo • [Apache 2.0 / CC BY 4.0 License](LICENSE).*
+*IPAX v0.1.10 — 2026-10-19, Santiago Bustelo • [Apache 2.0 / CC BY 4.0 License](LICENSE).*
