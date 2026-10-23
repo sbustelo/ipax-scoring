@@ -2,7 +2,7 @@
 
 2026, [Santiago Bustelo](https://www.bustelo.com.ar/)  
 [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)  
-v0.1.06 • 2026-10-16
+v0.1.20 • 2026-10-22
 
 ---
 
@@ -56,10 +56,11 @@ To ensure clarity in the UI, the presentation layer must communicate both the le
 | **Ratio $3.0 - 4.49$<br>APCA OK (Larger)** | $24\text{px}$ (Normal)<br>$18.5\text{px}$ (Bold) | $32\text{px}$ (Normal)<br>$24\text{px}$ (Bold) | **32px** (Normal)<br>**24px** (Bold) | `32px (APCA ergonomics; WCAG minimum 24px)`<br>`24px (APCA ergonomics; WCAG minimum 18.5px)` |
 | **Ratio $\ge 4.5$<br>No APCA** | Unconstrained (`null`) | Unavailable (`null`) | **16px** (Normal)<br>**16px** (Bold) | `16px (Standard convention; WCAG has no minimum)`<br>`16px (Standard convention; WCAG has no minimum)` |
 | **Ratio $3.0 - 4.49$<br>No APCA** | $24\text{px}$ (Normal)<br>$18.5\text{px}$ (Bold) | Unavailable (`null`) | **24px** (Normal)<br>**18.5px** (Bold) | `24px (WCAG Large Text mandatory floor)`<br>`18.5px (WCAG Bold mandatory floor)` |
-| **Ratio $< 3.0$** | Illegal | Spot / Unviable | **Not viable** | `Not viable for text (WCAG normative failure)` |
+| **Ratio $< 3.0$<br>APCA $\ge 30$** | Exempt (Inactive) | Spot Text | **Spot Text Only** | `Spot / Inactive text only (WCAG 2 exempt; APCA Lc 30 floor)` |
+| **Ratio $< 3.0$<br>APCA $< 30$** | Illegal | Unviable | **Not viable** | `Combination fails minimum contrast requirements` |
 
 *Note: 16px is used as the standard web convention (1rem) when WCAG does not enforce a minimum and APCA is unavailable.*
 
 ---
 
-*IPAX Scoring System v0.1.06 • 2026-10-16, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data).*
+*IPAX Scoring System v0.1.20 • 2026-10-22, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data).*

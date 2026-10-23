@@ -1,0 +1,62 @@
+/* Layout específico para el Index. */
+
+.index-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 var(--ipax-1-space-4);
+}
+
+.index-header {
+    margin-bottom: 30px;
+}
+
+.index-header h1 {
+    margin: 0 0 10px 0;
+    color: var(--ipax-this-accent);
+}
+
+.index-header p {
+    margin: 0;
+    color: var(--ipax-this-muted);
+}
+
+.index-group-title {
+    margin: 0 0 var(--ipax-1-space-3) 0;
+    padding-bottom: 10px;
+    color: var(--ipax-this-accent);
+    border-bottom: var(--ipax-0-border-width) solid var(--ipax-this-border);
+    font-size: var(--ipax-1-font-xl, 20px);
+    font-weight: bold;
+}
+
+/* Override explícito a la regla de enlaces del engine */
+.index-link {
+    display: block;
+    padding: 12px 0;
+    color: var(--ipax-this-ink) !important;
+    text-decoration: none !important;
+    border-bottom: var(--ipax-0-border-width) solid var(--ipax-this-divider, var(--ipax-this-border));
+}
+
+.index-link:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.index-link:hover {
+    color: var(--ipax-this-accent) !important;
+}
+
+.index-link strong {
+    display: inline-block;
+    width: 220px;
+    font-family: var(--ipax-0-font-mono);
+    font-size: 14px;
+    /* Fuerza a heredar el color del hover del padre */
+    color: inherit; 
+}
+
+.index-link span {
+    color: var(--ipax-this-muted);
+    font-size: 14px;
+}

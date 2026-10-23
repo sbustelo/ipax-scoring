@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPAX Scoring Cases Sweep</title>
+    
+    <!-- 1. IPAX UI Core -->
+    <link rel="stylesheet" href="css/ipax-ui/ipax-ui-engine.css">
+    <link rel="stylesheet" href="css/ipax-ui/ipax-ui-theme-default.css">
+    <link rel="stylesheet" href="css/ipax-ui/ipax-ui-components.css">
+    
+    <!-- 2. CSS Local de la vista -->
+    <link rel="stylesheet" href="css/map-cases.css">
+</head>
+<body class="ipax-ui ipax-surface ipax-ink-on-paper">
+
+    <main class="ipax-page-main js-app">
+        <h1 style="margin-top: 0;">IPAX Scoring Cases Sweep</h1>
+        <p class="ipax-muted">Sweeping <span id="sweep-count">N<sup>6</sup></span> hex combinations to categorize the 0-6 scoring scale: extracting pure readability examples, ergonomic penalty drops, and WCAG/APCA divergences.</p>
+        
+        <div class="js-output" style="margin-top: var(--ipax-1-space-4);"></div>
+    </main>
+
+    <script type="module" src="js/map-cases.js"></script>
+</body>
+</html>

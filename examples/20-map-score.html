@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IPAX Interactive Compare</title>
+    <link rel="stylesheet" href="css/map-score.css">
+	<link rel="stylesheet" href="css/map-score-tokens.css">
+</head>
+<body>
+    
+    <div class="toolbar">
+    <div class="toolbar-header-text">
+        <h2>IPAX Score map</h2>
+        <p>
+            Matrices mapping luminance of Text (y) vs Surface (x). Plots WCAG and APCA compliance tiers against the continuous IPAX ergonomic score. Mouseover any pixel to inspect detailed metrics and live preview.
+        </p>
+    </div>
+
+        <div class="toolbar-controls">
+            
+            <!-- Column 1: Y-Axis (Text) -->
+            <div class="control-column">
+                <div class="control-header">
+                    <input type="color" id="picker-txt" class="swatch-picker" aria-label="Text Color Picker">
+                    <strong>Y-Axis (Text Color)</strong>
+                </div>
+                <div class="control-row">
+                    <label>C:</label>
+                    <input type="range" id="slider-txt-c" min="0" max="0.4" step="0.01" value="0">
+                    <span id="val-txt-c">0.00</span>
+                </div>
+                <div class="control-row">
+                    <label>H:</label>
+                    <input type="range" id="slider-txt-h" min="0" max="360" step="1" value="0">
+                    <span id="val-txt-h">0</span>
+                </div>
+            </div>
+
+            <!-- Column 2: X-Axis (Background) -->
+            <div class="control-column control-column-bordered">
+                <div class="control-header">
+                    <input type="color" id="picker-bg" class="swatch-picker" aria-label="Surface Color Picker">
+                    <strong>X-Axis (Surface Color)</strong>
+                </div>
+                <div class="control-row">
+                    <label>C:</label>
+                    <input type="range" id="slider-bg-c" min="0" max="0.4" step="0.01" value="0">
+                    <span id="val-bg-c">0.00</span>
+                </div>
+                <div class="control-row">
+                    <label>H:</label>
+                    <input type="range" id="slider-bg-h" min="0" max="360" step="1" value="0">
+                    <span id="val-bg-h">0</span>
+                </div>
+            </div>
+
+            <!-- Column 3: Mode & Export -->
+            <div class="control-column control-column-bordered control-column-mode">
+                <div class="control-mode">
+                    <strong>Map Mode</strong>
+                    <select id="ctrl-mode">
+                        <option value="srgb">sRGB (L 0-255)</option>
+                        <option value="oklab">OKLab (L 0.0-1.0)</option>
+                    </select>
+                </div>
+                <button id="btn-export">Export PNGs</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="sticky-area">
+        <div class="top-row">
+            <div class="graphs-container">
+                
+                <!-- Strip Y as direct sibling (preserves user gap) -->
+                <div class="strip-wrapper strip-wrapper-y" id="wrap-strip-y">
+                    <canvas id="strip-y" width="8" height="256" class="strip-y"></canvas>
+                    <div class="strip-marker marker-y" id="marker-strip-y"></div>
+                </div>
+
+                <!-- Graphic 0: IPAX Grid (16x16) -->
+                <div class="graph-box">
+                    <h3>IPAX Grid (16x16)</h3>
+                    <div class="matrix-column">
+                        <div class="canvas-wrapper" id="wrap-grid">
+                            <canvas id="canvas-grid" width="256" height="256"></canvas>
+                            <div class="crosshairs-layer" id="layer-grid">
+                                <div class="xh-hover xh-x"></div>
+                                <div class="xh-hover xh-y"></div>
+                            </div>
+                        </div>
+                        <div class="strip-wrapper strip-wrapper-x" id="wrap-strip-x-0">
+                            <canvas id="strip-x-0" width="256" height="8" class="strip-x"></canvas>
+                            <div class="strip-marker marker-x" id="marker-strip-x-0"></div>
+                        </div>
+                    </div>
+                    <div class="readout" id="readout-grid">-</div>
+                </div>
+
+                <!-- Graphic 1: WCAG -->
+                <div class="graph-box">
+                    <h3>WCAG Grades</h3>
+                    <div class="matrix-column">
+                        <div class="canvas-wrapper" id="wrap-wcag">
+                            <canvas id="canvas-wcag" width="256" height="256"></canvas>
+                            <div class="crosshairs-layer" id="layer-wcag">
+                                <div class="xh-hover xh-x"></div>
+                                <div class="xh-hover xh-y"></div>
+                            </div>
+                        </div>
+                        <div class="strip-wrapper strip-wrapper-x" id="wrap-strip-x-1">
+                            <canvas id="strip-x-1" width="256" height="8" class="strip-x"></canvas>
+                            <div class="strip-marker marker-x" id="marker-strip-x-1"></div>
+                        </div>
+                    </div>
+                    <div class="readout" id="readout-wcag">-</div>
+                </div>
+				
+
+                <!-- Graphic 2: APCA -->
+                <div class="graph-box">
+                    <h3>APCA Grades (Absolute)</h3>
+                    <div class="matrix-column">
+                        <div class="canvas-wrapper" id="wrap-apca">
+                            <canvas id="canvas-apca" width="256" height="256"></canvas>
+                            <div class="crosshairs-layer" id="layer-apca">
+                                <div class="xh-hover xh-x"></div>
+                                <div class="xh-hover xh-y"></div>
+                            </div>
+                        </div>
+                        <div class="strip-wrapper strip-wrapper-x" id="wrap-strip-x-2">
+                            <canvas id="strip-x-2" width="256" height="8" class="strip-x"></canvas>
+                            <div class="strip-marker marker-x" id="marker-strip-x-2"></div>
+                        </div>
+                    </div>
+                    <div class="readout" id="readout-apca">-</div>
+                </div>
+
+                <!-- Graphic 3: IPAX -->
+                <div class="graph-box">
+                    <h3>IPAX Grades</h3>
+                    <div class="matrix-column">
+                        <div class="canvas-wrapper" id="wrap-ipax">
+                            <canvas id="canvas-ipax" width="256" height="256"></canvas>
+                            <div class="crosshairs-layer" id="layer-ipax">
+                                <div class="xh-hover xh-x"></div>
+                                <div class="xh-hover xh-y"></div>
+                            </div>
+                        </div>
+                        <div class="strip-wrapper strip-wrapper-x" id="wrap-strip-x-3">
+                            <canvas id="strip-x-3" width="256" height="8" class="strip-x"></canvas>
+                            <div class="strip-marker marker-x" id="marker-strip-x-3"></div>
+                        </div>
+                    </div>
+                    <div class="readout" id="readout-ipax">-</div>
+                </div>
+            </div>
+
+            <div class="preview-container">
+                <h3>Preview</h3>
+                <div class="ipx-preview js-preview-box" id="preview-box">
+                    <p class="ipx-preview-text" id="preview-text-normal">-</p>
+                    <p class="ipx-preview-text" id="preview-text-bold">-</p>
+                    <a href="#" id="preview-link" class="ipx-preview-more" target="_blank">Open in IPAX Sampler ↗</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="split-screen" id="split-screen">
+        <div class="panel" id="panel-hover">
+            <ul class="tabs-header">
+                <li class="tab active">HOVER</li>
+            </ul>
+            <pre class="dump" id="dump-hover">Loading computational matrix...</pre>
+        </div>
+        <div class="resizer" id="resizer"></div>
+        <div class="panel" id="panel-fixed" style="display: none;">
+            <div class="tabs-header-container">
+                <ul class="tabs-header" id="tabs-fixed"></ul>
+                <label class="tab-mode-toggle" title="Modo Multicolumna (mínimo 16em por cota)">
+                    <input type="checkbox" id="chk-multi-col" checked>
+                    <span class="mode-icon">⊞</span>
+                </label>
+            </div>
+            <pre class="dump" id="dump-fixed"></pre>
+            <div class="multi-col-wrapper" id="multi-col-container" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script type="module" src="js/map-score.js"></script>
+</body>
+</html>

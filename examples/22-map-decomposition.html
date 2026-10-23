@@ -1,0 +1,142 @@
+<?php /*
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IPAX Score deconstructed: Contrast &amp; Ergonomy Maps</title>
+    
+    <!-- 0. J0 Kernel (EventBus Global) -->
+    <script src="js/lib/j0-kernel/01-bus-j0kernel.js"></script>
+    <script src="js/lib/j0-kernel/02-core-j0kernel.js"></script>
+
+<!-- 1. IPAX UI Core & Tokens -->
+    <link rel="stylesheet" href="css/ipax-ui/ipax-ui-engine.css">
+    <link rel="stylesheet" href="css/ipax-ui/ipax-ui-theme-default.css">
+    <link rel="stylesheet" href="css/ipax-ui/ipax-ui-components.css">
+    
+    <!-- SSOT Tokens location fallback -->
+    <link rel="stylesheet" href="css/map-score-tokens.css">
+    <link rel="stylesheet" href="../css/map-score-tokens.css">
+
+
+<!-- 2. Componentes SSOT -->
+    <link rel="stylesheet" href="css/components/base.css">
+    <link rel="stylesheet" href="css/components/map-toolbar.css">
+    <link rel="stylesheet" href="css/components/map-inspector.css">
+    
+    <!-- 3. CSS Local de la vista -->
+    <link rel="stylesheet" href="css/map-decomposition.css">
+</head>
+<body class="ipax-ui ipax-surface ipax-ink-on-paper" style="display: flex; flex-direction: column; height: 100vh; margin: 0; overflow: hidden;">
+
+    <div class="map-toolbar" id="main-toolbar" style="flex-shrink: 0;">
+        <div class="map-toolbar-header">
+            <h2>IPAX Score deconstructed: Contrast &amp; Ergonomy Maps</h2>
+            <p>Maps every text and surface lightness combination for the selected Chroma and Hue values. Hover to cross-inspect metrics across all decomposed maps; click any point to pin the pair and lock the preview.</p>
+        </div>
+
+        <div class="map-toolbar-controls">
+            <!-- Column 1: Y-Axis (Text) -->
+            <div class="map-control-column">
+                <div class="map-control-header">
+                    <input type="color" data-j0-id="picker-txt" class="map-swatch-picker" aria-label="Text Color Picker">
+                    <span>Y-Axis (Text Color)</span>
+                </div>
+                <div class="map-control-row">
+                    <label>C:</label>
+                    <input type="range" data-j0-id="slider-txt-c" min="0" max="0.4" step="0.01" value="0">
+                    <span data-j0-id="val-txt-c">0.00</span>
+                </div>
+                <div class="map-control-row">
+                    <label>H:</label>
+                    <input type="range" data-j0-id="slider-txt-h" min="0" max="360" step="1" value="0">
+                    <span data-j0-id="val-txt-h">0</span>
+                </div>
+            </div>
+
+            <!-- Column 2: X-Axis (Background) -->
+            <div class="map-control-column map-control-column-bordered">
+                <button type="button" class="map-btn-swap-toolbar" data-j0-action="toolbar:swap" title="Swap Text & Surface Colors">⇄</button>
+                <div class="map-control-header">
+                    <input type="color" data-j0-id="picker-bg" class="map-swatch-picker" aria-label="Surface Color Picker">
+                    <span>X-Axis (Surface Color)</span>
+                </div>
+                <div class="map-control-row">
+                    <label>C:</label>
+                    <input type="range" data-j0-id="slider-bg-c" min="0" max="0.4" step="0.01" value="0">
+                    <span data-j0-id="val-bg-c">0.00</span>
+                </div>
+                <div class="map-control-row">
+                    <label>H:</label>
+                    <input type="range" data-j0-id="slider-bg-h" min="0" max="360" step="1" value="0">
+                    <span data-j0-id="val-bg-h">0</span>
+                </div>
+            </div>
+
+            <!-- Column 3: Mode & Export -->
+            <div class="map-control-column map-control-column-bordered map-control-mode">
+                <div class="map-control-header">
+                    <span>Map Mode</span>
+                </div>
+                <select data-j0-id="ctrl-mode">
+                    <option value="srgb">sRGB (L 0-255)</option>
+                    <option value="oklab">OKLab (L 0.0-1.0)</option>
+                </select>
+                <button type="button" class="ipax-btn ipax-btn--secondary" id="btn-export" style="margin-top: 10px;">Export All PNGs</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN SPLIT AREA -->
+    <div class="map-split-container">
+        <div class="map-readout-bar">
+            <div id="readout-text" class="ipax-small" style="display: flex; align-items: center; gap: 8px;">
+                <span class="ipax-muted">Hover over a map to inspect values...</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <label class="ipax-small" style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--ipax-this-ink); user-select: none;">
+                    <input type="checkbox" id="chk-show-grid"> Show Grid
+                </label>
+                <label class="ipax-small" style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--ipax-this-ink); user-select: none;">
+                    <input type="checkbox" id="chk-show-preview"> Show Preview &amp; Inspector
+                </label>
+            </div>
+        </div>
+
+        <div class="map-split-screen" id="split-screen">
+            <div class="map-panel" id="panel-left">
+                <main class="ipax-grid" id="graphs-container">
+                    <!-- Canvases injected by JS -->
+                </main>
+                <!-- Anclaje SSOT para el Footer -->
+                <div id="ipax-footer-mount"></div>
+            </div>
+            <div class="map-resizer" id="resizer" style="display: none;"></div>
+            <div class="map-panel" id="panel-right" style="display: none;">
+                <!-- Fixed Overlay Header -->
+                <div id="sampler-overlay-header">
+                    <div id="sampler-overlay-info"></div>
+                    <a id="preview-link-sampler" href="#" target="_blank">Open in IPAX Sampler ↗</a>
+                </div>
+
+                <div class="map-preview-top-box">
+                    <!-- Preview Panel Principal -->
+                    <div id="inspector-preview-box" class="js-preview-box">
+                        <p id="preview-text-normal">-</p>
+                        <p id="preview-text-bold">-</p>
+                    </div>
+                </div>
+
+                <div class="map-raw-resizer" id="raw-resizer"></div>
+
+                <div class="map-raw-data-box" id="raw-data-box">
+                    <button type="button" class="map-btn-copy-dump" data-j0-action="dump:copy" title="Copy Raw JSON">Copy JSON</button>
+                    <pre class="map-dump-raw" id="dump-raw-json">Awaiting inspection data...</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/map-decomposition.js"></script>
+</body>
+</html>

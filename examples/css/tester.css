@@ -1,7 +1,7 @@
 :root {
     /* Color Palette */
-    --ipx-color-bg: #000000;
-    --ipx-color-surface: #222222;
+    --ipx-color-bg: #222222;
+    --ipx-color-surface: #333333;
     --ipx-color-border-controls: #66666680;
     --ipx-color-text-main: #eeeeee;
     --ipx-color-text-muted: #eeeeee99;

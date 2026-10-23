@@ -1,0 +1,18 @@
+:root {
+    /* IPAX Score Scale */
+    /* --ipax-score-0: #000000;
+    --ipax-score-1: #FF0000;
+    --ipax-score-2: #FFA500;
+    --ipax-score-3: #FFFF00;
+    --ipax-score-4: #00FFFF;
+    --ipax-score-5: #32CD32;
+    --ipax-score-6: #008000; */
+
+--ipax-score-0: #000000;
+--ipax-score-1: #990000;
+--ipax-score-2: #b443ff;
+--ipax-score-3: #008cff;
+--ipax-score-4: #00eeFF;
+--ipax-score-5: #66cc33;
+--ipax-score-6: #008000;
+}

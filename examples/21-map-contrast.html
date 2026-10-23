@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>IPAX: Contrast Metrics are not a Score</title>
+		<link rel="stylesheet" href="css/tester.css" />
+		<link rel="stylesheet" href="css/map-score.css" />
+		<link rel="stylesheet" href="css/components/sweep-panel.css" />
+
+		<style>
+			.toolbar-header-text P {
+				margin: 4pt 0;
+			}
+		</style>
+	</head>
+	<body>
+		<main class="ipx-app sweep-app-full">
+			<!-- Header Row: Title & Text on Left, Controls Panel on Right -->
+			<div class="toolbar">
+				<div class="toolbar-header-text">
+					<h2>IPAX: Contrast Metrics are not a Score</h2>
+
+<p>Industry tools often reduce WCAG 2 and APCA to one-way metrics (Ratio, Lc) that only go up, rewarding <em>extreme</em> contrast: harmful to users with light sensitivity.</p>
+
+<p>The <strong>IPAX Score</strong> is an <em>actual score</em> that flags when contrast is too much, preventing macular glare, halation fatigue, and overstimulation.</p>
+
+<p>This interactive graphic maps contrast to IPAX Scores. Choose the text and surface colors, then pick which one to vary across its full lightness range. Hover over the graphic to preview that combination, with text scaled to its APCA-recommended size.</p>
+
+				</div>
+
+				<div class="toolbar-controls">
+					<!-- Text Color Column -->
+					<div class="sweep-col">
+						<div class="sweep-header">
+							<input
+								type="color"
+								id="picker-txt"
+								class="swatch-picker"
+								value="#000000"
+								aria-label="Text Color Picker" />
+							<strong>Text Color (OKLCH)</strong>
+						</div>
+						<div class="sweep-row">
+							<label>L:</label>
+							<input type="range" id="slider-txt-l" min="0" max="1" step="0.01" value="0" />
+							<span id="val-txt-l">0.00</span>
+						</div>
+						<div class="sweep-row">
+							<label>C:</label>
+							<input type="range" id="slider-txt-c" min="0" max="0.4" step="0.01" value="0" />
+							<span id="val-txt-c">0.00</span>
+						</div>
+						<div class="sweep-row">
+							<label>H:</label>
+							<input type="range" id="slider-txt-h" min="0" max="360" step="1" value="0" />
+							<span id="val-txt-h">0</span>
+						</div>
+					</div>
+
+					<!-- Surface Color Column -->
+					<div class="sweep-col sweep-col-bordered">
+						<div class="sweep-header">
+							<input
+								type="color"
+								id="picker-bg"
+								class="swatch-picker"
+								value="#FFFFFF"
+								aria-label="Surface Color Picker" />
+							<strong>Surface Color (OKLCH)</strong>
+						</div>
+						<div class="sweep-row">
+							<label>L:</label>
+							<input type="range" id="slider-bg-l" min="0" max="1" step="0.01" value="1" />
+							<span id="val-bg-l">1.00</span>
+						</div>
+						<div class="sweep-row">
+							<label>C:</label>
+							<input type="range" id="slider-bg-c" min="0" max="0.4" step="0.01" value="0" />
+							<span id="val-bg-c">0.00</span>
+						</div>
+						<div class="sweep-row">
+							<label>H:</label>
+							<input type="range" id="slider-bg-h" min="0" max="360" step="1" value="0" />
+							<span id="val-bg-h">0</span>
+						</div>
+					</div>
+
+					<!-- Map Axis Column -->
+					<div class="sweep-col sweep-col-bordered" style="min-width: 200px">
+						<div class="sweep-header">
+							<strong>Map Mode</strong>
+						</div>
+<select id="ctrl-mode" class="map-mode-select">
+    <optgroup label="sRGB (Lightness 0–255)">
+        <option value="srgb-bg">Surface varies (text fixed)</option>
+        <option value="srgb-txt">Text varies (surface fixed)</option>
+    </optgroup>
+    <optgroup label="OKLab (Lightness 0–1)">
+        <option value="oklab-bg">Surface varies (text fixed)</option>
+        <option value="oklab-txt">Text varies (surface fixed)</option>
+    </optgroup>
+</select>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sticky Area: Fixed on top during vertical scrolling -->
+			<div class="sticky-area">
+				<div class="top-row">
+					<div class="chart-container">
+						<div class="chart-wrap" id="chart-wrap">
+							<canvas id="cvs-lines" width="800" height="380"></canvas>
+							<div class="hover-line" id="h-line"></div>
+						</div>
+						<canvas id="color-strip" class="strip-preview" width="800" height="1"></canvas>
+
+						<div class="legend">
+							<div class="leg-wcag">■ WCAG Ratio (scaled 0-21)</div>
+							<div class="leg-apca">■ APCA Absolute |Lc| (scaled 0-108)</div>
+							<div class="leg-ipax">■ IPAX Exact Score (0-6)</div>
+						</div>
+
+						<div class="hover-readout-box" id="hover-readout">
+							Hover chart to inspect values...
+						</div>
+					</div>
+
+					<!-- Preview Panel: Expands to full right margin -->
+					<div class="preview-container">
+						<h3>Preview</h3>
+						<div class="ipx-preview js-preview-box" id="preview-box">
+							<p class="ipx-preview-text" id="preview-text-bold">-</p>
+							<p class="ipx-preview-text" id="preview-text-normal">-</p>
+							<a href="#" id="preview-link" class="ipx-preview-more" target="_blank"
+								>Open in IPAX Sampler ↗</a
+							>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<script type="module" src="js/map-contrast.js"></script>
+	</body>
+</html>

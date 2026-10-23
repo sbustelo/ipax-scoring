@@ -1,0 +1,62 @@
+/* =============================================================================
+   ipax-ui-components.css (Extracto mínimo para el Sandbox)
+   Consumidores ciegos de var(--ipax-this-*) y escalares
+   ============================================================================= */
+
+/* ─── LAYOUT Y CONTENEDORES ─────────────────────────────────────────────────── */
+.ipax-page-main { max-width: 72rem; margin: 0 auto; padding: var(--ipax-1-space-4, 32px); }
+.ipax-grid { display: grid; gap: var(--ipax-1-space-4, 32px); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+.ipax-stack { display: grid; gap: var(--ipax-1-space-3, 20px); }
+.ipax-row  { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ipax-1-space-3, 20px); }
+
+.ipax-card {
+    overflow: hidden;
+    background-color: var(--ipax-this-paper);
+    border: var(--ipax-0-border-width, 1px) solid var(--ipax-this-border);
+    border-radius: var(--ipax-1-radius-window, 6px);
+}
+.ipax-card-body { padding: var(--ipax-1-space-4, 32px); }
+
+/* ─── TEXTO ─────────────────────────────────────────────────────────────────── */
+.ipax-muted { color: var(--ipax-this-muted); }
+.ipax-small { font-size: var(--ipax-1-font-sm, 12px); }
+
+/* ─── BOTONES ───────────────────────────────────────────────────────────────── */
+.ipax-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ipax-1-space-2, 12px);
+    height: var(--ipax-1-control-height, 28px);
+    padding: 0 var(--ipax-1-space-4, 32px);
+    background-color: transparent;
+    color: var(--ipax-this-ink);
+    border: var(--ipax-0-border-width, 1px) solid transparent;
+    border-radius: var(--ipax-1-radius-button, 4px);
+    font: inherit;
+    font-size: var(--ipax-1-font-sm, 12px);
+    font-weight: bold;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* El primario lee directamente de Nivel 2 (o active-bg en tu nueva arquitectura) */
+.ipax-btn--primary   { background-color: var(--ipax-2-accent); color: var(--ipax-1-on-accent); border-color: var(--ipax-2-accent); }
+.ipax-btn--secondary { background-color: var(--ipax-this-ink); color: var(--ipax-this-paper); border-color: var(--ipax-this-ink); }
+.ipax-btn--outline   { color: var(--ipax-this-accent); border-color: var(--ipax-this-accent); }
+
+
+.ipax-table-wrap { overflow-x: auto; }
+.ipax-table { width: 100%; border-collapse: collapse; }
+.ipax-table th {
+    padding: var(--ipax-1-space-2) var(--ipax-1-space-3);
+    border-bottom: var(--ipax-0-border-width) solid var(--ipax-this-border);
+    font-size: var(--ipax-1-font-sm);
+    font-weight: var(--ipax-1-weight-strong);
+    text-align: left;
+    color: var(--ipax-this-muted);
+}
+.ipax-table td { padding: var(--ipax-1-space-2) var(--ipax-1-space-3); border-bottom: var(--ipax-0-border-width) solid var(--ipax-this-divider); }
+.ipax-table tbody tr:nth-child(even) { background-color: var(--ipax-this-tint); }

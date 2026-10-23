@@ -25,10 +25,19 @@ const t = {
 	lvl: isEs ? "Nivel" : "Level",
 	butDegraded: isEs ? "pero IPAX degradó el puntaje a" : "but IPAX degraded the score to",
 	dueTo: isEs ? "debido a penalidades ergonómicas. Como recomendación de calidad de diseño, no use esta combinación para lectura continua, incluso si está legalmente permitida." : "due to ergonomic penalties. As a design quality recommendation, do not use this combination for continuous reading, even if legally permitted.",
-	failAbs: isEs ? "La combinación falla los requisitos<br>mínimos de contraste" : "Combination fails minimum<br>contrast requirements",
+	
+	// Mensajes contextuales de falla
+	failBoth: isEs ? "La combinación falla los requisitos<br>mínimos de contraste" : "Combination fails minimum<br>contrast requirements",
+	failWcag: isEs ? "Falla el mínimo normativo<br>(WCAG < 3:1)" : "Fails statutory minimum<br>(WCAG < 3:1)",
+	failApca: isEs ? "Falla el mínimo perceptual<br>(APCA Lc < 30)" : "Fails perceptual minimum<br>(APCA Lc < 30)",
+	failErgo: isEs ? "Falla por excesivas<br>penalidades ergonómicas" : "Fails due to excessive<br>ergonomic penalties",
+
 	bold: isEs ? "peso Bold" : "Bold weight",
 	normal: isEs ? "peso Normal" : "Normal weight",
 	open: isEs ? "Abrir en IPAX Sampler ↗" : "Open in IPAX Sampler ↗",
+
+	// Mensajes contextuales de exención / falla
+	exemptSpot: isEs ? "Texto inactivo / Spot text (Exento WCAG 2; piso APCA Lc 30)" : "Spot / Inactive text only (WCAG 2 exempt; APCA Lc 30 floor)",
 
 	// Strings ultracompactos
 	unconstrainedApca: isEs ? "px (APCA; WCAG sin mínimo)" : "px (APCA; WCAG no min)",
@@ -84,37 +93,64 @@ const renderInterpretation = (result) => {
 	interpretationBox.innerHTML = html;
 };
 
-const renderPreview = (resNormal, resBold, fgVal, bgVal) => {
+// SSOT: Función extraída y exportada para poder ser consumida por otros módulos (ej. compare.js)
+export const renderPreviewTo = (container, resNormal, resBold, fgVal, bgVal) => {
+    if (!container) return;
+
 	// Determine Sampler link color based on OKLCH lightness
 	const isBgLight = resNormal.raw.bgOklch.l > 0.65;
 	const linkColor = isBgLight ? '#000000' : '#FFFFFF';
 
 	let html = '';
 
-	if (resNormal.score < 1) {
-		// Overlay de Falla Absoluta
-		html = `
+	const isApca = resNormal.apca && resNormal.apca.lc !== null;
+	const apcaSizeNormal = isApca && resNormal.apca.font ? resNormal.apca.font.sizePx : null;
+	const apcaSizeBold = isApca && resBold.apca.font ? resBold.apca.font.sizePx : null;
+	const hasAnyApcaSize = apcaSizeNormal !== null || apcaSizeBold !== null;
+
+	const failW = resNormal.wcag.score === 0;
+	const failA = isApca && resNormal.apca.score < 2;
+
+	if (failW && !failA) {
+		// Caso Exención: Falla WCAG pero pasa APCA (Score 2 - Texto inactivo/Spot)
+		html += `
+            <div class="ipx-preview-overlay ipx-preview-overlay-info">
+                <span class="ipx-overlay-icon">ℹ</span>
+                <span class="ipx-overlay-text">${t.exemptSpot}</span>
+            </div>
+        `;
+	} else if (resNormal.score < 2) {
+		// Overlay de Falla crítica
+		let failMsg = t.failBoth;
+		if (failW && failA) failMsg = t.failBoth;
+		else if (!failW && failA) failMsg = t.failApca;
+		else if (!failW && !failA) failMsg = t.failErgo;
+
+		html += `
             <div class="ipx-preview-overlay">
                 <span class="ipx-overlay-icon">⊘</span>
-                <span class="ipx-overlay-text">${t.failAbs}</span>
+                <span class="ipx-overlay-text">${failMsg}</span>
             </div>
+        `;
+	}
+
+	if (resNormal.score < 2 && !hasAnyApcaSize) {
+		// Mostrar XXXX gigante SOLO si tampoco tenemos tamaños válidos en APCA
+		html += `
             <p class="ipx-preview-text" style="font-weight: 400; font-size: 128px; margin: -24px 0 0 0; color: ${fgVal};">
                 XXXX
             </p>
         `;
 	} else {
-
-
-
 		const renderLine = (res, weight) => {
-			const isApca = res.apca.lc !== null;
-			const apcaSizeRaw = isApca && res.apca.font ? res.apca.font.sizePx : null;
+			const isApcaLocal = res.apca && res.apca.lc !== null;
+			const apcaSizeRaw = isApcaLocal && res.apca.font ? res.apca.font.sizePx : null;
 			const wcagSize = res.wcag.fontSize;
 
 			let finalSize = 16;
 			let text = "";
 
-			if (isApca) {
+			if (isApcaLocal) {
 				if (apcaSizeRaw === null && wcagSize === null) return "";
 
 				if (wcagSize === null) {
@@ -154,8 +190,9 @@ const renderPreview = (resNormal, resBold, fgVal, bgVal) => {
 			return `<p class="ipx-preview-text" style="font-weight: ${weight}; font-size: ${finalSize}px; color: ${fgVal};" title="${text}">${text}</p>`;
 		};
 
-		html += renderLine(resNormal, 400);
+		// Mostrar Bold primero, Normal después
 		html += renderLine(resBold, 700);
+		html += renderLine(resNormal, 400);
 	}
 
 	const cleanFg = fgVal.replace('#', '');
@@ -169,8 +206,8 @@ const renderPreview = (resNormal, resBold, fgVal, bgVal) => {
         </a>
     `;
 
-	previewBox.style.backgroundColor = bgVal;
-	previewBox.innerHTML = html;
+	container.style.backgroundColor = bgVal;
+	container.innerHTML = html;
 };
 
 const renderNode = (data, depth = 0) => {
@@ -242,7 +279,7 @@ const updateUI = () => {
 		const resBold = runIpax(fgVal, bgVal, 700);
 
 		renderInterpretation(resNormal);
-		renderPreview(resNormal, resBold, fgVal, bgVal);
+		renderPreviewTo(previewBox, resNormal, resBold, fgVal, bgVal);
 
 		out.innerHTML = '';
 		out.appendChild(renderNode(resNormal, 0));
@@ -300,20 +337,22 @@ const renderReferenceTable = () => {
 	});
 };
 
-// Initialize UI
-renderReferenceTable();
-bindInput(pickerFg, hexFg);
-bindInput(pickerBg, hexBg);
+// Encapsulamiento de inicialización de la UI para no interferir al importar en compare.js
+if (out && interpretationBox && pickerFg && hexFg && pickerBg && hexBg && previewBox) {
+    renderReferenceTable();
+    bindInput(pickerFg, hexFg);
+    bindInput(pickerBg, hexBg);
 
-if (btnSwap) {
-	btnSwap.addEventListener('click', () => {
-		const tempVal = hexFg.value;
-		hexFg.value = hexBg.value;
-		pickerFg.value = hexBg.value;
-		hexBg.value = tempVal;
-		pickerBg.value = tempVal;
-		updateUI();
-	});
+    if (btnSwap) {
+        btnSwap.addEventListener('click', () => {
+            const tempVal = hexFg.value;
+            hexFg.value = hexBg.value;
+            pickerFg.value = hexBg.value;
+            hexBg.value = tempVal;
+            pickerBg.value = tempVal;
+            updateUI();
+        });
+    }
+
+    updateUI();
 }
-
-updateUI();

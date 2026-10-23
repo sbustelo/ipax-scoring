@@ -1,0 +1,23 @@
+/* ==========================================
+   CREAR NUEVO ARCHIVO EN: css/components/base.css
+   ========================================== */
+/* Estilos base del proyecto (específicos del Sandbox/Ejemplos)
+   Mantiene ipax-ui universal y agnóstico */
+
+.ipax-footer-ssot {
+    margin-top: 24px;
+    padding-top: 12px;
+    border-top: var(--ipax-0-border-width, 1px) solid var(--ipax-this-border);
+    font-family: var(--ipax-0-font-mono, monospace);
+    font-size: 11px;
+    color: var(--ipax-this-muted);
+}
+
+.ipax-footer-ssot a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.ipax-footer-ssot a:hover {
+    color: var(--ipax-this-ink);
+}

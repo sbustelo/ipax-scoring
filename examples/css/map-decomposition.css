@@ -1,0 +1,47 @@
+.graph-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ipax-1-space-2, 8px);
+    width: 256px;
+}
+
+.graph-box h3 {
+    margin: 0;
+    font-size: var(--ipax-1-font-sm, 13px);
+    font-weight: normal;
+    color: var(--ipax-this-muted);
+}
+
+.canvas-wrapper {
+    position: relative;
+    width: 256px;
+    height: 256px;
+    display: flex;
+    border: var(--ipax-0-border-width, 1px) solid var(--ipax-this-border);
+    box-sizing: content-box;
+    cursor: crosshair;
+}
+
+.canvas-wrapper canvas {
+    display: block;
+    width: 256px;
+    height: 256px;
+    image-rendering: pixelated;
+}
+
+/* Grilla sutil 16x16 superpuesta sobre los gráficos */
+.canvas-wrapper.show-grid::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 256px;
+    height: 256px;
+    pointer-events: none;
+    z-index: 8;
+    background-image:
+        linear-gradient(to right, rgba(0, 255, 255, 0.2) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 255, 0.2) 1px, transparent 1px);
+    background-size: 16px 16px;
+}

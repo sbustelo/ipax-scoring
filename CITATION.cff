@@ -12,8 +12,8 @@ repository-code: "https://github.com/sbustelo/ipax-scoring"
 license:
   - Apache-2.0
   - CC-BY-4.0
-version: 0.1.03
-date-released: 2026-09-22
+version: 0.1.20
+date-released: 2026-10-22
 references:
   - type: video
     title: "Bridging the Gap Between Compliance and Design Quality"

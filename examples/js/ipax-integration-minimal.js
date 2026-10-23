@@ -3,8 +3,25 @@
  * Connects the host environment to the IPAX Orchestrator.
  * Dynamically resolves language dictionary via loop and fallback.
  */
-import { IPAXOrchestrator } from '../../dist-js/orchestrator.js';
+
+// 1. Import IPAX engine and Path Resolver:
+
+// --- Dynamic version: uses path-resolver.js for portability ---
+import { resolveResourcePath } from './path-resolver.js';
+
+// --- Direct version (commented out for reference): ---
+// import { IPAXOrchestrator } from '../../dist-js/orchestrator.js';
+
+const orchestratorPath = await resolveResourcePath('dist-js/orchestrator.js') || '../../dist-js/orchestrator.js';
+const { IPAXOrchestrator } = await import(orchestratorPath);
+
+
+// 2. Import APCA engine:
+
 import { apcaEngine, apcaFontLookup } from './apca-bridge.js';
+
+
+// 3. Load language dictionary:
 
 let dictionaryObject = { penalties: [], rewards: [], scale: [] };
 
@@ -17,24 +34,35 @@ async function loadDictionary() {
 
 	for (const l of langsToTry) {
 		try {
-			const dictUrl = new URL(`../../data/dictionary.${l}.json`, import.meta.url);
-			const res = await fetch(dictUrl);
+			// --- Dynamic version (active): ---
+			const relPath = `data/dictionary.${l}.json`;
+			const resolvedPath = await resolveResourcePath(relPath) || `../../${relPath}`;
+			const cacheBuster = resolvedPath.includes('?') ? '&v=' : '?v=';
+			const res = await fetch(resolvedPath + cacheBuster + Date.now());
+
+			// --- Direct version (commented out for reference): ---
+			// const dictUrl = new URL(`../../data/dictionary.${l}.json`, import.meta.url);
+			// const res = await fetch(dictUrl.href + "?v=" + Date.now());
+
 			if (res.ok) {
 				dictionaryObject = await res.json();
-				return; // Corta ejecución al primer éxito
+				return; // Stop loop on first successful match
 			}
 		} catch (err) {
-			// Falla de red/CORS silenciosa, continúa al siguiente idioma del loop
+			// Silent network/CORS failure, try next language in loop
 		}
 	}
 
 	console.warn("IPAX Integration: Failed to load any dictionary JSON. Semantic descriptions will be missing.");
 }
 
-// Inicialización asíncrona bloqueante en carga de módulo (Top-Level Await)
+// Blocking asynchronous initialization on module load (Top-Level Await)
 await loadDictionary();
 
 export { dictionaryObject };
+
+
+// 4. Export main execution function (runIpax):
 
 /**
  * Calculates the IPAX Score for a given color pair and font weight.

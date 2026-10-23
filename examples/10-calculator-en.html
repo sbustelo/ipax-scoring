@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPAX Score - Evaluador Dinámico</title>
+    <title>IPAX Score Calculator</title>
     <link rel="stylesheet" href="css/tester.css">
     
-    <!-- La lógica de la aplicación se encapsula en el Controlador de UI -->
+    <!-- Application logic is fully encapsulated in UI Controller -->
     <script type="module" src="js/ui-app.js"></script>
 </head>
 <body>
 
     <main class="ipx-app js-app">
-        <h1>Evaluador IPAX Score</h1>
+        <h1>IPAX Score Tester</h1>
         
         <p>
-            Este ejemplo demuestra cómo integrar el Sistema de Puntuación IPAX. 
-            Para ver el código de integración limpio, consulte <code>js/ipax-integration.js</code>.
+            This example demonstrates how to integrate the IPAX Scoring System. 
+            For clean integration code, see <code>js/ipax-integration.js</code>.
         </p>
 
         <div class="ipx-header-panel">
@@ -27,17 +27,17 @@
                         <input type="color" class="ipx-picker js-picker-fg" value="#FFFFFF">
                         <input type="text" class="ipx-input-hex js-input-fg-text" value="#FFFFFF" maxlength="7" spellcheck="false">
                     </div>
-                    <label class="ipx-label">Color de Texto</label>
+                    <label class="ipx-label">Text Color</label>
                 </div>
                 
-                <button class="ipx-btn-swap js-btn-swap" title="Intercambiar colores">⇄</button>
+                <button class="ipx-btn-swap js-btn-swap" title="Swap colors">⇄</button>
                 
                 <div class="ipx-input-group">
                     <div class="ipx-combo">
                         <input type="color" class="ipx-picker js-picker-bg" value="#000000">
                         <input type="text" class="ipx-input-hex js-input-bg-text" value="#000000" maxlength="7" spellcheck="false">
                     </div>
-                    <label class="ipx-label">Color de Fondo</label>
+                    <label class="ipx-label">Surface Color</label>
                 </div>
 
             </div>
@@ -47,26 +47,26 @@
             </div>
         </div>
 
-        <!-- Caja de Interpretación -->
+        <!-- Interpretation Box -->
         <div class="ipx-interpretation js-interpretation">
-            <span class="ipx-message">Inicializando Motor...</span>
+            <span class="ipx-message">Initializing Engine...</span>
         </div>
 
-        <!-- Tabla de Referencia -->
+        <!-- Reference Table -->
         <details class="ipx-reference">
-            <summary>Ver Tabla de Referencia de Puntuación</summary>
+            <summary>View Score Reference Table</summary>
             <table class="ipx-table">
                 <thead>
                     <tr>
-                        <th>Puntaje IPAX</th>
-                        <th>Grado APCA</th>
-                        <th>Grado WCAG</th>
-                        <th>Estado</th>
+                        <th>IPAX Score</th>
+                        <th>APCA Grade</th>
+                        <th>WCAG Grade</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id="ipx-table-body">
-                    <!-- Hidratado vía JS desde dictionary.es.json -->
-                    <tr><td colspan="4">Cargando tabla de referencia...</td></tr>
+                    <!-- Hidratado vía JS desde dictionary.*.json -->
+                    <tr><td colspan="4">Loading reference table...</td></tr>
                 </tbody>
             </table>
         </details>
@@ -80,9 +80,9 @@
             </tr>
         </template>
 
-        <h2>Salida del Orquestador (Datos Crudos)</h2>
+        <h2>Orchestrator Output (Raw Data)</h2>
         <div class="ipx-output-container js-output">
-            <span class="ipx-message">Esperando cálculo...</span>
+            <span class="ipx-message">Awaiting calculation...</span>
         </div>
     </main>
 

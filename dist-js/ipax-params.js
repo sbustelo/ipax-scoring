@@ -10,19 +10,15 @@
  *   cls  (provenance class):
  *     NORM    Normative definition taken from a published standard (WCAG, sRGB, CIE).
  *     LIT     Value or functional form derived from published literature.
- *     IPAX1   Inherited unchanged from the original IPAX 1 code base. It is an
- *             empirical heuristic of the project, NOT validated against data.
- *             Pending calibration (see docs/DECISIONS.md, section 7).
+ *     IPAX1   Inherited unchanged from the original IPAX 1 code base. It is a design
+ *             decision or still an empirical heuristic of the project.
+ *             Pending calibration.
  *     DESIGN  Introduced by the continuity refactor (this version) to remove a
- *             discontinuity. Engineering choice, documented in docs/DECISIONS.md
- *             (decision log D-xx). Pending calibration.
+ *             discontinuity. Engineering choice. Pending calibration.
  *     DISPLAY Presentation-layer threshold. It only decides which warnings are
  *             SHOWN; it never changes the numeric score.
  *
  *   refs: IDs of docs/REFERENCES.md (e.g. "WCAG-RL"). "D-xx" are decisions of docs/DECISIONS.md.
- *
- * The generated table docs/PARAMETERS.md is built from this file by tools/gen-docs.mjs.
- * Pure ESM, zero dependencies.
  */
 
 const META = {
@@ -60,6 +56,13 @@ const META = {
     large_text_px_normal: { v: 24, unit: 'CSS px', cls: 'NORM', refs: ['WCAG-LARGE'], note: 'WCAG large-scale text, normal weight: 18 pt = 24 px. Telemetry (wcag.fontSize) for the 3:1 to 4.49:1 zone only; does not enter the score.' },
     large_text_px_bold: { v: 18.5, unit: 'CSS px', cls: 'IPAX1', refs: ['WCAG-LARGE'], note: 'Large-scale bold text. IPAX 1 value (v0.1.04+); WCAG 14 pt bold = 18.67 px. Telemetry only.' },
     bold_weight_min: { v: 700, unit: 'font-weight', cls: 'NORM', refs: ['WCAG-LARGE'], note: 'Weight from which text counts as bold for the large-text size.' },
+
+    // ---------------------------------------------------------------- 0-6 scale: red level and legal-minimum gate
+    // SCALE 0-6 (labels arbitrary): 0 black | 1 red (APCA Lc 15) | 2 orange (3:1 / Lc 30) | 3 yellow (4.5 / 45) | 4 cyan (7 / 60) | 5 lime (10 / 75) | 6 dark green (15 / 90).
+    // NAMING: knot_ratio_levelN and apca_node_levelN keep the 0-5 numbering of the previous release: scale level = N + 1.
+    apca_node_red: { v: 15, unit: '|Lc|', cls: 'DESIGN', refs: ['D-04'], note: 'APCA minimum for non-text elements: visible, not legible. Scale level 1 (red). It has NO WCAG equivalent: WCAG only says "fail" below 3:1. Used only with an injected engine.' },
+    red_cap_level: { v: 1, unit: 'score', cls: 'DESIGN', refs: [], note: 'Score ceiling of a pair that fails WCAG (< 3:1) when an APCA engine decides between black and red. In WCAG-only mode the sub-3:1 ramp approaches this value. Pending entry in docs/DECISIONS.md.' },
+    legal_min_level: { v: 2, unit: 'score', cls: 'DESIGN', refs: [], note: 'Scale level of the minimum legal tier (orange: WCAG 3:1, Lc 30). Ergonomic floor: ergonomics cannot take a pair below min(base, this level), so it never demotes a pair out of orange and never touches red or black. Keyed on the base, not on the WCAG level. Pending entry in docs/DECISIONS.md.' },
 
     // ---------------------------------------------------------------- Optional APCA nodes (mode "auto" with an engine)
     apca_node_level1: { v: 30, unit: '|Lc|', cls: 'IPAX1', refs: ['D-04'], note: 'IPAX 1 tier boundary, inherited. Used only in baseMode "auto" when an engine is injected. No APCA code or table is embedded.' },
@@ -143,12 +146,12 @@ const META = {
     hk_red_center: { v: 0, unit: 'degrees', cls: 'IPAX1', refs: [], note: 'Red hue center.' },
     hk_blue_center: { v: 270, unit: 'degrees', cls: 'IPAX1', refs: [], note: 'Blue hue center.' },
     hk_max: { v: 0.5, unit: 'score points', cls: 'IPAX1', refs: [], note: 'Cap of the single term.' },
-    hk_gate_score_lo: { v: 3.0, unit: 'score', cls: 'DESIGN', refs: ['D-09'], note: 'Base score where the HK term starts to apply. Replaces the IPAX 1 gate |Lc| >= 75 (APCA-specific).' },
-    hk_gate_score_hi: { v: 4.0, unit: 'score', cls: 'IPAX1', refs: ['D-09'], note: 'Base score where the HK term is fully applied (IPAX 1: |Lc| >= 75, mapped to level 4).' },
+    hk_gate_score_lo: { v: 4.0, unit: 'score', cls: 'DESIGN', refs: ['D-09'], note: 'Base score where the HK term starts to apply (0-6 scale: previous value 3.0, +1). Replaces the IPAX 1 gate |Lc| >= 75 (APCA-specific).' },
+    hk_gate_score_hi: { v: 5.0, unit: 'score', cls: 'IPAX1', refs: ['D-09'], note: 'Base score where the HK term is fully applied (IPAX 1: |Lc| >= 75; 0-6 scale: level 5).' },
 
     // ---------------------------------------------------------------- Rewards
-    reward_gate_score_lo: { v: 2.0, unit: 'score', cls: 'IPAX1', refs: [], note: 'Rewards start to apply above this score (smoothstep).' },
-    reward_gate_score_hi: { v: 3.5, unit: 'score', cls: 'IPAX1', refs: [], note: 'Rewards fully apply above this score.' },
+    reward_gate_score_lo: { v: 3.0, unit: 'score', cls: 'IPAX1', refs: [], note: 'Rewards start to apply above this score (smoothstep). 0-6 scale: previous value 2.0, +1.' },
+    reward_gate_score_hi: { v: 4.5, unit: 'score', cls: 'IPAX1', refs: [], note: 'Rewards fully apply above this score. 0-6 scale: previous value 3.5, +1.' },
     reward_penalty_ref: { v: 0.8, unit: 'score points', cls: 'IPAX1', refs: [], note: 'Total penalty at which rewards are fully suppressed.' },
     paper_mid: { v: 0.915, unit: 'OKLab L', cls: 'IPAX1', refs: ['POL-2013', 'POL-2014'], note: 'Center of the paper-tone bonus. Heuristic; brighter positive-polarity displays reduce pupil size, but no literature value for this center.' },
     paper_width: { v: 0.027, unit: 'OKLab L', cls: 'IPAX1', refs: [], note: 'Sigma of the paper-tone bonus.' },

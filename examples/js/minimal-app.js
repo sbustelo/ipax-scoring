@@ -1,4 +1,4 @@
-import { runIpax } from './ipax-integration.js';
+import { runIpax } from './ipax-integration-minimal.js';
 
 const app = document.querySelector('.js-app');
 

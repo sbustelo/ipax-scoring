@@ -1,9 +1,12 @@
 {
 	"name": "ipax-scoring",
-	"version": "0.1.10",
+	"version": "0.1.20",
 	"description": "Algorithmic scoring system integrating WCAG 2.x, APCA, and optical ergonomics metrics into a 5-point design quality score.",
 	"type": "module",
 	"license": "Apache-2.0",
 	"author": "Santiago Bustelo",
-	"homepage": "https://ipax.bustelo.com.ar/"
+	"homepage": "https://ipax.bustelo.com.ar/",
+	"dependencies": {
+		"apca-w3": "^0.1.9"
+	}
 }

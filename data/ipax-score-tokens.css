@@ -1,0 +1,23 @@
+:root {
+    /* IPAX Score Scale colors */
+    --ipax-score-0: #000000;
+    --ipax-score-ink-0: #FFFFFF;
+    
+    --ipax-score-1: #990000;
+    --ipax-score-ink-1: #FFFFFF;
+    
+    --ipax-score-2: #b443ff;
+    --ipax-score-ink-2: #FFFFFF;
+    
+    --ipax-score-3: #008cff;
+    --ipax-score-ink-3: #FFFFFF;
+    
+    --ipax-score-4: #00eeFF;
+    --ipax-score-ink-4: #1A1A1A;
+    
+    --ipax-score-5: #66cc33;
+    --ipax-score-ink-5: #1A1A1A;
+    
+    --ipax-score-6: #008000;
+    --ipax-score-ink-6: #FFFFFF;
+}

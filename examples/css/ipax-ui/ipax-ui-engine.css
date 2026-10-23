@@ -1,0 +1,120 @@
+/* =============================================================================
+   ipax-ui-engine.css
+   ============================================================================= */
+
+/* ─── BASE Y RESETS ─────────────────────────────────────────────────────────── */
+.ipax-ui {
+    font-family: var(--ipax-0-font-sans, system-ui, sans-serif);
+    font-size: var(--ipax-1-font-ui, 16px);
+    line-height: var(--ipax-0-line-height, 1.5);
+}
+.ipax-ui *, .ipax-ui *::before, .ipax-ui *::after { box-sizing: border-box; }
+.ipax-surface { background-color: var(--ipax-this-paper); color: var(--ipax-this-ink); }
+.ipax-ui a { color: var(--ipax-this-link); text-decoration: underline; text-underline-offset: 0.2em; }
+
+/* ─── 1. EL PUENTE LINEAL (Nivel 1 -> Nivel 2) ──────────────────────────────── */
+:root {
+    --ipax-2-paper:          var(--ipax-1-paper);
+    --ipax-2-paper-muted:    var(--ipax-1-paper-muted);
+    --ipax-2-paper-tint:     var(--ipax-1-paper-tint);
+    --ipax-2-paper-border:   var(--ipax-1-paper-border);
+
+    --ipax-2-ink:            var(--ipax-1-ink);
+    --ipax-2-ink-muted:      var(--ipax-1-ink-muted);
+    --ipax-2-ink-tint:       var(--ipax-1-ink-tint);
+    --ipax-2-ink-border:     var(--ipax-1-ink-border);
+
+    --ipax-2-accent-p:       var(--ipax-1-accent-p);
+    --ipax-2-accent-i:       var(--ipax-1-accent-i);
+    --ipax-2-accent:         var(--ipax-1-accent);
+    --ipax-2-on-accent:      var(--ipax-1-on-accent);
+
+    --ipax-2-link-p:         var(--ipax-1-link-p);
+    --ipax-2-link-i:         var(--ipax-1-link-i);
+}
+
+/* ─── 2. EL RUTEO CONTEXTUAL (Nivel 2 -> this-*) ────────────────────────────── */
+
+/* 1. ink-on-paper (Default) */
+:root, .ipax-ink-on-paper {
+    --ipax-this-paper:       var(--ipax-2-paper);
+    --ipax-this-ink:         var(--ipax-2-ink);
+    --ipax-this-muted:       var(--ipax-2-ink-muted);
+    --ipax-this-tint:        var(--ipax-2-ink-tint);
+    --ipax-this-border:      var(--ipax-2-ink-border);
+    
+    --ipax-this-accent:      var(--ipax-2-accent-i);
+    --ipax-this-link:        var(--ipax-2-link-i);
+    --ipax-this-active-bg:   var(--ipax-2-accent);
+    --ipax-this-active-ink:  var(--ipax-2-on-accent);
+}
+
+/* 2. paper-on-ink (Negativo) */
+.ipax-paper-on-ink {
+    --ipax-this-paper:       var(--ipax-2-ink);
+    --ipax-this-ink:         var(--ipax-2-paper);
+    --ipax-this-muted:       var(--ipax-2-paper-muted);
+    --ipax-this-tint:        var(--ipax-2-paper-tint);
+    --ipax-this-border:      var(--ipax-2-paper-border);
+    
+    --ipax-this-accent:      var(--ipax-2-accent-p);
+    --ipax-this-link:        var(--ipax-2-link-p);
+    --ipax-this-active-bg:   var(--ipax-2-accent);
+    --ipax-this-active-ink:  var(--ipax-2-on-accent);
+}
+
+/* 3. accent-on-paper */
+.ipax-accent-on-paper {
+    --ipax-this-paper:       var(--ipax-2-paper);
+    --ipax-this-ink:         var(--ipax-2-accent-i);
+    --ipax-this-muted:       var(--ipax-2-ink-muted); /* Simplificado para el sandbox */
+    --ipax-this-tint:        var(--ipax-2-ink-tint);
+    --ipax-this-border:      var(--ipax-2-ink-border);
+    
+    --ipax-this-accent:      var(--ipax-2-ink);
+    --ipax-this-link:        var(--ipax-2-link-i);
+    --ipax-this-active-bg:   var(--ipax-2-ink);
+    --ipax-this-active-ink:  var(--ipax-2-paper);
+}
+
+/* 4. accent-on-ink */
+.ipax-accent-on-ink {
+    --ipax-this-paper:       var(--ipax-2-ink);
+    --ipax-this-ink:         var(--ipax-2-accent-p);
+    --ipax-this-muted:       var(--ipax-2-paper-muted);
+    --ipax-this-tint:        var(--ipax-2-paper-tint);
+    --ipax-this-border:      var(--ipax-2-paper-border);
+    
+    --ipax-this-accent:      var(--ipax-2-paper);
+    --ipax-this-link:        var(--ipax-2-link-p);
+    --ipax-this-active-bg:   var(--ipax-2-paper);
+    --ipax-this-active-ink:  var(--ipax-2-ink);
+}
+
+/* 5. paper-on-accent */
+.ipax-paper-on-accent {
+    --ipax-this-paper:       var(--ipax-2-accent-i);
+    --ipax-this-ink:         var(--ipax-2-paper);
+    --ipax-this-muted:       var(--ipax-2-paper-muted);
+    --ipax-this-tint:        var(--ipax-2-paper-tint);
+    --ipax-this-border:      var(--ipax-2-paper-border);
+    
+    --ipax-this-accent:      var(--ipax-2-paper);
+    --ipax-this-link:        var(--ipax-this-ink);
+    --ipax-this-active-bg:   var(--ipax-2-paper);
+    --ipax-this-active-ink:  var(--ipax-2-accent-i);
+}
+
+/* 6. ink-on-accent */
+.ipax-ink-on-accent {
+    --ipax-this-paper:       var(--ipax-2-accent-p);
+    --ipax-this-ink:         var(--ipax-2-ink);
+    --ipax-this-muted:       var(--ipax-2-ink-muted);
+    --ipax-this-tint:        var(--ipax-2-ink-tint);
+    --ipax-this-border:      var(--ipax-2-ink-border);
+    
+    --ipax-this-accent:      var(--ipax-2-ink);
+    --ipax-this-link:        var(--ipax-this-ink);
+    --ipax-this-active-bg:   var(--ipax-2-ink);
+    --ipax-this-active-ink:  var(--ipax-2-accent-p);
+}

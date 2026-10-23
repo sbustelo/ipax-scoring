@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPAX Score - Minimal Integration</title>
+    <link rel="stylesheet" href="css/tester.css">
+    <script type="module" src="js/minimal-app.js"></script>
+</head>
+<body>
+
+    <main class="ipx-app js-app">
+        <h1>IPAX Score — Minimal Example</h1>
+        <p>Minimal boilerplate demonstrating direct integration with <code>runIpax</code>.</p>
+
+        <form class="ipx-simple-controls js-form" onsubmit="return false;">
+            <div class="ipx-simple-group">
+                <div class="ipx-simple-combo">
+                    <input type="text" class="ipx-simple-hex js-input-fg" value="#FFFFFF" maxlength="7" spellcheck="false">
+                </div>
+                <label class="ipx-simple-label">Text Color</label>
+            </div>
+
+            <div class="ipx-simple-group">
+                <div class="ipx-simple-combo">
+                    <input type="text" class="ipx-simple-hex js-input-bg" value="#000000" maxlength="7" spellcheck="false">
+                </div>
+                <label class="ipx-simple-label">Surface Color</label>
+            </div>
+
+            <button type="submit" class="ipx-simple-btn js-btn-submit">Calculate</button>
+        </form>
+
+        <div class="ipx-interpretation js-output">
+            <span class="ipx-message">Awaiting calculation...</span>
+        </div>
+
+        <div class="ipx-docs-block" style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--ipx-color-sep-root);">
+            <h2>Integration Architecture</h2>
+            <p>This example represents the absolute minimum requirement to integrate IPAX into your application. It bypasses complex UI components to focus strictly on the required cascade:</p>
+            <ul>
+                <li><strong><code>dist-js/</code></strong>: The core mathematical engine. Any IPAX integration must include this entire directory untouched. It has zero external dependencies.</li>
+                <li><strong><code>js/apca-bridge.js</code></strong>: Dynamically imports the APCA engine via CDN. This decouples IPAX from APCA to prevent AGPL license contamination. If the network fails, IPAX gracefully degrades to WCAG-only mode, disabling advanced perceptual grading but preserving baseline legal compliance.</li>
+                <li><strong><code>js/ipax-integration-minimal.js</code></strong>: The raw initializer. It boots the orchestrator and returns the numerical data structure. It does not load external dictionaries (unlike <code>ipax-integration.js</code>), meaning it requires no external <code>data/</code> folder and is impervious to network/CORS issues.</li>
+                <li><strong><code>js/minimal-app.js</code></strong>: The minimal DOM controller that reads input values and fires the <code>runIpax()</code> function.</li>
+            </ul>
+            <p style="font-size: 0.9em; color: var(--ipx-color-text-muted);"><em>Note on Semantics:</em> If your application requires translated strings for scores or penalties (e.g., "Score 3 - Acceptable"), you should use the advanced <code>js/ipax-integration.js</code> initializer instead, which strictly requires copying the <code>data/</code> directory containing the JSON dictionaries to your project.</p>
+        </div>
+    </main>
+
+</body>
+</html>

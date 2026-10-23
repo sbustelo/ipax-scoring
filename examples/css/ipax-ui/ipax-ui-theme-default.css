@@ -1,0 +1,68 @@
+/* =============================================================================
+   ipax-ui-theme-default.css
+   Valores absolutos hardcodeados. Salida pura del motor IPAX (Dark Mode).
+   ============================================================================= */
+
+:root {
+    color-scheme: dark;
+
+    /* ─── FAMILIA PAPER (Fondo oscuro por default, derivado de Nivel 0 ink) ─── */
+    --ipax-1-paper:          #333333;
+    --ipax-1-paper-muted:    rgba(51, 51, 51, 0.49);
+    --ipax-1-paper-tint:     rgba(51, 51, 51, 0.07);
+    --ipax-1-paper-border:   rgba(51, 51, 51, 0.25);
+    --ipax-1-paper-divider:  rgba(51, 51, 51, 0.14); /* Doble del tint */
+
+    /* ─── FAMILIA INK (Texto claro por default, derivado de Nivel 0 paper) ─── */
+    --ipax-1-ink:            #f0f0f0;
+    --ipax-1-ink-muted:      rgba(240, 240, 240, 0.49);
+    --ipax-1-ink-tint:       rgba(240, 240, 240, 0.07);
+    --ipax-1-ink-border:     rgba(240, 240, 240, 0.25);
+    --ipax-1-ink-divider:    rgba(240, 240, 240, 0.14);
+
+    /* ─── FAMILIA ACENTO (Invertidos por Dark Mode) ─── */
+    --ipax-1-accent:         #00cccc;  /* Botón sólido base */
+    --ipax-1-on-accent:      #000000;  /* Texto sobre acento (var(--ipax-0-ink-x)) */
+    --ipax-1-accent-p:       #169a99;  /* Acento oscuro (para leerse sobre claro) */
+    --ipax-1-accent-i:       #00cccc;  /* Acento brillante (para leerse sobre oscuro) */
+
+    /* ─── ENLACES (Invertidos por Dark Mode) ─── */
+    --ipax-1-link-p:         #4a8ed7;  
+    --ipax-1-link-i:         #5196df;  
+    --ipax-1-visited-p:      #9a7bd2;  
+    --ipax-1-visited-i:      #9e7fd7;  
+
+    /* ─── GRUPOS SEMÁNTICOS (Invertidos por Dark Mode) ─── */
+    --ipax-1-ok-p:           #529a4f;
+    --ipax-1-ok-i:           #5ea65b;
+    --ipax-1-warn-p:         #ab8600;
+    --ipax-1-warn-i:         #b28d13;
+    --ipax-1-bad-p:          #d36c6e;
+    --ipax-1-bad-i:          #d66e70;
+
+    /* ─── COLORES ESTABLES DE FORMULARIO ─── */
+    --ipax-1-field-bg:       #000000; /* Nivel 1 paper-x en dark */
+    --ipax-1-field-ink:      #f0f0f0;
+    --ipax-1-field-muted:    rgba(240, 240, 240, 0.49);
+    --ipax-1-field-border:   rgba(240, 240, 240, 0.25);
+
+    /* ─── GEOMETRÍA Y TIPOGRAFÍA ─── */
+    --ipax-0-font-sans:      system-ui, -apple-system, sans-serif;
+    --ipax-0-font-mono:      ui-monospace, Consolas, monospace;
+    --ipax-0-line-height:    1.5;
+    
+    --ipax-0-border-width:   1px;
+    --ipax-1-radius-window:  8px;
+    --ipax-1-radius-button:  5px; /* Calculado como 8px / 1.6 */
+    --ipax-1-radius-input:   5px;
+    
+    --ipax-1-control-height: 40px;
+    --ipax-1-font-ui:        16px; 
+    --ipax-1-font-sm:        14px;
+    --ipax-1-font-xl:        24px;
+    
+    --ipax-1-space-1:        4px;
+    --ipax-1-space-2:        8px;
+    --ipax-1-space-3:        12px;
+    --ipax-1-space-4:        16px;
+}

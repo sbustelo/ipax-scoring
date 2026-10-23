@@ -19,6 +19,25 @@ The core scoring pipeline is planned to be rewritten in JSOL and verified, via J
 
 ---
 
+## v0.1.20 - October 22, 2026
+
+This release expands the IPAX scoring scale to 6 levels, formalizes the epistemic parameters, and introduces a robust suite of visual inspection tools to inform design decisions.
+
+### Added
+- **Visual Inspector Suite (20-Series):** Added advanced workbench tools (`examples/20-sweep-compare.html`, `examples/21-sweep-contrast.html`, `examples/22-sweep-ergonomy.html`) to visualize contrast, non-monotonic mapping, and individual ergonomic penalties.
+- **Normative Diagnostics (30-Series):** Developed `examples/30-cases.html`, an in-browser sweep tool that analyzes 262,144 hex combinations (8⁶) to extract pure readability examples, map ergonomic penalty drops, and isolate divergences between WCAG and APCA.
+- **Strict Strategy Documentation (`docs/IPAX-SCORING.md`):** Expanded the scoring documentation to explicitly define the boundaries of the "Strict" strategy, integrating exact normative quotes from WCAG 2.2 and APCA minimums, alongside real-world tables.
+- **Parameter & Reference Registries (`docs/PARAMETERS.md`, `docs/REFERENCES.md`):** Published a generated registry tracking all 92 system parameters across normative, literature, and design classes.
+- **APCA Intersection Architecture (`docs/APCA-INTERSECTION.md`):** Documented the architectural decoupling of APCA's continuous math (`Lc`) from IPAX's ergonomic penalty and grading layer.
+
+### Changed
+- **Examples Directory Reorganization:** Restructured the `examples/` directory into a numbered taxonomy. Existing integration demos were renamed to `10-calculator-en.html`, `10-calculator-es.html`, and `11-minimal.html`.
+- **Scale Expanded (0-6):** The core scoring metric and APCA mappings were shifted, making IPAX 1 equivalent to APCA Lc 15 (non-text elements). Level 4 (Silver) is now 5, and Level 5 (Gold, without ergonomic penalties) is now 6.
+- **Ergonomic Floor Restructured:** The ergonomic legal floor is now anchored to the explicit `legal_min_level` parameter (Level 2), guaranteeing that biological penalties cannot demote readable contrast into "not legible" (1 or 0) scoring.
+- **Documentation and Translators Updated:** All references to the scale in `README.md` and semantic JSON dictionaries (`en` and `es`) were updated.
+
+---
+
 ## v0.1.10 - October 19, 2026
 
 This release transitions the core engine to a fully continuous biological model.
@@ -124,4 +143,4 @@ Features: Sandbox, Sampler, Font sizer.
 
 ---
 
-_IPAX Scoring System v0.1.10 • 2026-10-19, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)._
+_IPAX Scoring System v0.1.20 • 2026-10-22, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)._
