@@ -1,6 +1,7 @@
 # IPAX Scoring System
+_v0.1.20 • 2026-10-22, Santiago Bustelo • [ipax.bustelo.com.ar](https://ipax.bustelo.com.ar/)_
 
-IPAX is an algorithmic scoring system that integrates WCAG 2.x calculations, the APCA contrast model, and optical ergonomics metrics into a 6-point scale. It evaluates baseline contrast and applies mathematical modifiers for halation, macular glare, and chromatic fatigue.
+IPAX Score is an algorithmic scoring system that integrates WCAG 2.x calculations, the APCA contrast model, and optical ergonomics metrics into a 6-point scale. It evaluates baseline contrast and applies mathematical modifiers for halation, macular glare, and chromatic fatigue.
 
 ## Usage
 
@@ -17,11 +18,14 @@ const result = IPAXOrchestrator.getScore({
 });
 ```
 
+## Documentation and Sandbox
+
+Live testing environment and documentation: [https://ipax.bustelo.com.ar/](https://ipax.bustelo.com.ar/)
 
 
 ## Philosophy: The Legal Floor & Code Simplicity
 
-IPAX operates under a strict separation of concerns between **legal compliance** and **design quality** (ergonomics):
+IPAX Score operates under a strict separation of concerns between **legal compliance** and **design quality** (ergonomics):
 
 1. **The Law is the Law:** As of today, WCAG 2.x is the active legislation in most jurisdictions. Therefore, WCAG 2.x acts as the absolute, non-negotiable floor for the IPAX score. If a color pair fails WCAG 2.x, it fails IPAX, even if modern continuous algorithms (like APCA) deem it ergonomically safe. IPAX will always evaluate the worst-case legal scenario.
 2. **Design quality:** APCA is a better model for human perception, rejecting pairs that WCAG 2 formula approves. On top of that, IPAX considers ergonomic penalties for halation, glare, hue induction and other documented fenomena to inform better design decisions.
@@ -60,9 +64,7 @@ APCA unlocks IPAX scores 5 and 6. Without it, IPAX still works fully, it just fa
 
 The official `apca-w3` library depends on `colorparsley`, licensed under AGPL. This repository never copies, bundles, or commits that source. `example/js/apca-bridge.js` fetches `apca-w3` from a public CDN (`esm.sh`) at runtime, in the browser of whoever runs the example. If that succeeds, IPAX gets APCA and can grade design quality; if it fails, IPAX degrades to WCAG-only automatically. Including IPAX in your own project doesn't pull any AGPL code into your codebase.
 
-## Documentation and Sandbox
 
-Live testing environment and documentation: [https://ipax.bustelo.com.ar/](https://ipax.bustelo.com.ar/)
 
 
 ## ☕ Say thanks

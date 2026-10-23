@@ -9,18 +9,25 @@ The files are prefixed numerically to guide you from basic implementation up to 
 
 ### 10-Series: Integration Basics
 These examples demonstrate how to integrate the IPAX Orchestrator into your own web applications.
-*   **`10-calculator-en.html` & `10-calculator-es.html`**: The full IPAX Calculator UI. Demonstrates advanced integration using semantic JSON dictionaries to translate grades, penalties, and textual feedback (`js/ipax-integration.js`).
+*   **`10-calculator-en.html` & `10-calculator-es.html`**: The full IPAX Calculator UI. Demonstrates advanced integration using semantic JSON dictionaries to translate grades, penalties, and textual feedback (`js/ipax-integration.js`).  
+**Online demo:** https://ipax.bustelo.com.ar/?m=map-score  
+
 *   **`11-minimal.html`**: The absolute minimal integration. Bypasses complex UIs and dictionaries, returning raw numerical data. Ideal for developers building custom tooling (`js/ipax-integration-minimal.js`).
 
 ### 20-Series: Sweep & Visual Inspectors (The Workbench)
 Advanced tools designed to map the entire color space and compare the behavior of WCAG 2, APCA, and IPAX side-by-side.
-*   **`20-sweep-compare.html`**: Generates 256x256 quantized comparative maps of WCAG, APCA, and IPAX scores by sweeping Lightness (L) for both text and background, across user-defined constant Chroma (C) and Hue (H) values for each.
-*   **`21-sweep-contrast.html`**: A line chart demonstrating the non-monotonic nature of IPAX. Shows why infinite photometric contrast does not always equal optimal legibility.
-*   **`22-sweep-ergonomy.html`**: Decomposed 2D maps of all individual ergonomic penalties (Halation, Glare, Chromostereopsis, etc.).
+*   **`20-map-score.html`**: Generates 256x256 quantized comparative maps of WCAG, APCA, and IPAX scores by sweeping Lightness (L) for both text and background, across user-defined constant Chroma (C) and Hue (H) values for each.  
+**Online demo:** https://ipax.bustelo.com.ar/?m=map-score  
+
+*   **`21-map-contrast.html`**: A line chart demonstrating the non-monotonic nature of IPAX. Shows why infinite photometric contrast does not always equal optimal legibility.  
+**Online demo:** https://ipax.bustelo.com.ar/?m=map-contrast  
+
+*   **`22-map-decomposition.html`**: Decomposed 2D maps of all individual ergonomic penalties (Halation, Glare, Chromostereopsis, etc.).  
+**Online demo:** https://ipax.bustelo.com.ar/?m=map-decomposition
 
 ### 30-Series: Normative Diagnostics
-*   **`30-cases.html`**: An automated sweep tool that looks for example contrast pairs for 0 to 6 score levels, isolates mathematical edge cases where WCAG and APCA diverge drastically, and documents severe ergonomic penalty drops.
-
+*   **`30-cases.html`**: An automated sweep tool that looks for example contrast pairs for 0 to 6 score levels, isolates mathematical edge cases where WCAG and APCA diverge drastically, and documents severe ergonomic penalty drops.  
+**Online demo:** https://ipax.bustelo.com.ar/?m=cases
 
 ## Integration Architecture Notes
 *   **`dist-js/`**: The core mathematical engine. Requires zero dependencies. Always include this directory intact.
