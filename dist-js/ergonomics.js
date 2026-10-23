@@ -1,4 +1,7 @@
-/**
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+ 
+ /**
  * IPAX Scoring System - Ergonomics  (continuous edition)
  * JSOL-style pseudocode (hand-written, pending real JSOL compiler).
  * Pure functions for biological modeling and rewards. Pure ESM.

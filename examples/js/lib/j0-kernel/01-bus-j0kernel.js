@@ -1,3 +1,6 @@
+/* j0 framework kernel 0.4.0 • 9/jul/2026
+ * Santiago Bustelo, https://bustelo.com.ar/ */
+
 class EventChannel {
     constructor(name) {
         this.name = name;

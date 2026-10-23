@@ -1,4 +1,7 @@
-import { runIpax, dictionaryObject } from './ipax-integration.js';
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+ 
+ import { runIpax, dictionaryObject } from './ipax-integration.js';
 
 const out = document.querySelector('.js-output');
 const interpretationBox = document.querySelector('.js-interpretation');

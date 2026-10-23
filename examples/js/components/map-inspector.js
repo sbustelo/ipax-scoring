@@ -1,3 +1,6 @@
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+
 import { renderPreviewTo } from '../ui-app.js';
 import { IPAXOrchestrator } from '../../../dist-js/orchestrator.js';
 import { apcaEngine, apcaFontLookup } from '../apca-bridge.js';

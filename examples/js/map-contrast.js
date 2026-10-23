@@ -1,4 +1,7 @@
-import { IPAXOrchestrator } from '../../dist-js/orchestrator.js';
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+ 
+ import { IPAXOrchestrator } from '../../dist-js/orchestrator.js';
 import { apcaEngine, apcaFontLookup } from './apca-bridge.js';
 import { ColorUtils } from './color-utils.js';
 import { ColorMath } from '../../dist-js/color-math.js';

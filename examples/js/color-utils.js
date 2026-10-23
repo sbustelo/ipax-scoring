@@ -1,3 +1,6 @@
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+
 export const ColorUtils = {
     linear_to_sRGB(l) {
         const v = (l <= 0.0031308) ? l * 12.92 : 1.055 * Math.pow(l, 1 / 2.4) - 0.055;

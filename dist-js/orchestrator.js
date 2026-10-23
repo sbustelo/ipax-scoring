@@ -1,5 +1,8 @@
-/**
- * IPAX Scoring System - Orchestrator (SSOT Public API)  (continuous edition, rebased on v0.1.06)
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+ 
+ /**
+ * IPAX Scoring System - Orchestrator (SSOT Public API)
  * Connects the pure core (JSOL-style) with the host environment: handles I/O,
  * the optional external APCA dependency (IoC), and semantic dictionary mapping.
  *

@@ -1,4 +1,7 @@
-(function () {
+/* j0 framework kernel 0.4.0 • 9/jul/2026
+ * Santiago Bustelo, https://bustelo.com.ar/ */
+
+ (function () {
 	"use strict";
 	
 	if (window.j0 && window.j0.registry) return;

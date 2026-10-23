@@ -1,4 +1,7 @@
-/**
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+ 
+ /**
  * IPAX 1 (continuous) - Curves
  * ----------------------------------------------------------------------------
  * The ONLY place where continuous primitives are defined. The scoring core and

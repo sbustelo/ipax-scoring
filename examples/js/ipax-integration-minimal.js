@@ -1,3 +1,6 @@
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+
 /**
  * IPAX Integration Layer
  * Connects the host environment to the IPAX Orchestrator.

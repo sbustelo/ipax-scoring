@@ -1,4 +1,7 @@
-/**
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+ 
+ /**
  * IPAX Scoring System - Core Engine  (continuous edition, scale 0-6)
  * Pure computational logic. Pure ESM.
  *

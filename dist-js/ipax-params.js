@@ -1,4 +1,7 @@
-/**
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+ 
+ /**
  * IPAX 1 (continuous) - Parameter Registry
  * ----------------------------------------------------------------------------
  * SINGLE SOURCE OF TRUTH for every numeric constant used by the scoring core.

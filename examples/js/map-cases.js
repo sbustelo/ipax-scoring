@@ -1,4 +1,7 @@
-import { runIpax } from './ipax-integration.js';
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+ 
+ import { runIpax } from './ipax-integration.js';
 
 const output = document.querySelector('.js-output');
 const spanCount = document.getElementById('sweep-count');
