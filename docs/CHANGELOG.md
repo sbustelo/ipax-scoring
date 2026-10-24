@@ -9,7 +9,7 @@ Evolving the engine from a color-contrast calculator into a full perceptual simu
 - **Thermodynamic Fatigue:** Modeling glare, halation, and mydriasis by crossing OKLCH lightness with maximum/minimum nits and ambient lux.
 - **Ciliary Muscular Effort:** Calculating legibility through spatial frequency (arcminutes) and 2D optical mass instead of CSS pixels.
 - **Pathology Tensors:** Supporting clinical conditions (cataracts, astigmatism, maculopathy, photophobia) as physical light-degradation multipliers.
-- **Redefinition of Excellence (Scores 4 & 5):** Considering a shift from APCA-dictated thresholds to strictly ergonomic definitions. Score 4: "no active aggression" (adequate contrast, zero significant penalties). Score 5: "actively supports reading" (robust across environments and observers).
+- **Redefinition of Excellence (Scores 4 & 5):** Considering a shift from APCA-dictated thresholds to strictly ergonomic definitions. Score 5: "no active aggression" (adequate contrast, zero significant penalties). Score 6: "actively supports reading" (robust across environments and observers).
 
 ## Roadmap — Future (JSOL Parity)
 
@@ -19,12 +19,24 @@ The core scoring pipeline is planned to be rewritten in JSOL and verified, via J
 
 ---
 
+## v0.1.21 - October 23, 2026
+
+This patch recalibrates key ergonomic parameters to better reflect physiological limits under the newly expanded 0-6 scoring scale, and introduces the Semantic Alignment interactive visualization.
+
+### Added
+- **APCA/WCAG Semantic Alignment:** Added `examples/31-apca-wcag-alignment.html` and updated `docs/APCA-WCAG-ALIGNMENT.md` to map the algorithmic intersection and visually demonstrate the collapse of the viable design space when forcing mathematical translation versus IPAX's Semantic Alignment.
+
+### Changed
+- **Parameter Recalibration (SSOT):** Recalibrated maximum penalties in `dist-js/ipax-params.js` to match the scale expansion. `simc_max` (Simultaneous Contrast) increased to 1.5; `mydriasis_gain` (Dilated Pupil) increased to 1.0; `glare_gain` (Photopic Glare) increased to 1.8; `chroma_total_cap` increased to 3.0.
+- **Examples:** Minor UI adjustments and fixes.
+
+---
+
 ## v0.1.20 - October 22, 2026
 
 This release expands the IPAX scoring scale to 6 levels, formalizes the epistemic parameters, and introduces a robust suite of visual inspection tools to inform design decisions.
 
 ### Added
-- **APCA/WCAG Semantic Alignment (Oct 23):** Added `examples/31-apca-wcag-alignment.html` and updated `docs/APCA-WCAG-ALIGNMENT.md` to map the algorithmic intersection and visually demonstrate the collapse of the viable design space when forcing mathematical translation versus IPAX's Semantic Alignment.
 - **Visual Inspector Suite (20-Series):** Added advanced workbench tools (`examples/20-sweep-compare.html`, `examples/21-sweep-contrast.html`, `examples/22-sweep-ergonomy.html`) to visualize contrast, non-monotonic mapping, and individual ergonomic penalties.
 - **Normative Diagnostics (30-Series):** Developed `examples/30-cases.html`, an in-browser sweep tool that analyzes 262,144 hex combinations (8⁶) to extract pure readability examples, map ergonomic penalty drops, and isolate divergences between WCAG and APCA.
 - **Strict Strategy Documentation (`docs/IPAX-SCORING.md`):** Expanded the scoring documentation to explicitly define the boundaries of the "Strict" strategy, integrating exact normative quotes from WCAG 2.2 and APCA minimums, alongside real-world tables.
@@ -144,4 +156,4 @@ Features: Sandbox, Sampler, Font sizer.
 
 ---
 
-_IPAX Scoring System v0.1.20 • 2026-10-22, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)._
+_IPAX Scoring System v0.1.21 • 2026-10-23, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)._

@@ -83,7 +83,7 @@ function renderLocalPreview(container, resNormal, resBold) {
     const txt = resNormal.input.text;
     const bg = resNormal.input.bg;
     
-    let html = `<p class="ipax-small ipax-muted" style="margin-bottom:12px !important; font-family:monospace;">${txt} / ${bg}</p>`;
+    let html = `<p class="ipax-small" style="margin-bottom:12px !important;font-family:monospace;text-shadow: 0 1px 3px black;color: white;opacity: .75;;">${txt} / ${bg}</p>`;
     
     const renderLine = (res, weight) => {
         const wcag = res.wcag.ratio;

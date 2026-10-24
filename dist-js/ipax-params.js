@@ -121,8 +121,14 @@ const META = {
     },
     simc_txt_chroma_gate_lo: { v: 0.02, unit: 'OKLab C', cls: 'DESIGN', refs: ['D-05'], note: 'Text chroma below which hue is treated as undefined (weight 0).' },
     simc_txt_chroma_gate_hi: { v: 0.06, unit: 'OKLab C', cls: 'DESIGN', refs: ['D-05'], note: 'Text chroma above which hue is treated as defined (weight 1).' },
-    simc_max: { v: 1.0, unit: 'score points', cls: 'IPAX1', refs: [], note: 'Cap of the single term.' },
-    chroma_total_cap: { v: 2.0, unit: 'score points', cls: 'IPAX1', refs: [], note: 'Cap on the sum of chromo + scone + simc (proportional rescaling).' },
+    simc_max: { v: 1.5,  //recalibrating in 0.1.21 for 0-6 scale (was: 1.0/1.5)
+		unit: 'score points', 
+        cls: 'IPAX1', 
+        refs: [], 
+        note: 'Cap on simultaneous contrast penalty for achromatic text on high-chroma surfaces.' 
+    },
+    chroma_total_cap: { v: 3, //recalibrating in 0.1.21 for 0-6 scale (was: 2.0)
+		unit: 'score points', cls: 'IPAX1', refs: [], note: 'Cap on the sum of chromo + scone + simc (proportional rescaling).' },
 
     // ---------------------------------------------------------------- Dark polarity: halation, mydriasis
     halation_gain: { v: 0.8, unit: 'score points', cls: 'IPAX1', refs: ['POL-2013', 'POL-2014', 'PUPIL-WY'], note: 'Maximum halation penalty at full activation and unit lightness difference.' },
@@ -130,16 +136,19 @@ const META = {
     halation_bg_l_max: { v: 0.25, unit: 'OKLab L', cls: 'IPAX1', refs: [], note: 'Background lightness at which halation activation reaches zero (linear ramp from 0).' },
     halation_txt_l_min: { v: 0.75, unit: 'OKLab L', cls: 'IPAX1', refs: [], note: 'Text lightness at which halation activation starts.' },
     halation_txt_l_span: { v: 0.25, unit: 'OKLab L', cls: 'IPAX1', refs: [], note: 'Text lightness span to full activation.' },
-    mydriasis_gain: { v: 0.4, unit: 'score points', cls: 'IPAX1', refs: ['POL-2014', 'PUPIL-WY'], note: 'Maximum mydriasis penalty (pure black background).' },
+    mydriasis_gain: { v: 0.8, //recalibrating in 0.1.21 for 0-6 scale (was: 0.4)
+		unit: 'score points', cls: 'IPAX1', refs: ['POL-2014', 'PUPIL-WY'], note: 'Maximum mydriasis penalty (pure black background).' },
     mydriasis_l_span: {
         v: 0.12, unit: 'OKLab L', cls: 'DESIGN', refs: ['D-06', 'PUPIL-WY'],
         note: 'IPAX 1 used 0.04, equivalent to Y < 6.4e-5, below the smallest non-zero 8-bit luminance (3.0e-4): only #000000 triggered it. Widened so that the penalty fades over several hex steps. 0.12 = Y 1.7e-3, about 0.4 cd/m2 on a 250-nit display, where the pupil is near its maximum.'
     },
 
     // ---------------------------------------------------------------- Light polarity: glare
-    glare_l_start: { v: 0.96, unit: 'OKLab L', cls: 'IPAX1', refs: ['POL-2013'], note: 'Background lightness where glare starts.' },
+    glare_l_start: { v: 0.96,
+		unit: 'OKLab L', cls: 'IPAX1', refs: ['POL-2013'], note: 'Background lightness where glare starts.' },
     glare_l_span: { v: 0.04, unit: 'OKLab L', cls: 'IPAX1', refs: [], note: 'Lightness span to full glare.' },
-    glare_gain: { v: 1.0, unit: 'score points', cls: 'IPAX1', refs: [], note: 'Maximum glare penalty (pure white background).' },
+    glare_gain: { v: 1.5, //recalibrating in 0.1.21 for 0-6 scale (was: 1.0)
+		unit: 'score points', cls: 'IPAX1', refs: [], note: 'Maximum glare penalty (pure white background).' },
 
     // ---------------------------------------------------------------- Helmholtz-Kohlrausch
     hk_chroma_lo: { v: 0.08, unit: 'OKLab C', cls: 'IPAX1', refs: ['HK-FP91', 'HK-2023'], note: 'Chroma where the HK term starts.' },

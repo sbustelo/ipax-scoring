@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--ipax-1-space-2, 8px);
+    /* gap: var(--ipax-1-space-2, 8px); */
     width: 256px;
 }
 
@@ -47,4 +47,56 @@
         linear-gradient(to right, rgba(0, 255, 255, 0.2) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(0, 255, 255, 0.2) 1px, transparent 1px);
     background-size: 16px 16px;
+}
+
+/* Modificadores para scroll orgánico y anclaje */
+.map-toolbar {
+    position: relative !important; /* Fuerza la muerte del sticky heredado; scrollea natural */
+    top: auto !important;
+}
+
+/* Matamos las restricciones de alto/overflow del layout anterior (App Fija) */
+.map-split-container, 
+.map-split-screen {
+    height: auto !important;
+    min-height: 100vh;
+    overflow: visible !important;
+}
+
+.map-panel#panel-left {
+    height: auto !important;
+    min-height: 100vh;
+    overflow-y: visible !important;
+    overflow-x: clip !important; /* Corta la hemorragia horizontal de la grilla interna */
+}
+
+.map-split-container {
+    align-items: stretch; /* Restaura el 100% del ancho para arreglar el borde de la fila */
+}
+
+.map-split-screen {
+    align-items: flex-start; /* Habilita el anclaje en las columnas hijas (resizer y panel derecho) */
+}
+
+.map-readout-bar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+
+    background-color: color-mix(in srgb,var(--ipax-this-paper) 80%,transparent);
+	backdrop-filter: blur(8px);
+
+    height: 48px; /* Altura controlada para empujar el inspector */
+    box-sizing: border-box;
+    border-bottom: var(--ipax-0-border-width, 1px) solid var(--ipax-this-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--ipax-1-space-4);
+}
+
+.map-panel#panel-right, .map-resizer#resizer {
+    position: sticky;
+    top: 48px; /* Anclado matemáticamente justo debajo de la readout-bar */
+    height: calc(100vh - 48px);
 }

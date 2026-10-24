@@ -6,12 +6,14 @@
     --ipax-map-surface-dark: #1a1a1a;
 }
 
+
+
+
 .comp-split-container {
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    overflow: hidden;
-    height: calc(100vh - 120px);
+    align-items: flex-start; /* CRÍTICO: Permite que los hijos utilicen position: sticky */
 }
 
 .comp-panel-left {
@@ -20,19 +22,19 @@
     padding: var(--ipax-1-space-4);
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     box-sizing: border-box;
 }
 
 .comp-panel-right {
     flex: 1 1 0%;
     min-width: 250px;
-    height: 100%;
+    height: 100vh; /* Ocupa exactamente el alto de la pantalla */
+    position: sticky;
+    top: 0;
     display: flex;
     flex-direction: column;
-    position: relative;
     overflow: hidden;
-    background-color: #000; /* Fallback base que luego manipula JS */
+    background-color: #000;
     transition: background-color 0.1s ease-out;
 }
 
@@ -42,8 +44,14 @@
     cursor: col-resize;
     flex-shrink: 0;
     z-index: 30;
+    height: 100vh;
+    position: sticky;
+    top: 0;
     transition: background 0.2s;
 }
+
+
+
 .comp-resizer:hover, .comp-resizer:active { background: var(--ipax-this-accent); }
 
 /* Graphs Layout */
@@ -86,12 +94,11 @@
     height: 256px;
     /* Bottom half: Dark Mode (-Lc, Light Text on Dark Surface) */
     background-color: var(--ipax-map-surface-dark);
-    /* Usamos trama con blanco traslúcido para no oscurecer aún más el fondo */
     background-image:
-        linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.05) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.05) 75%);
+        linear-gradient(45deg, rgba(0, 0, 0, 0.25) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(0, 0, 0, 0.25) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.25) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.25) 75%);
     background-size: 16px 16px;
     background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
     border: var(--ipax-0-border-width) solid var(--ipax-this-border);
@@ -178,12 +185,29 @@
     position: absolute;
     font-family: var(--ipax-0-font-mono);
     font-size: 10px;
-    color: var(--ipax-this-muted);
     pointer-events: none;
-    z-index: 5;
+    z-index: 30;
+    /* Estilos compartidos para máximo contraste sobre el scatter plot */
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000,
+         0px  2px 4px rgba(0,0,0,0.85);
 }
-.comp-axis-y { top: 50%; left: 4px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
-.comp-axis-x { bottom: 2px; left: 50%; transform: translateX(-50%); }
+.comp-axis-y { 
+    top: 50%; 
+    right: -69px; 
+    left: auto !important; /* Forzamos la muerte de cualquier anclaje izquierdo residual */
+    transform: translateY(-50%) rotate(90deg); /* 90deg para lectura natural de arriba hacia abajo */
+    transform-origin: center;
+}
+.comp-axis-x { 
+    bottom: 4px; 
+    left: 8px; /* Zona muerta inferior izquierda de la curva WCAG */
+}
 
 .comp-line-h { position: absolute; left: 0; right: 0; height: 1px; border-top: 1px dashed rgba(255, 255, 255, 0.4); pointer-events: none; z-index: 10; }
 .comp-line-v { position: absolute; top: 0; bottom: 0; width: 1px; border-left: 1px dashed rgba(255, 255, 255, 0.4); pointer-events: none; z-index: 10; }
@@ -236,9 +260,22 @@
     max-width: 100%;
 }
 
-.comp-tr-interactive { cursor: pointer; transition: background-color 0.2s; }
-.comp-tr-interactive:hover { background-color: var(--ipax-this-border) !important; }
-.comp-cell-swatch { font-family: var(--ipax-0-font-mono); font-weight: bold; }
+.comp-table {
+    --ipax-this-divider: var(--ipax-this-border); /* Resuelve el undefined en el scope local */
+}
+
+.comp-tr-interactive { 
+    border-bottom: var(--ipax-0-border-width, 1px) solid var(--ipax-this-divider);
+    cursor: pointer; 
+    transition: background-color 0.2s; 
+}
+.comp-tr-interactive:hover { 
+    background-color: var(--ipax-this-border) !important; 
+}
+.comp-cell-swatch { 
+    font-family: var(--ipax-0-font-mono); 
+    font-weight: bold; 
+}
 
 /* Right Panel: Inspector Elements */
 .comp-inspector-header {

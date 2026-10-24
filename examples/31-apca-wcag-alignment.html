@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<!-- _IPAX Scoring System v0.1.21 • 2026-10-23, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)._ -->
+ 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,7 +22,7 @@
     <link rel="stylesheet" href="css/components/map-toolbar.css">
     <link rel="stylesheet" href="css/map-alignment.css">
 </head>
-<body class="ipax-ui ipax-surface ipax-ink-on-paper" style="display: flex; flex-direction: column; height: 100vh; margin: 0; overflow: hidden;">
+<body class="ipax-ui ipax-surface ipax-ink-on-paper" style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
 
     <div class="map-toolbar" id="main-toolbar" style="flex-shrink: 0;">
         <div class="map-toolbar-header">
@@ -99,7 +102,7 @@
                     <div class="comp-overlay-metric" data-j0-id="metric-wcag"></div>
                     <div class="comp-canvas-wrap" data-j0-target="hover-zone">
                         <canvas data-j0-id="canvas-wcag" width="256" height="256"></canvas>
-                        <div class="comp-axis comp-axis-y" style="left:-25px;">APCA Lc (Dark ⬆ / Light ⬇)</div>
+                        <div class="comp-axis comp-axis-y">(LIGHT) &bull; APCA Lc &bull; (DARK)</div>
                         <div class="comp-axis comp-axis-x">WCAG Ratio</div>
                         <div class="comp-line-0"></div> <!-- Línea central 0 -->
                         <div class="comp-line-v" style="left: 14.2%;"></div> <!-- 3.0 -->
@@ -118,7 +121,7 @@
                     <div class="comp-overlay-metric" data-j0-id="metric-apca"></div>
                     <div class="comp-canvas-wrap" data-j0-target="hover-zone">
                         <canvas data-j0-id="canvas-apca" width="256" height="256"></canvas>
-                        <div class="comp-axis comp-axis-y" style="left:-25px;">APCA Lc (Dark ⬆ / Light ⬇)</div>
+                        <div class="comp-axis comp-axis-y">(LIGHT) &bull; APCA Lc &bull; (DARK)</div>
                         <div class="comp-axis comp-axis-x">WCAG Ratio</div>
                         <div class="comp-line-0"></div> <!-- Línea central 0 -->
                         <div class="comp-line-h" style="top: 29.1%;"></div> <!-- +45 -->
@@ -141,7 +144,7 @@
                     <div class="comp-overlay-metric" data-j0-id="metric-prop"></div>
                     <div class="comp-canvas-wrap" data-j0-target="hover-zone">
                         <canvas data-j0-id="canvas-proposed" width="256" height="256"></canvas>
-                        <div class="comp-axis comp-axis-y" style="left:-25px;">APCA Lc (Dark ⬆ / Light ⬇)</div>
+                        <div class="comp-axis comp-axis-y">(LIGHT) &bull; APCA Lc &bull; (DARK)</div>
                         <div class="comp-axis comp-axis-x">WCAG Ratio</div>
                         <div class="comp-line-0"></div> <!-- Línea central 0 -->
                         <!-- Líneas ±60 (60/108 = 55.5% desde el centro) -->
@@ -163,7 +166,7 @@
                     <div class="comp-overlay-metric" data-j0-id="metric-ipax"></div>
                     <div class="comp-canvas-wrap" data-j0-target="hover-zone">
                         <canvas data-j0-id="canvas-ipax" width="256" height="256"></canvas>
-                        <div class="comp-axis comp-axis-y" style="left:-25px;">APCA Lc (Dark ⬆ / Light ⬇)</div>
+                        <div class="comp-axis comp-axis-y">(LIGHT) &bull; APCA Lc &bull; (DARK)</div>
                         <div class="comp-axis comp-axis-x">WCAG Ratio</div>
                         <div class="comp-line-0"></div> <!-- Línea central 0 -->
                         <div class="comp-line-h" style="top: 29.1%;"></div> <!-- +45 -->
@@ -179,12 +182,23 @@
 
             </div> <!-- Cierre comp-graphs-layout -->
 
+			<!-- Conclusion Block -->
+<div style="margin-top: 32px; margin-bottom: 16px;">
+                <p class="ipax-muted" style="margin: 0; line-height: 1.5; max-width: 80ch;">
+                    <strong>The Transition Compromise:</strong> As long as WCAG 2.x is legally binding, any intersection with a perceptual space reduces the viable design space. The <strong>IPAX Semantic Alignment</strong> provides a pragmatic bridge: it maximizes the usable color space without sacrificing legal compliance or optical safety.
+                </p>
+            </div>
+			
+
             <!-- Tablas de Datos Inferiores -->
             <div class="comp-tables-area">
                 <div class="ipax-stack">
                     <div>
-                        <h3 style="color: var(--ipax-1-warn-i); margin-bottom: 4px;">The Collapsed Space (Valid UI Colors Rejected by APCA Math)</h3>
-                        <p class="ipax-small ipax-muted">Pairs that achieve WCAG 4.5:1 and are optically legible (≥ Lc 45), but would be illegally classified if Lc 60 was enforced as the WCAG AA mathematical equivalent.</p>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4px; gap: 16px;">
+                            <h3 style="color: var(--ipax-1-warn-i); margin: 0;">The Collapsed Space (Valid UI Colors Rejected by APCA Math)</h3>
+                            <span class="ipax-small ipax-muted" style="white-space: nowrap; margin-bottom: 1px;">Click row to open in Sampler ↗</span>
+                        </div>
+                        <p class="ipax-small ipax-muted" style="margin-top: 0;">Pairs that achieve WCAG 4.5:1 and are optically legible (≥ Lc 45), but would be rejected if enforcing Lc 60 as the WCAG AA equivalent.</p>
                         <div class="ipax-table-wrap">
                             <table class="ipax-table comp-table">
                                 <thead><tr><th>Pair</th><th>WCAG</th><th>APCA</th><th>Active Penalties</th><th>IPAX Score</th></tr></thead>
@@ -194,8 +208,11 @@
                     </div>
 
                     <div style="margin-top: 32px;">
-                        <h3 style="color: var(--ipax-1-bad-i); margin-bottom: 4px;">The Legal Danger Zone (WCAG False Positives)</h3>
-                        <p class="ipax-small ipax-muted">Pairs that achieve WCAG 4.5:1 (Legal) but fail the physical optical minimum of Lc 45. This forces IPAX's Strict Strategy to downgrade them.</p>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4px; gap: 16px;">
+                            <h3 style="color: var(--ipax-1-bad-i); margin: 0;">The Legal Danger Zone (WCAG False Positives)</h3>
+                            <span class="ipax-small ipax-muted" style="white-space: nowrap; margin-bottom: 1px;">Click row to open in Sampler ↗</span>
+                        </div>
+                        <p class="ipax-small ipax-muted" style="margin-top: 0;">Pairs that achieve WCAG 4.5:1 (Legal) but fail the physical optical minimum of Lc 45. This forces IPAX's Strict Strategy to downgrade them.</p>
                         <div class="ipax-table-wrap">
                             <table class="ipax-table comp-table">
                                 <thead><tr><th>Pair</th><th>WCAG</th><th>APCA</th><th>Active Penalties</th><th>IPAX Score</th></tr></thead>

@@ -69,8 +69,8 @@ Totals: 92 parameters (NORM6, DESIGN18, IPAX160, LIT1, DISPLAY7).
 | `simc_neutral_act` | 1 | activation | DESIGN | `D-05`, `SCC-VSS`, `SCC-BRENNER03` | Activation used for achromatic text (hue undefined). Equals the maximum of the original gaussian. Rationale: induction on a neutral target is driven by the surround, not by the target hue; magnitude is broadly similar across surround hues. Alternative behaviour-preserving value: 0.61 (mean of the original gaussian over uniform hue differences). Pending calibration. |
 | `simc_txt_chroma_gate_lo` | 0.02 | OKLab C | DESIGN | `D-05` | Text chroma below which hue is treated as undefined (weight 0). |
 | `simc_txt_chroma_gate_hi` | 0.06 | OKLab C | DESIGN | `D-05` | Text chroma above which hue is treated as defined (weight 1). |
-| `simc_max` | 1 | score points | IPAX1 | - | Cap of the single term. |
-| `chroma_total_cap` | 2 | score points | IPAX1 | - | Cap on the sum of chromo + scone + simc (proportional rescaling). |
+| `simc_max` | 1.5 | score points | IPAX1 | - | Cap on simultaneous contrast penalty for achromatic text on high-chroma surfaces. |
+| `chroma_total_cap` | 3 | score points | IPAX1 | - | Cap on the sum of chromo + scone + simc (proportional rescaling). |
 
 ## Luminance penalties (halation, mydriasis, glare)
 
@@ -81,11 +81,11 @@ Totals: 92 parameters (NORM6, DESIGN18, IPAX160, LIT1, DISPLAY7).
 | `halation_bg_l_max` | 0.25 | OKLab L | IPAX1 | - | Background lightness at which halation activation reaches zero (linear ramp from 0). |
 | `halation_txt_l_min` | 0.75 | OKLab L | IPAX1 | - | Text lightness at which halation activation starts. |
 | `halation_txt_l_span` | 0.25 | OKLab L | IPAX1 | - | Text lightness span to full activation. |
-| `mydriasis_gain` | 0.4 | score points | IPAX1 | `POL-2014`, `PUPIL-WY` | Maximum mydriasis penalty (pure black background). |
+| `mydriasis_gain` | 0.8 | score points | IPAX1 | `POL-2014`, `PUPIL-WY` | Maximum mydriasis penalty (pure black background). |
 | `mydriasis_l_span` | 0.12 | OKLab L | DESIGN | `D-06`, `PUPIL-WY` | IPAX 1 used 0.04, equivalent to Y < 6.4e-5, below the smallest non-zero 8-bit luminance (3.0e-4): only #000000 triggered it. Widened so that the penalty fades over several hex steps. 0.12 = Y 1.7e-3, about 0.4 cd/m2 on a 250-nit display, where the pupil is near its maximum. |
 | `glare_l_start` | 0.96 | OKLab L | IPAX1 | `POL-2013` | Background lightness where glare starts. |
 | `glare_l_span` | 0.04 | OKLab L | IPAX1 | - | Lightness span to full glare. |
-| `glare_gain` | 1 | score points | IPAX1 | - | Maximum glare penalty (pure white background). |
+| `glare_gain` | 1.5 | score points | IPAX1 | - | Maximum glare penalty (pure white background). |
 
 ## Helmholtz-Kohlrausch
 
@@ -135,3 +135,6 @@ Totals: 92 parameters (NORM6, DESIGN18, IPAX160, LIT1, DISPLAY7).
 | `display_min_hk` | 0.1 | score points | DISPLAY | `D-10` | hk_effect warning threshold. |
 | `display_min_reward` | 0.02 | score points | DISPLAY | `D-10` | Individual bonus listing threshold. |
 
+---
+
+_IPAX Scoring System v0.1.21 • 2026-10-23, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)._

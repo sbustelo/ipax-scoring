@@ -1,5 +1,5 @@
 # IPAX Scoring System
-_v0.1.20 • 2026-10-22, Santiago Bustelo • [ipax.bustelo.com.ar](https://ipax.bustelo.com.ar/)_
+_v0.1.21 • 2026-10-23, Santiago Bustelo • [ipax.bustelo.com.ar](https://ipax.bustelo.com.ar/)_
 
 IPAX Score is an algorithmic scoring system that integrates WCAG 2.x calculations, the APCA contrast model, and optical ergonomics metrics into a 6-point scale. It evaluates baseline contrast and applies mathematical modifiers for halation, macular glare, and chromatic fatigue.
 
@@ -78,4 +78,4 @@ Entirely optional, never required.
 
 ---
 
-*IPAX v0.1.20 — 2026-10-22, Santiago Bustelo • [Apache 2.0 / CC BY 4.0 License](LICENSE).*
+*IPAX v0.1.21 — 2026-10-23, Santiago Bustelo • [Apache 2.0 / CC BY 4.0 License](LICENSE).*
