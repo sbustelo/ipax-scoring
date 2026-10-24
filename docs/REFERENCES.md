@@ -55,7 +55,7 @@ Usage rule: a reference marked **A** or **B** supports the *direction* of an eff
 ### ARDITI-FAYE — Contrast and acuity in low vision
 - Source: Arditi, A. and Faye, E., *Monocular and binocular letter contrast sensitivity and letter acuity in a diverse ophthalmologic practice* (cited by WCAG).
 - URL: not opened; cited through WCAG-143.
-- Supports (according to WCAG): factor 1.5 of contrast sensitivity loss per doubling of acuity loss. NOTA ESTRUCTURAL: La extrapolación matemática de este factor para proyectar el Nivel 4 (10:1) y Nivel 5 (15:1) es una elaboración analítica propia de IPAX y no cuenta con validación experimental directa en esta fuente.
+- Supports (according to WCAG): factor 1.5 of contrast sensitivity loss per doubling of acuity loss.
 - Status: **C**.
 - Documented caveat: in public W3C lists it was noted that the acuity–contrast relationship is not deterministic and depends on assumptions about display hardware:
   - https://lists.w3.org/Archives/Public/w3c-wai-gl/2015OctDec/0050.html (**B**)
@@ -165,21 +165,31 @@ Usage rule: a reference marked **A** or **B** supports the *direction* of an eff
 
 ---
 
-## 6. Reading margin (context for levels 4 and 5)
+## 6. Ergonomic limits for optimal legibility and visual discomfort (Levels 4 and 5)
 
-Levels 4 and 5 (ratios 10:1 and 15:1) are an extrapolation of the ×1.5 step implicit in the WCAG justification (3 → 4.5 → ≈ 7 → ≈ 10 → ≈ 15). **No** source in this list validates those values. The low-vision literature uses the idea of *reserve* (acuity and contrast above threshold for fluent reading); in this session only one secondary source mentioning an acuity reserve of approximately 2:1 was seen:
-- https://lists.w3.org/Archives/Public/public-low-vision-a11y-tf/2017May/0007.html (**B**, secondary)
-- Whittaker, S. G. and Lovie-Kitchin, J. (1993) and Lovie-Kitchin and Whittaker (1999): **C**, not opened.
-A source that gave a contrast reserve value ("10:1") was study material with no clear authorship and **was discarded**. The contrast values for levels 4 and 5 are **hypotheses** (D-03).
+Levels 4 and 5 (ratios 10:1 and 15:1) are anchored in the Federal Aviation Administration (FAA) Human Factors Design Standard, which establishes physical bounds for sustained reading comfort, independent of WCAG 2.x calculations.
+
+### NATS-1999 / FAA-HFDS — Human Factors Design Standard
+- Source: Federal Aviation Administration (FAA), *Human Factors Design Standard (HFDS)* (HF-STD-001B), Chapter 8. Citing National Air Traffic Services (1999).
+- URL: https://hf.tc.faa.gov/hfds/
+- Supports: "For optimum legibility, character contrast should be between 6:1 and 10:1. [...] contrasts above 15:1 may cause visual discomfort."
+- Status: **D**.
+- Use in IPAX: Establishes the 10:1 target for Level 4 (FAA-HFDS Optimal) and the 15:1 threshold for Level 5 (FAA-HFDS Limit).
+
+### MYNDEX-FAA — APCA Author on FAA limits and optical phenomena
+- Source: W3C WCAG GitHub Repository, Issue #675, comment by Andrew Somers (Myndex).
+- URL: https://github.com/w3c/wcag/issues/675
+- Supports: The APCA author explicitly cites the FAA HFDS 15:1 limit. He confirms via personal experiments and research that "very high contrasts causes noticeable halation, glare, scatter, and chromatic aberration, and sometimes discomfort," noting these increase with age. He explains these phenomena are not the primary focus of APCA's baseline math ("max contrast is at near the bottom of the issues I am examining").
+- Status: **A**.
+- Use in IPAX: Validates the architectural decision to model halation, glare, and chromatic aberration as independent penalties *on top* of the base contrast algorithms, and confirms the relevance of the FAA limits in modern digital accessibility contexts.
 
 ---
 
 ## 7. What is NOT supported by this list (explicit statement)
 
 1. No gain, threshold or exponent of the IPAX 1 penalties (`halation_gain = 0.8`, `glare_gain = 1.0`, `chromo_gain = 25`, etc.).
-2. The knots 10:1 and 15:1.
-3. The HK score gate and the choice of `simc_neutral_act = 1.0`.
-4. The equivalence between an IPAX level and a specific acuity or reading ability.
+2. The HK score gate and the choice of `simc_neutral_act = 1.0`.
+3. The equivalence between an IPAX level and a specific acuity or reading ability.
 
 ---
 

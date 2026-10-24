@@ -39,13 +39,16 @@ Scores 2 to 4 indicate adherence to technical readability thresholds. Score 1 in
 
 | IPAX Score | APCA Grade | WCAG Grade | Status |
 | --- | --- | --- | --- |
-| **6** | Gold (≥ Lc 90) | AAA Max (15.0:1) | Optimal optical comfort. |
-| **5** | Silver (≥ Lc 75) | AAA High (10.0:1) | Stable for sustained reading. |
+| **6** | Gold (≥ Lc 90) | N/A (FAA-HFDS Limit)* (15.0:1) | Optimal optical comfort. |
+| **5** | Silver (≥ Lc 75) | N/A (FAA-HFDS Optimal)* (10.0:1) | Stable for sustained reading. |
 | **4** | Bronze (≥ Lc 60) | AAA (7.0:1) | Maximum compliance threshold. |
 | **3** | Basic (≥ Lc 45) | AA (4.5:1) | Baseline legal compliance. |
 | **2** | Large (≥ Lc 30) | Large (3.0:1) | Restricted to large text. |
 | **1** | Non-text (≥ Lc 15) | N/A | Visible, not legible: icons and graphics. |
 | **X** | Fail | Fail | Does not meet contrast minimums. |
+
+*\* WCAG 2.x maxes out at AAA (7.0:1). Levels 5 and 6 use FAA Human Factors Design Standard (HFDS) thresholds for optimal legibility (10:1) and maximum ergonomic contrast before visual discomfort (15:1).*
+*Note: APCA and WCAG are mathematically incompatible algorithms. IPAX aligns them semantically by use-case intent rather than mathematically, taking the strictest legal/physical minimum of both to prevent viable color spaces from collapsing. See [APCA & WCAG: Semantic Alignment](docs/APCA-WCAG-ALIGNMENT.md).*
 
 ## IPAX Algorithm Cascade
 
@@ -60,7 +63,7 @@ Scores 2 to 4 indicate adherence to technical readability thresholds. Score 1 in
 
 ## About APCA and its license
 
-APCA unlocks IPAX scores 5 and 6. Without it, IPAX still works fully, it just falls back to WCAG 2.x, using 10:1 and 15:1 as upper tiers.
+APCA unlocks IPAX scores 5 and 6. Without it, IPAX still works fully: it falls back to the WCAG 2.x contrast formula, but extends the scale using the FAA-HFDS 10:1 and 15:1 ratios as upper tiers.
 
 The official `apca-w3` library depends on `colorparsley`, licensed under AGPL. This repository never copies, bundles, or commits that source. `example/js/apca-bridge.js` fetches `apca-w3` from a public CDN (`esm.sh`) at runtime, in the browser of whoever runs the example. If that succeeds, IPAX gets APCA and can grade design quality; if it fails, IPAX degrades to WCAG-only automatically. Including IPAX in your own project doesn't pull any AGPL code into your codebase.
 

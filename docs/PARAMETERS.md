@@ -1,6 +1,6 @@
-# IPAX - Parameter registry
+# IPAX 1 (continuous) - Parameter registry
 
-GENERATED FILE from `dist-js/ipax-params.js`.
+GENERATED FILE. Do not edit by hand: run `node tools/gen-docs.mjs` after changing `dist-js/ipax-params.js`.
 
 Provenance classes: **NORM** published standard · **LIT** from literature · **IPAX1** inherited unchanged from the original code (empirical heuristic, not validated) · **DESIGN** introduced by the continuity refactor (decision D-xx in DECISIONS.md) · **DISPLAY** presentation threshold, never changes the score.
 
@@ -16,8 +16,8 @@ Totals: 92 parameters (NORM6, DESIGN18, IPAX160, LIT1, DISPLAY7).
 | `knot_ratio_level1` | 3 | contrast ratio | NORM | `WCAG-143`, `ARDITI-FAYE` | WCAG 2 minimum for large text (AA large). IPAX level 1. |
 | `knot_ratio_level2` | 4.5 | contrast ratio | NORM | `WCAG-143`, `ARDITI-FAYE` | WCAG 2 AA minimum (compensates ~20/40 acuity, 3 x 1.5). IPAX level 2. |
 | `knot_ratio_level3` | 7 | contrast ratio | NORM | `WCAG-146`, `WCAG-143` | WCAG 2 AAA (compensates ~20/80 acuity). IPAX level 3. Last LEGAL level. |
-| `knot_ratio_level4` | 10 | contrast ratio | DESIGN | `D-03`, `WCAG-143`, `ARDITI-FAYE` | Beyond-legal level. Extrapolation of the x1.5 geometric step implied by the WCAG rationale (3 -> 4.5 -> ~7 -> ~10). HYPOTHESIS, not validated. |
-| `knot_ratio_level5` | 15 | contrast ratio | DESIGN | `D-03`, `WCAG-143`, `ARDITI-FAYE` | Beyond-legal level (~15.2 if the x1.5 step is continued). HYPOTHESIS, not validated. Maximum WCAG ratio is 21. |
+| `knot_ratio_level4` | 10 | contrast ratio | DESIGN | `D-03`, `FAA-HFDS` | Beyond-legal level. Ergonomic target for optimal legibility (FAA Human Factors Design Standard). |
+| `knot_ratio_level5` | 15 | contrast ratio | DESIGN | `D-03`, `FAA-HFDS` | Beyond-legal level. Threshold above which visual discomfort may occur (FAA Human Factors Design Standard). |
 | `softmin_tau` | 0.05 | score points | DESIGN | `D-04`, `LSE` | Smoothing width of the softmin used to combine WCAG and APCA base scores when an APCA engine is injected. Maximum deviation from min() is tau*ln(2). |
 | `large_text_px_normal` | 24 | CSS px | NORM | `WCAG-LARGE` | WCAG large-scale text, normal weight: 18 pt = 24 px. Telemetry (wcag.fontSize) for the 3:1 to 4.49:1 zone only; does not enter the score. |
 | `large_text_px_bold` | 18.5 | CSS px | IPAX1 | `WCAG-LARGE` | Large-scale bold text. IPAX 1 value (v0.1.04+); WCAG 14 pt bold = 18.67 px. Telemetry only. |
@@ -135,7 +135,3 @@ Totals: 92 parameters (NORM6, DESIGN18, IPAX160, LIT1, DISPLAY7).
 | `display_min_hk` | 0.1 | score points | DISPLAY | `D-10` | hk_effect warning threshold. |
 | `display_min_reward` | 0.02 | score points | DISPLAY | `D-10` | Individual bonus listing threshold. |
 
-
----
-
-_IPAX Scoring System v0.1.20 • 2026-10-22, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)._

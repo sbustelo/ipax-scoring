@@ -44,12 +44,12 @@ const META = {
         note: 'WCAG 2 AAA (compensates ~20/80 acuity). IPAX level 3. Last LEGAL level.'
     },
     knot_ratio_level4: {
-        v: 10, unit: 'contrast ratio', cls: 'DESIGN', refs: ['D-03', 'WCAG-143', 'ARDITI-FAYE'],
-        note: 'Beyond-legal level. Extrapolation of the x1.5 geometric step implied by the WCAG rationale (3 -> 4.5 -> ~7 -> ~10). HYPOTHESIS, not validated.'
+        v: 10, unit: 'contrast ratio', cls: 'DESIGN', refs: ['D-03', 'FAA-HFDS'],
+        note: 'Beyond-legal level. Ergonomic target for optimal legibility (FAA Human Factors Design Standard).'
     },
     knot_ratio_level5: {
-        v: 15, unit: 'contrast ratio', cls: 'DESIGN', refs: ['D-03', 'WCAG-143', 'ARDITI-FAYE'],
-        note: 'Beyond-legal level (~15.2 if the x1.5 step is continued). HYPOTHESIS, not validated. Maximum WCAG ratio is 21.'
+        v: 15, unit: 'contrast ratio', cls: 'DESIGN', refs: ['D-03', 'FAA-HFDS'],
+        note: 'Beyond-legal level. Threshold above which visual discomfort may occur (FAA Human Factors Design Standard).'
     },
     softmin_tau: {
         v: 0.05, unit: 'score points', cls: 'DESIGN', refs: ['D-04', 'LSE'],

@@ -123,7 +123,7 @@ export const IPAX_CORE = {
         // STEP 2: WCAG 2.x EVALUATION (labels are discrete by nature and do not enter the score)
         const $nWcagRatio = ColorMath.calculateWcagContrast($nTxtY, $nBgY);
         const $nLegalLevel = IPAX_BASE.legalLevel($nWcagRatio);
-        // Without an APCA engine WCAG also grades the upper levels (10:1, 15:1); with an engine it stops at 7:1 (level 4).
+        // Without an APCA engine, the WCAG formula is extended to grade the FAA-HFDS upper levels (10:1, 15:1); with an engine, WCAG stops at its legal ceiling of 7:1 (level 4).
         const $nExtLevel = IPAX_BASE.extendedLevel($nWcagRatio);
         const $nWcagScore = $bUseApca ? Math.min(4, $nExtLevel) : $nExtLevel;
         // Index = position on the 0-6 scale. Index 1 (red) has no WCAG equivalent and is never produced.

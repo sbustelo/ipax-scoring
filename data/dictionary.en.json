@@ -99,8 +99,8 @@
     }
   ],
   "scale": [
-    { "score": 6, "name": "Excellent", "category": "design_quality", "apca": { "grade": "Gold", "min_value": 90 }, "wcag": { "grade": "AAA Max", "min_value": 15.0 }, "description": "Optimal optical comfort for continuous reading." },
-    { "score": 5, "name": "Very Good", "category": "design_category", "apca": { "grade": "Silver", "min_value": 75 }, "wcag": { "grade": "AAA High", "min_value": 10.0 }, "description": "Strong contrast, but potential for fatigue over extended use." },
+    { "score": 6, "name": "Excellent", "category": "design_quality", "apca": { "grade": "Gold", "min_value": 90 }, "wcag": { "grade": "N/A (FAA-HFDS Limit)", "min_value": 15.0 }, "description": "Optimal optical comfort for continuous reading." },
+    { "score": 5, "name": "Very Good", "category": "design_category", "apca": { "grade": "Silver", "min_value": 75 }, "wcag": { "grade": "N/A (FAA-HFDS Optimal)", "min_value": 10.0 }, "description": "Strong contrast, but potential for fatigue over extended use." },
     { "score": 4, "name": "Good", "category": "compliance", "apca": { "grade": "Bronze", "min_value": 60 }, "wcag": { "grade": "AAA", "min_value": 7.0 }, "description": "Maximum legal threshold; high contrast may incur overstimulation." },
     { "score": 3, "name": "Acceptable", "category": "compliance", "apca": { "grade": "Basic", "min_value": 45 }, "wcag": { "grade": "AA", "min_value": 4.5 }, "description": "Baseline legal compliance for standard text." },
     { "score": 2, "name": "Functional", "category": "compliance", "apca": { "grade": "Large", "min_value": 30 }, "wcag": { "grade": "Large", "min_value": 3.0 }, "description": "Restricted to large text (WCAG) or inactive/disabled text (APCA)." },

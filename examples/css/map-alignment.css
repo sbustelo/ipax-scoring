@@ -1,0 +1,349 @@
+/* IPAX Scoring System v0.1.20 • 2026-10-22
+ * Santiago Bustelo, https://ipax.bustelo.com.ar/ */
+
+:root {
+    --ipax-map-surface-light: #e5e5e5;
+    --ipax-map-surface-dark: #1a1a1a;
+}
+
+.comp-split-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    overflow: hidden;
+    height: calc(100vh - 120px);
+}
+
+.comp-panel-left {
+    flex: 0 0 65%;
+    width: 65%;
+    padding: var(--ipax-1-space-4);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.comp-panel-right {
+    flex: 1 1 0%;
+    min-width: 250px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    background-color: #000; /* Fallback base que luego manipula JS */
+    transition: background-color 0.1s ease-out;
+}
+
+.comp-resizer {
+    width: 6px;
+    background: var(--ipax-this-border);
+    cursor: col-resize;
+    flex-shrink: 0;
+    z-index: 30;
+    transition: background 0.2s;
+}
+.comp-resizer:hover, .comp-resizer:active { background: var(--ipax-this-accent); }
+
+/* Graphs Layout */
+.comp-graphs-layout {
+    display: flex;
+    gap: var(--ipax-1-space-4);
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.comp-graph-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Remove gap to control positioning exactly */
+    width: 256px;
+    position: relative; /* Anchor for absolute overlay */
+}
+.comp-graph-card h3 { 
+    margin: 0; 
+    color: var(--ipax-this-ink); 
+    font-size: var(--ipax-1-font-sm); 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+}
+
+.comp-graph-card p {
+    margin: 4px 0 8px 0;
+    min-height: 18px;
+    height: auto;
+    line-height: 1.2;
+}
+
+
+
+
+.comp-canvas-wrap {
+    position: relative;
+    width: 256px;
+    height: 256px;
+    /* Bottom half: Dark Mode (-Lc, Light Text on Dark Surface) */
+    background-color: var(--ipax-map-surface-dark);
+    /* Usamos trama con blanco traslúcido para no oscurecer aún más el fondo */
+    background-image:
+        linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.05) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.05) 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    border: var(--ipax-0-border-width) solid var(--ipax-this-border);
+    margin-bottom: var(--ipax-1-space-2);
+    cursor: crosshair;
+    overflow: hidden;
+    transition: background-color 0.2s ease;
+}
+
+/* Top half: Light Mode (+Lc, Dark Text on Light Surface) */
+.comp-canvas-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 50%;
+    background-color: var(--ipax-map-surface-light);
+    background-image:
+        linear-gradient(45deg, rgba(0, 0, 0, 0.05) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(0, 0, 0, 0.05) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.05) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.05) 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    pointer-events: none;
+    z-index: 1;
+    transition: background-color 0.2s ease;
+}
+
+
+
+.comp-canvas-wrap canvas {
+    display: block;
+    width: 256px;
+    height: 256px;
+    image-rendering: pixelated;
+    background: transparent;
+    position: relative;
+    z-index: 2; /* Above the grid pseudo-element */
+}
+
+.comp-line-0 {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.25);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.comp-xh-fixed {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    margin-left: -4px;
+    margin-top: -4px;
+    pointer-events: none;
+    z-index: 15;
+    display: none;
+}
+.comp-xh-fixed.active {
+    display: block;
+}
+.comp-xh-fixed-line-x {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    left: 0;
+    top: 4px;
+    background: #ffffff;
+    mix-blend-mode: difference;
+}
+.comp-xh-fixed-line-y {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    top: 0;
+    left: 4px;
+    background: #ffffff;
+    mix-blend-mode: difference;
+}
+
+.comp-axis {
+    position: absolute;
+    font-family: var(--ipax-0-font-mono);
+    font-size: 10px;
+    color: var(--ipax-this-muted);
+    pointer-events: none;
+    z-index: 5;
+}
+.comp-axis-y { top: 50%; left: 4px; transform: translateY(-50%) rotate(-90deg); transform-origin: left center; }
+.comp-axis-x { bottom: 2px; left: 50%; transform: translateX(-50%); }
+
+.comp-line-h { position: absolute; left: 0; right: 0; height: 1px; border-top: 1px dashed rgba(255, 255, 255, 0.4); pointer-events: none; z-index: 10; }
+.comp-line-v { position: absolute; top: 0; bottom: 0; width: 1px; border-left: 1px dashed rgba(255, 255, 255, 0.4); pointer-events: none; z-index: 10; }
+
+/* Overlay Metrics inside Canvas */
+.comp-overlay-metric {
+    position: absolute;
+    top: 20px; /* Covers the <p> tag */
+    right: 0;
+    background-color: var(--ipax-this-paper); /* Solid background to obscure text beneath */
+    color: var(--ipax-this-ink);
+    font-family: var(--ipax-0-font-mono);
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: var(--ipax-0-border-width) solid var(--ipax-this-border);
+    pointer-events: none;
+    z-index: 25;
+    white-space: nowrap;
+    display: none;
+}
+
+.comp-overlay-metric.active {
+    display: block;
+}
+
+/* Hover Crosshairs */
+.comp-xh-layer {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 20;
+}
+.comp-xh-x, .comp-xh-y {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.85);
+    mix-blend-mode: difference;
+    display: none;
+}
+.comp-xh-layer.active .comp-xh-x, .comp-xh-layer.active .comp-xh-y { display: block; }
+.comp-xh-x { width: 100%; height: 1px; left: 0; margin-top: -1px; }
+.comp-xh-y { width: 1px; height: 100%; top: 0; margin-left: -1px; }
+
+/* Tables Area */
+.comp-tables-area {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--ipax-this-border);
+    max-width: 100%;
+}
+
+.comp-tr-interactive { cursor: pointer; transition: background-color 0.2s; }
+.comp-tr-interactive:hover { background-color: var(--ipax-this-border) !important; }
+.comp-cell-swatch { font-family: var(--ipax-0-font-mono); font-weight: bold; }
+
+/* Right Panel: Inspector Elements */
+.comp-inspector-header {
+    height: 38px;
+    padding: 0 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 20;
+    font-size: 11px;
+    font-family: monospace;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--ipax-this-border);
+}
+
+.comp-preview-top-box {
+    flex: 1 1 50%;
+    min-height: 140px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.comp-preview-box {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 24px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+}
+
+.comp-preview-box p {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    width: 100% !important;
+    flex: 0 0 auto !important;
+}
+
+/* Ocultar el cartel rojo de falla de ui-app.js porque ensucia la comparación óptica */
+.comp-preview-box .ipx-preview-overlay {
+    display: none !important;
+}
+/* Ocultar el link original interno del preview de ui-app */
+.comp-preview-box a.ipx-preview-more {
+    display: none !important;
+}
+
+.comp-raw-resizer {
+    height: 6px;
+    background: var(--ipax-this-border);
+    cursor: row-resize;
+    flex-shrink: 0;
+    z-index: 25;
+    transition: background 0.2s;
+}
+.comp-raw-resizer:hover, .comp-raw-resizer:active { background: var(--ipax-this-accent); }
+
+.comp-raw-data-box {
+    flex: 1 1 50%;
+    min-height: 100px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.75);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.comp-dump-raw {
+    margin: 0;
+    padding: 12px;
+    color: #0f0;
+    font-family: var(--ipax-0-font-mono, monospace);
+    font-size: 11px;
+    line-height: 18px;
+    background-image: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 18px, transparent 18px, transparent 36px);
+    background-position: 0 11px;
+    background-attachment: local;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.comp-swatch-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    border: 1px solid rgba(128, 128, 128, 0.4);
+    line-height: 1.2;
+    font-family: system-ui, sans-serif;
+    user-select: none;
+}

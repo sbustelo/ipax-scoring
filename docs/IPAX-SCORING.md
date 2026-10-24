@@ -8,11 +8,12 @@ This document details the scoring logic for IPAX v0.1.20. The system distills th
 
 Currently (as v.0.1.20), IPAX evaluates color pairs using a **Strict** strategy, based on the following rationale:
 
-*   **The Disagreement:**  The math behind WCAG 2 and APCA is fundamentally different and often incompatible. There are color pairs that APCA approves but WCAG 2 fails, and vice versa.
+*   **The Disagreement:**  The math behind WCAG 2 and APCA is fundamentally different and mathematically incompatible. There are color pairs that APCA approves but WCAG 2 fails (e.g., `#FFFFFF` on `#B4B4B4` yields a failing WCAG 2.07 but a passing APCA Lc 45), and vice versa (e.g., `#969696` on `#010101` yields a WCAG 7.05 AAA but a baseline APCA Lc 45).
+*   **The Semantic Alignment (vs Mathematical):** The official [APCA Contrast Legend](https://apcacontrast.com/#:~:text=APCA%20Contrast%20Legend) proposes a stricter mathematical correspondence (e.g., mapping Lc 45 to WCAG 3.0:1 instead of 4.5:1). If IPAX adopted this mathematical scale while enforcing its "Strict" strategy of rejecting any color that either algorithm fails, the valid design space would collapse almost entirely. Because IPAX is a practical scoring tool rather than a new normative standard, it maps the formulas *semantically*. It aligns their intended use cases (e.g., mapping both APCA Basic and WCAG AA as the "standard text minimum") instead of their math.
 *   **The Legal Reality:** Today, the legal standard is WCAG 2. Therefore, if a color pair fails WCAG 2, it is not legally compliant.
 *   **The Physical Reality:** WCAG 2's math is flawed, particularly in dark mode, often approving color combinations that are physically unreadable. APCA accurately catches these failures.
 
-To guarantee both **accessibility** and **compliance**, the Strict strategy takes the lowest common denominator.  
+To guarantee both **accessibility** and **compliance**, the Strict strategy takes the lowest common denominator of this semantic intersection.  
 Under this strategy, a design is only considered compliant (Score 2, 3, or 4) if it meets the physical readability standards of APCA *and* the legal thresholds of WCAG 2.
 
 ---

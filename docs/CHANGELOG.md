@@ -24,11 +24,12 @@ The core scoring pipeline is planned to be rewritten in JSOL and verified, via J
 This release expands the IPAX scoring scale to 6 levels, formalizes the epistemic parameters, and introduces a robust suite of visual inspection tools to inform design decisions.
 
 ### Added
+- **APCA/WCAG Semantic Alignment (Oct 23):** Added `examples/31-apca-wcag-alignment.html` and updated `docs/APCA-WCAG-ALIGNMENT.md` to map the algorithmic intersection and visually demonstrate the collapse of the viable design space when forcing mathematical translation versus IPAX's Semantic Alignment.
 - **Visual Inspector Suite (20-Series):** Added advanced workbench tools (`examples/20-sweep-compare.html`, `examples/21-sweep-contrast.html`, `examples/22-sweep-ergonomy.html`) to visualize contrast, non-monotonic mapping, and individual ergonomic penalties.
 - **Normative Diagnostics (30-Series):** Developed `examples/30-cases.html`, an in-browser sweep tool that analyzes 262,144 hex combinations (8⁶) to extract pure readability examples, map ergonomic penalty drops, and isolate divergences between WCAG and APCA.
 - **Strict Strategy Documentation (`docs/IPAX-SCORING.md`):** Expanded the scoring documentation to explicitly define the boundaries of the "Strict" strategy, integrating exact normative quotes from WCAG 2.2 and APCA minimums, alongside real-world tables.
 - **Parameter & Reference Registries (`docs/PARAMETERS.md`, `docs/REFERENCES.md`):** Published a generated registry tracking all 92 system parameters across normative, literature, and design classes.
-- **APCA Intersection Architecture (`docs/APCA-INTERSECTION.md`):** Documented the architectural decoupling of APCA's continuous math (`Lc`) from IPAX's ergonomic penalty and grading layer.
+- **APCA Intersection Architecture (`docs/APCA-WCAG-ALIGNMENT.md`):** Documented the architectural decoupling of APCA's continuous math (`Lc`) from IPAX's ergonomic penalty and grading layer.
 
 ### Changed
 - **Examples Directory Reorganization:** Restructured the `examples/` directory into a numbered taxonomy. Existing integration demos were renamed to `10-calculator-en.html`, `10-calculator-es.html`, and `11-minimal.html`.

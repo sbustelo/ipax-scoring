@@ -45,8 +45,11 @@ function processPair(textHex, bgHex, label = '') {
         const finalScore = res.scoreExact;
         const baseScore = res.raw.baseScore;
         const penaltySum = res.details.totalPenalty;
+        const activePenalties = res.details.penalties && res.details.penalties.length > 0 
+            ? res.details.penalties.map(function(p) { return p.label || p.slug; }).join(', ') 
+            : '–';
 
-        const item = { text: textHex, bg: bgHex, label, wcagRatio, apcaLc, baseScore, penaltySum, finalScore };
+        const item = { text: textHex, bg: bgHex, label, wcagRatio, apcaLc, baseScore, penaltySum, activePenalties, finalScore };
 
         if (wcagRatio !== null && apcaLc !== null) {
             const intScore = Math.floor(res.score);
@@ -80,7 +83,7 @@ function renderTable(title, list, limit = 10) {
     if (list.length === 0) return `<h3>${title}</h3><p class="ipax-muted"><em>No pairs found.</em></p>`;
     
     let html = `<h3>${title}</h3><table class="edge-table ipax-table">
-        <thead><tr><th>Pair</th><th>Label</th><th>WCAG</th><th>APCA</th><th>Base IPAX Score</th><th>Penalty</th><th>Final IPAX Score</th></tr></thead><tbody>`;
+        <thead><tr><th>Pair (Click to open in IPAX Sampler)</th><th>Label</th><th>WCAG</th><th>APCA</th><th>Base Score</th><th>Penalty Value</th><th>Active Penalties</th><th>Final Score</th></tr></thead><tbody>`;
     
     list.slice(0, limit).forEach(i => {
         const wcagStr = i.wcagRatio !== null && i.wcagRatio !== undefined ? i.wcagRatio.toFixed(2) : 'N/A';
@@ -88,9 +91,12 @@ function renderTable(title, list, limit = 10) {
         const baseStr = i.baseScore !== null && i.baseScore !== undefined ? i.baseScore.toFixed(2) : 'N/A';
         const penStr  = i.penaltySum !== null && i.penaltySum !== undefined ? i.penaltySum.toFixed(2) : '0.00';
         const finStr  = i.finalScore !== null && i.finalScore !== undefined ? i.finalScore.toFixed(2) : 'N/A';
+        const cleanBg = i.bg.replace('#', '');
+        const cleanTxt = i.text.replace('#', '');
+        const samplerUrl = `https://ipax.bustelo.com.ar/sampler.php?m=sample&bg=${cleanBg}&txt=${cleanTxt}`;
 
         html += `<tr>
-            <td style="background-color: ${i.bg};">
+            <td style="background-color: ${i.bg}; cursor: pointer;" onclick="window.open('${samplerUrl}', '_blank');" title="Click to open in IPAX Sampler">
                 <span style="color: ${i.text};">
                     ${i.text} on ${i.bg}
                 </span>					
@@ -100,6 +106,7 @@ function renderTable(title, list, limit = 10) {
             <td>${apcaStr}</td>
             <td>${baseStr}</td>
             <td>-${penStr}</td>
+            <td class="ipax-small ipax-muted">${i.activePenalties}</td>
             <td><strong>${finStr}</strong></td>
         </tr>`;
     });
@@ -156,7 +163,7 @@ setTimeout(() => {
             ${renderTable('Score 5 (Penalty Drop)', categories.score5Penalty)}
 
             <h2>Score 6: Excellent (Optimal Optical Comfort)</h2>
-            ${renderTable('Score 6 (High APCA, Zero Penalties, Active Rewards)', categories.score6)}
+            ${renderTable('Score 6 (High APCA, Zero or Low Penalties, Active Rewards)', categories.score6)}
         </div>
     `;
 }, 50);

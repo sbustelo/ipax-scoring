@@ -99,8 +99,8 @@
     }
   ],
   "scale": [
-    { "score": 6, "name": "Excelente", "category": "design_quality", "apca": { "grade": "Gold", "min_value": 90 }, "wcag": { "grade": "AAA Max", "min_value": 15.0 }, "description": "Confort óptico óptimo para lectura continua." },
-    { "score": 5, "name": "Muy Bueno", "category": "design_quality", "apca": { "grade": "Silver", "min_value": 75 }, "wcag": { "grade": "AAA High", "min_value": 10.0 }, "description": "Contraste elevado, pero con potencial de fatiga en uso prolongado." },
+    { "score": 6, "name": "Excelente", "category": "design_quality", "apca": { "grade": "Gold", "min_value": 90 }, "wcag": { "grade": "N/A (FAA-HFDS Limit)", "min_value": 15.0 }, "description": "Confort óptico óptimo para lectura continua." },
+    { "score": 5, "name": "Muy Bueno", "category": "design_quality", "apca": { "grade": "Silver", "min_value": 75 }, "wcag": { "grade": "N/A (FAA-HFDS Optimal)", "min_value": 10.0 }, "description": "Contraste elevado, pero con potencial de fatiga en uso prolongado." },
     { "score": 4, "name": "Bueno", "category": "design_quality", "apca": { "grade": "Bronze", "min_value": 60 }, "wcag": { "grade": "AAA", "min_value": 7.0 }, "description": "Umbral normativo máximo; el contraste extremo puede causar sobreestimulación." },
     { "score": 3, "name": "Aceptable", "category": "compliance", "apca": { "grade": "Basic", "min_value": 45 }, "wcag": { "grade": "AA", "min_value": 4.5 }, "description": "Cumplimiento normativo básico para texto estándar." },
     { "score": 2, "name": "Funcional", "category": "compliance", "apca": { "grade": "Large", "min_value": 30 }, "wcag": { "grade": "Large", "min_value": 3.0 }, "description": "Restringido a texto grande (WCAG) o texto inactivo/deshabilitado (APCA)." },
