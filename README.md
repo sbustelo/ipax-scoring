@@ -18,7 +18,7 @@ const result = IPAXOrchestrator.getScore({
 });
 ```
 
-## Documentation and Sandbox
+## Documentation and Color System Audit
 
 Live testing environment and documentation: [https://ipax.bustelo.com.ar/](https://ipax.bustelo.com.ar/)
 

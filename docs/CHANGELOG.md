@@ -125,7 +125,7 @@ This release finalizes the architecture of the examples, centralizing all semant
 _First public release of the score algorithm outside the ipax.bustelo.com.ar core_
 
 - **First version on GitHub:** Major refactoring for publishing the IPAX core outside of the prototype. The new IPAX Orchestrator allows the core to be built on pure JSOL so PHP, Python and other languages can be supported. The published algorithm is the SSOT of every IPAX tool.
-- **Theme Builder:** Published as a standalone tool (`builder.php`) alongside sandbox, sampler and font sizer.
+- **Theme Builder:** Published as a standalone tool (`builder.php`) alongside Color System Audit, sampler and font sizer.
 - **APCA IoC Decoupling:** To prevent AGPL license contamination, the APCA dependency is dynamically injected via Inversion of Control (`config.env.apcaEngine`) by the Orchestrator.
 - **Architectural Overhaul:** Migrated from `window.IPAX` global namespace and IIFEs to pure, zero-dependency ES Modules (`dist-js/*`).
 - **Strict Cross-Compliance Floor:** Refactored the core logic so that if the normative intersection (`nComplianceLevel`, the minimum between WCAG and APCA) passes (≥ 1), ergonomic penalties can never drop the final score below 1.0.
@@ -152,7 +152,7 @@ First stable engine [presented at Rosenverse (Rosenfeld Media)](https://rosenver
 - **Biological Modifier Engine:** Established the foundational ergonomic modifiers to penalize isoluminant jitter, chromostereopsis, macular glare, and mydriatic aberration based on the OKLCH color space.
 - **Reward Gating:** Introduced multiplicative smoothstep gating, allowing ergonomic rewards (e.g. Paper Tone) to gracefully fade in only if the biological score is healthy, revoking them entirely if severe scatter penalties exist.
 
-Features: Sandbox, Sampler, Font sizer.
+Features: Color System Audit, Sampler, Font sizer.
 
 ---
 

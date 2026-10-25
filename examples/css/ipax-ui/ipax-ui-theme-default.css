@@ -10,6 +10,7 @@
     color-scheme: dark;
 
     /* ─── FAMILIA PAPER (Fondo oscuro por default, derivado de Nivel 0 ink) ─── */
+	--ipax-1-paper-x:          #000000;
     --ipax-1-paper:          #333333;
     --ipax-1-paper-muted:    rgba(51, 51, 51, 0.49);
     --ipax-1-paper-tint:     rgba(51, 51, 51, 0.07);
@@ -17,7 +18,8 @@
     --ipax-1-paper-divider:  rgba(51, 51, 51, 0.14); /* Doble del tint */
 
     /* ─── FAMILIA INK (Texto claro por default, derivado de Nivel 0 paper) ─── */
-    --ipax-1-ink:            #f0f0f0;
+    --ipax-1-ink-x:            #ffffff;
+	--ipax-1-ink:            #f0f0f0;
     --ipax-1-ink-muted:      rgba(240, 240, 240, 0.49);
     --ipax-1-ink-tint:       rgba(240, 240, 240, 0.07);
     --ipax-1-ink-border:     rgba(240, 240, 240, 0.25);
