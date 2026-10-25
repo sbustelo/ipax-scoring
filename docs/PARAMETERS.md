@@ -135,6 +135,3 @@ Totals: 92 parameters (NORM6, DESIGN18, IPAX160, LIT1, DISPLAY7).
 | `display_min_hk` | 0.1 | score points | DISPLAY | `D-10` | hk_effect warning threshold. |
 | `display_min_reward` | 0.02 | score points | DISPLAY | `D-10` | Individual bonus listing threshold. |
 
----
-
-_IPAX Scoring System v0.1.21 • 2026-10-23, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)._
