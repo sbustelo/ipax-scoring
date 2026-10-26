@@ -6,10 +6,10 @@ Evolving the engine from a color-contrast calculator into a full perceptual simu
 
 - [Color in Design Systems (Kambrica)](https://www.kambrica.com/en/color-in-design-systems/)
 - [Dark Mode vs Night Mode (Kambrica)](https://www.kambrica.com/en/dark-mode-vs-night-mode/)
-- **Thermodynamic Fatigue:** Modeling glare, halation, and mydriasis by crossing OKLCH lightness with maximum/minimum nits and ambient lux.
-- **Ciliary Muscular Effort:** Calculating legibility through spatial frequency (arcminutes) and 2D optical mass instead of CSS pixels.
-- **Pathology Tensors:** Supporting clinical conditions (cataracts, astigmatism, maculopathy, photophobia) as physical light-degradation multipliers.
-- **Redefinition of Excellence (Scores 4 & 5):** Considering a shift from APCA-dictated thresholds to strictly ergonomic definitions. Score 5: "no active aggression" (adequate contrast, zero significant penalties). Score 6: "actively supports reading" (robust across environments and observers).
+- **Thermodynamic Fatigue:** Investigating models that relate glare, halation, and mydriasis to display luminance (nits), ambient illumination (lux), and perceived lightness.
+- **Ciliary Muscular Effort:** Exploring spatial frequency (arcminutes), typographic dimensions, and 2D optical mass as potential predictors of visual effort beyond nominal CSS pixel measurements.
+- **Pathology Tensors:** Researching how visual conditions such as cataracts, astigmatism, maculopathy, and photophobia could be represented in simulations of light perception and contrast degradation. These models require clinical validation.
+- **Redefinition of Excellence (Scores 5 & 6):** Exploring alternative definitions for the highest scoring levels: Level 5 as adequate contrast without significant ergonomic penalties, and Level 6 as contrast that remains robust across viewing environments and observer characteristics. These definitions are research proposals, not the scoring criteria implemented in v0.1.21.
 
 ## Roadmap — Future (JSOL Parity)
 
@@ -19,16 +19,18 @@ The core scoring pipeline is planned to be rewritten in JSOL and verified, via J
 
 ---
 
-## v0.1.21 - October 23, 2026
+## v0.1.21 - October 23-26, 2026
 
 This patch recalibrates key ergonomic parameters to better reflect physiological limits under the newly expanded 0-6 scoring scale, and introduces the Semantic Alignment interactive visualization.
 
 ### Added
-- **APCA/WCAG Semantic Alignment:** Added `examples/31-apca-wcag-alignment.html` and updated `docs/APCA-WCAG-ALIGNMENT.md` to map the algorithmic intersection and visually demonstrate the collapse of the viable design space when forcing mathematical translation versus IPAX's Semantic Alignment.
+- **APCA/WCAG Semantic Alignment:** Added `examples/31-apca-wcag-alignment.html` and updated `docs/APCA-WCAG-ALIGNMENT.md` to map the algorithmic intersection and visually compare direct mathematical threshold alignment with IPAX's semantic alignment approach.
 
 ### Changed
 - **Parameter Recalibration (SSOT):** Recalibrated maximum penalties in `dist-js/ipax-params.js` to match the scale expansion. `simc_max` (Simultaneous Contrast) increased to 1.5; `mydriasis_gain` (Dilated Pupil) increased to 1.0; `glare_gain` (Photopic Glare) increased to 1.8; `chroma_total_cap` increased to 3.0.
-- **Examples:** Minor UI adjustments and fixes.
+- **Documentation Audit:** (26/oct) Updated `README.md`, `docs/IPAX-SCORING.md`, `docs/APCA-WCAG-ALIGNMENT.md`, `docs/TYPOGRAPHY.md`, and `docs/PARAMETERS.md` to reflect the current scoring architecture, continuous WCAG/APCA mappings, independent WCAG conformance classification, score representations, and typography recommendations.
+- **Experimental Typography:** (26/oct) Documented the experimental automation of ARC/APCA reference-font matching through rasterized x-height measurements, alongside the Optical Density and Thin Stroke Energy experiments available in [IPAX Font Sizer](https://ipax.bustelo.com.ar/fontsizer.php).
+- **Examples:** (26/oct) UI adjustments and fixes. Removed the heuristic APCA font-size estimation from the example UI. Typography previews now use the APCA reference table directly, applying the WCAG minimum font size when required and falling back to WCAG sizing when APCA font data is unavailable.
 
 ---
 
@@ -46,7 +48,7 @@ This release expands the IPAX scoring scale to 6 levels, formalizes the epistemi
 ### Changed
 - **Examples Directory Reorganization:** Restructured the `examples/` directory into a numbered taxonomy. Existing integration demos were renamed to `10-calculator-en.html`, `10-calculator-es.html`, and `11-minimal.html`.
 - **Scale Expanded (0-6):** The core scoring metric and APCA mappings were shifted, making IPAX 1 equivalent to APCA Lc 15 (non-text elements). Level 4 (Silver) is now 5, and Level 5 (Gold, without ergonomic penalties) is now 6.
-- **Ergonomic Floor Restructured:** The ergonomic legal floor is now anchored to the explicit `legal_min_level` parameter (Level 2), guaranteeing that biological penalties cannot demote readable contrast into "not legible" (1 or 0) scoring.
+- **Ergonomic Floor Restructured:** Introduced the explicit `legal_min_level` parameter (Level 2). Ergonomic adjustments cannot reduce the final score below `min(baseScore, legal_min_level)`. This safeguard does not raise scores whose base is already below Level 2.
 - **Documentation and Translators Updated:** All references to the scale in `README.md` and semantic JSON dictionaries (`en` and `es`) were updated.
 
 ---
@@ -78,7 +80,7 @@ This release solidifies the typographic intersection logic.
 ### Added
 
 - Created `docs/TYPOGRAPHY.md` to document the architectural decoupling and intersection logic between WCAG normative sizing and APCA ergonomic sizing.
-- The Orchestrator now outputs symbolic grades (e.g., `2+` or `3-`). A `+` is awarded for a decimal surplus `>= 0.7` towards the next integer, and a `-` indicates ergonomic penalties pierced the normative legal base.
+- **Symbolic Grades:** Introduced compact grade representations (e.g., `2+` or `3-`). A `+` indicates a rounded fractional score of at least 0.7, while a `-` indicates that the integer IPAX score is below the independently calculated WCAG level. Degradation may result from APCA, ergonomic adjustments, or both.
 
 ### Changed
 
@@ -154,6 +156,7 @@ First stable engine [presented at Rosenverse (Rosenfeld Media)](https://rosenver
 
 Features: Color System Audit, Sampler, Font sizer.
 
+
 ---
 
-_IPAX Scoring System v0.1.21 • 2026-10-23, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)._
+*IPAX Scoring System v0.1.21 • 2026-10-26, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data).*

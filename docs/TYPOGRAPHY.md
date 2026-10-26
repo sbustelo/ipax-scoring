@@ -28,7 +28,7 @@ To provide actionable data without risking legal non-compliance, IPAX decouples 
 
 1. **The Legal Clamp:** If a color pair falls into the WCAG "Large Text" zone (3.0:1 to 4.49:1), the 24px / 18.5px requirements become a strict legal floor. If APCA recommends a smaller size (e.g., 18px), IPAX clamps the output to the WCAG legal minimum. If APCA recommends a larger size due to ergonomic stress (e.g., 32px), the larger size is recommended.
 2. **The Unconstrained Zone:** If a color pair exceeds 4.5:1, WCAG imposes no size restrictions. Here, APCA dictates the optimal ergonomic minimum (e.g., 12px or 15px).
-3. **The Graceful Degradation (Fallback):** If the APCA engine or its reference matrix is unavailable, IPAX abandons typographic guessing. It defaults strictly to WCAG's legal floors. For high-contrast pairs where WCAG has no rule, the UI defaults to a 16px industry convention, explicitly warning the user that WCAG does not mandate a minimum.
+3. **The Graceful Degradation (Fallback):** If the APCA engine or its reference matrix is unavailable, IPAX falls back to WCAG requirements without attempting to estimate APCA typography recommendations. For color pairs meeting the WCAG 3:1 threshold but not 4.5:1, it applies the large-text requirements. For pairs meeting 4.5:1 or higher, the UI uses 16px as a conventional default, explicitly noting that WCAG does not mandate a minimum font size.
 
 ## 3. Integration into the Design Process
 
@@ -40,10 +40,9 @@ Standard accessibility checkers may require the designer to input both colors *a
 In day-to-day UI design, brand colors are usually rigid, while typography is more flexible. By requiring only the color pair as input, IPAX outputs the exact minimum font sizes required for both Normal and Bold text. The designer doesn't guess; the tool provides the exact typographic constraints needed to make those specific colors legal and ergonomic.
 
 ### The "Size-First" Approach (Future Scope for IPAX tools)
-This architecture leaves the door open for inverse applications. In early phases of building a design system or a brand manual, a designer might lock a font size (e.g., "Our secondary labels must be 12px"). A "Size-First" algorithm could then take that rigid typographic constraint and automatically shift the lightness/chroma of the proposed colors until they meet the required compliance for that specific size.
+This architecture also supports a potential inverse workflow. When defining a design system or brand guidelines, a designer may establish typography constraints in advance—for example, requiring secondary labels to use a 16px font size. A future **Size-First** approach could use those constraints to identify suitable foreground and background colors, adjusting their lightness and chroma to satisfy the applicable WCAG contrast requirements and APCA recommendations.
 
-### The "Size-First" Approach (Future Scope for IPAX tools)
-This architecture leaves the door open for inverse applications. In early phases of building a design system or a brand manual, a designer might lock a font size (e.g., "Our secondary labels must be 12px"). A "Size-First" algorithm could then take that rigid typographic constraint and automatically shift the lightness/chroma of the proposed colors until they meet the required compliance for that specific size.
+
 
 ## 4. Truth Table & Output Matrix
 
@@ -61,6 +60,7 @@ To ensure clarity in the UI, the presentation layer must communicate both the le
 
 *Note: 16px is used as the standard web convention (1rem) when WCAG does not enforce a minimum and APCA is unavailable.*
 
+
 ---
 
-*IPAX Scoring System v0.1.20 • 2026-10-22, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data).*
+*IPAX Scoring System v0.1.21 • 2026-10-26, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data).*

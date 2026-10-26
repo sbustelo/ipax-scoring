@@ -154,32 +154,26 @@ export const renderPreviewTo = (container, resNormal, resBold, fgVal, bgVal) => 
 			let text = "";
 
 			if (isApcaLocal) {
-				if (apcaSizeRaw === null && wcagSize === null) return "";
+    if (apcaSizeRaw === null && wcagSize === null) return "";
 
-				if (wcagSize === null) {
-					finalSize = apcaSizeRaw;
-					text = `${finalSize}${t.unconstrainedApca}`;
-				} else {
-					const apcaObj = res.raw.apcaLc !== null ? Math.abs(res.raw.apcaLc) : 0;
-					let suggestedSize = null;
-					if (apcaObj >= 30) {
-						let baseSize = (850 / (apcaObj - 25)) + 3;
-						let weightFactor = weight < 400 ? Math.pow(400 / weight, 1.5) : Math.pow(400 / weight, 0.8);
-						suggestedSize = Math.max(12, Math.round(baseSize * weightFactor));
-					}
+    if (wcagSize === null) {
+        finalSize = apcaSizeRaw;
+        text = `${finalSize}${t.unconstrainedApca}`;
+    } else if (apcaSizeRaw === null) {
+        finalSize = wcagSize;
+        text = weight === 700 ? t.clampNoApcaBold : t.clampNoApcaNormal;
+    } else if (apcaSizeRaw < wcagSize) {
+        finalSize = wcagSize;
+        text = weight === 700
+            ? `${finalSize}${t.clampSmallerApcaBold}${apcaSizeRaw}px)`
+            : `${finalSize}${t.clampSmallerApcaNormal}${apcaSizeRaw}px)`;
+    } else {
+        finalSize = apcaSizeRaw;
+        text = weight === 700
+            ? `${finalSize}${t.clampLargerApcaBold}`
+            : `${finalSize}${t.clampLargerApcaNormal}`;
+    }
 
-					if (suggestedSize && suggestedSize < wcagSize) {
-						finalSize = wcagSize;
-						text = weight === 700
-							? `${finalSize}${t.clampSmallerApcaBold}${suggestedSize}px)`
-							: `${finalSize}${t.clampSmallerApcaNormal}${suggestedSize}px)`;
-					} else {
-						finalSize = apcaSizeRaw;
-						text = weight === 700
-							? `${finalSize}${t.clampLargerApcaBold}`
-							: `${finalSize}${t.clampLargerApcaNormal}`;
-					}
-				}
 			} else {
 				if (wcagSize === null) {
 					finalSize = 16;

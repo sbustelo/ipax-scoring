@@ -13,9 +13,9 @@ Totals: 92 parameters (NORM6, DESIGN18, IPAX160, LIT1, DISPLAY7).
 | Parameter | Value | Unit | Class | Refs | Note |
 |---|---|---|---|---|---|
 | `wcag_flare` | 0.05 | relative luminance | NORM | `WCAG-CR` | Constant added to both luminances in the WCAG 2 contrast ratio. Interpreted in IPAX 2 as an implicit ambient flare term (decision D-12). |
-| `knot_ratio_level1` | 3 | contrast ratio | NORM | `WCAG-143`, `ARDITI-FAYE` | WCAG 2 minimum for large text (AA large). IPAX level 1. |
-| `knot_ratio_level2` | 4.5 | contrast ratio | NORM | `WCAG-143`, `ARDITI-FAYE` | WCAG 2 AA minimum (compensates ~20/40 acuity, 3 x 1.5). IPAX level 2. |
-| `knot_ratio_level3` | 7 | contrast ratio | NORM | `WCAG-146`, `WCAG-143` | WCAG 2 AAA (compensates ~20/80 acuity). IPAX level 3. Last LEGAL level. |
+| `knot_ratio_level1` | 3 | contrast ratio | NORM | `WCAG-143`, `ARDITI-FAYE` | WCAG 2 minimum for large text (AA large). IPAX score 2 (Functional). |
+| `knot_ratio_level2` | 4.5 | contrast ratio | NORM | `WCAG-143`, `ARDITI-FAYE` | WCAG 2 AA minimum (compensates ~20/40 acuity, 3 x 1.5). IPAX score 3 (Acceptable). |
+| `knot_ratio_level3` | 7 | contrast ratio | NORM | `WCAG-146`, `WCAG-143` | WCAG 2 AAA (compensates ~20/80 acuity). IPAX score 4 (Good). Highest WCAG contrast conformance tier. |
 | `knot_ratio_level4` | 10 | contrast ratio | DESIGN | `D-03`, `FAA-HFDS` | Beyond-legal level. Ergonomic target for optimal legibility (FAA Human Factors Design Standard). |
 | `knot_ratio_level5` | 15 | contrast ratio | DESIGN | `D-03`, `FAA-HFDS` | Beyond-legal level. Threshold above which visual discomfort may occur (FAA Human Factors Design Standard). |
 | `softmin_tau` | 0.05 | score points | DESIGN | `D-04`, `LSE` | Smoothing width of the softmin used to combine WCAG and APCA base scores when an APCA engine is injected. Maximum deviation from min() is tau*ln(2). |
@@ -135,3 +135,7 @@ Totals: 92 parameters (NORM6, DESIGN18, IPAX160, LIT1, DISPLAY7).
 | `display_min_hk` | 0.1 | score points | DISPLAY | `D-10` | hk_effect warning threshold. |
 | `display_min_reward` | 0.02 | score points | DISPLAY | `D-10` | Individual bonus listing threshold. |
 
+
+---
+
+*IPAX Scoring System v0.1.21 • 2026-10-26, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data).*

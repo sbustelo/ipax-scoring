@@ -1,84 +1,161 @@
 # IPAX & APCA: Algorithmic Intersection & Semantic Alignment
 
-This document outlines the architectural separation of concerns between the APCA contrast algorithm, WCAG 2.x calculations, and the IPAX ergonomic scoring system. It serves as the reference of IPAX design decisions for its APCA and WCAG equivalence scale, based on a Semantic Alignment Strategy.
+This document explains the design decisions behind IPAX's integration of WCAG 2.x and APCA, including their mathematical differences, semantic alignment, and separation from ergonomic evaluation.
+
+For the scoring implementation, see [IPAX Scoring System](IPAX-SCORING.md).
 
 ## 1. The Mathematical Incompatibility
 
-WCAG 2.x and APCA (SAPC) evaluate light and contrast through fundamentally different biological and physical models. They are mathematically incompatible. 
+WCAG 2.x and APCA evaluate contrast using different mathematical models.
 
-WCAG 2.x relies on a simple relative _luminance ratio_ that fails to account for spatial frequency, text weight, or the non-linear perception of contrast in dark mode vs. light mode. APCA models the human visual system's actual response to _lightness contrast_ (Lc).
+WCAG 2.x calculates a contrast ratio from the relative luminance of two colors. The result is independent of text size, weight, and contrast polarity.
 
-This divergence causes extreme asymmetry in how both algorithms grade the exact same color pairs. 
+APCA calculates perceptual lightness contrast (`Lc`) using a model designed to account for characteristics of human visual perception, including differences between light-on-dark and dark-on-light polarity.
 
-### Empirical Proof: The Polar Extremes
+APCA also provides font-usage guidance through separate lookup tables, relating contrast to text size and weight.
 
-Case A: Light Polarity (APCA Approves, WCAG Collapses)  
-Pure white text (#FFFFFF) on a mid-light grey surface (#B4B4B4).
-*   WCAG 2.x: 2.07:1 (Fail)
-*   APCA: Lc 45 (Basic — Passes minimum for standard text)
+Consequently, the two algorithms can produce substantially different evaluations of the same color pair.
 
-```json
-{
-  "input": { "text": "#FFFFFF", "bg": "#B4B4B4", "darkMode": false },
-  "wcag": { "score": 0, "ratio": 2.07, "grade": "Fail" },
-  "apca": { "score": 3, "lc": 45, "grade": "Basic" }
-}
-```
+Neither WCAG contrast ratios nor APCA Lc values can be directly substituted for one another.
 
+### Why the disagreement matters
 
-Case B: Dark Polarity (WCAG Inflates, APCA Penalizes)  
-Mid-dark grey text (#969696) on a near-black surface (#010101).
-*   WCAG 2.x: 7.05:1 (AAA — Maximum Legal Grade)
-*   APCA: Lc -45.6 (Basic — Passes minimum for standard text)
+A color pair may satisfy WCAG AA while producing an APCA result that restricts its use to larger or heavier text.
 
-```json
-{
-  "input": { "text": "#969696", "bg": "#010101", "darkMode": true },
-  "wcag": { "score": 4, "ratio": 7.05, "grade": "AAA" },
-  "apca": { "score": 3, "lc": -45.6, "grade": "Basic" }
-}
-```
+Conversely, a pair may produce an APCA result associated with a particular typographic use while failing the corresponding WCAG contrast requirement.
+
+These disagreements are especially relevant when evaluating different contrast polarities.
+
+IPAX preserves both measurements rather than attempting to convert one into the other.
+
+For executable examples of these disagreements, see [IPAX Scoring Cases](../examples/30-cases.html).
 
 ## 2. The Problem with Mathematical Translation
 
-The official APCA Contrast Legend proposes a tentative mathematical correspondence mapping to WCAG, suggesting:
-*   APCA Lc 60 is "similar" to WCAG 4.5:1
-*   APCA Lc 45 is "similar" to WCAG 3:1
+The APCA Contrast Legend includes approximate comparisons between APCA Lc values and WCAG 2.x contrast ratios.
 
-Rather than using this mapping, IPAX operates under a "Strict" strategy to ensure both legal compliance and optical safety: a color pair is only approved _if it passes both algorithms._ 
+These comparisons are useful for understanding the differences between the models, but they do not establish mathematical equivalence or interchangeable conformance thresholds.
 
-If IPAX adopted APCA's mathematical mapping (demanding Lc 60 and 4.5:1 simultaneously for baseline text), the viable intersection space would collapse. Because WCAG severely punishes light-mode pairs and APCA severely punishes dark-mode pairs, enforcing the worst-case scenario mathematically would reject a massive percentage of functionally readable, industry-standard color palettes. The tool would become theoretically pure, but practically unusable for designers, which are IPAX main target as a practical Score to inform design decisions.
+IPAX does not use them as conversion formulas.
+
+Instead, IPAX aligns selected WCAG and APCA thresholds according to their intended applications.
+
+This distinction is important because requiring a direct numerical correspondence between the two models would introduce assumptions that neither algorithm establishes.
+
+A WCAG contrast ratio and an APCA Lc value describe different aspects of contrast. Their relationship varies with the colors and contrast polarity.
+
+Therefore, IPAX uses a semantic alignment strategy rather than a mathematical translation strategy.
 
 ## 3. The IPAX Solution: Semantic Alignment
 
-Instead of aligning the formulas mathematically, IPAX aligns them semantically by use-case intent.
+IPAX associates WCAG and APCA thresholds according to their intended use cases.
 
-*   WCAG defines AA (4.5:1) as the "baseline legal compliance for standard text."
-*   APCA defines Basic (Lc 45) as the "baseline physical requirement for standard text."
+For example:
 
-IPAX anchors its Level 3 (Acceptable) to this semantic intersection: min(WCAG AA, APCA Basic). By aligning the intent of the thresholds rather than their numerical equivalence, IPAX creates a functional design space that guarantees legal compliance without violating the laws of physical optics.
+- **WCAG AA (4.5:1):** the minimum contrast requirement for standard text under WCAG 2.x.
+- **APCA Basic (Lc 45):** a perceptual contrast reference associated with restricted typographic applications in the IPAX model.
 
-## 4. Extreme Contrast & Biological Penalties
+IPAX associates both reference points with **Score 3 (Acceptable)**.
 
-The official APCA mathematical algorithm (`apca-w3`) returns a continuous lightness contrast value (`Lc`) and, via its lookup tables, a recommended minimum font size. *The algorithm itself does not return semantic grades or penalties for extreme contrast.* A pair of `#FFFFFF` on `#000000` will consistently yield an `Lc` of ~106.
+This is a design decision about how to construct a shared scoring scale. It does not mean that WCAG 4.5:1 and APCA Lc 45 are mathematically equivalent or that they permit identical typography.
 
-The semantic labels often associated with APCA (e.g., "Small Text Only" for `Lc > 105`) are presentation-layer UI conditionals hardcoded in the SAPC-APCA web tool, not inherent penalties within the math. 
+### Semantic reference points
 
-A critical misconception arises at the top of the scale: when the APCA UI flags `Lc > 105` as "Small Text Only", it is technically expressing a *permission* (the contrast is high enough to support very small text) rather than a programmatic penalty, even though literature warns against using such extreme contrast for large blocks of text due to halation.
+| IPAX level | WCAG-based reference | APCA reference |
+|---|---|---|
+| 1 | No corresponding WCAG threshold | Lc 15 |
+| 2 | 3:1 | Lc 30 |
+| 3 | 4.5:1 | Lc 45 |
+| 4 | 7:1 | Lc 60 |
+| 5 | 10:1 | Lc 75 |
+| 6 | 15:1 | Lc 90 |
 
-To prevent architectural coupling, IPAX strictly separates normative math from biological ergonomics:
+The WCAG-based references at 10:1 and 15:1 extend the IPAX scale beyond WCAG AAA. They are not additional WCAG conformance levels.
 
-1. APCA as a Mathematical Baseline: IPAX consumes the APCA engine solely to extract the raw Lc value and absolute font sizing.
-2. IPAX Ergonomic Penalties: The responsibility of penalizing extreme contrast falls entirely on IPAX's core (ergonomics.js). Through continuous biological models, IPAX calculates the actual optical scatter (Halation, Macular Glare, Mydriasis, Chromatic Clash).
-3. Final Grading: If a pair has an Lc of 106, the base score is mathematically high, but IPAX ergonomic penalties for halation and glare will directly degrade the final score (e.g., dropping it from a Level 6 "Optimal" to a Level 4 "Good"). 
+Score 1, introduced in v0.1.20, represents a low perceptual contrast reference for discernible non-text elements. It has no WCAG contrast-ratio equivalent.
 
-Therefore, IPAX accurately reports that the combination is legally compliant and has high photometric contrast, but algorithmically flags it as physiologically harmful for sustained continuous reading".
+The complete mappings and interpolation rules are documented in [IPAX Scoring System](IPAX-SCORING.md).
+
+### Algorithmic intersection
+
+When APCA is available, IPAX calculates separate continuous values from the WCAG contrast ratio and the absolute APCA Lc result.
+
+The scoring core combines them using a **soft minimum** (`softmin`), a smooth approximation of the lower value.
+
+This implements the Strict strategy: disagreement between the models can reduce the combined base score.
+
+The combination operates on continuous values, not on the discrete WCAG conformance classification or APCA presentation labels.
+
+When APCA is unavailable, IPAX uses its WCAG-only scoring path.
+
+### Preserving WCAG requirements
+
+IPAX maintains a separate, discrete WCAG classification based on the actual contrast ratio.
+
+**WCAG levels are never rounded up or promoted by APCA or ergonomic rewards.**
+
+For example, a ratio below 4.5:1 does not qualify for WCAG AA, regardless of its APCA result or proximity to the threshold.
+
+The final IPAX score may be lower than the WCAG level because of the APCA evaluation, ergonomic penalties, or both.
+
+The Orchestrator exposes this distinction through its score representations, including the structural format `N(M)`, where `N` is the final IPAX level and `M` is the independently determined WCAG level.
+
+These representations are documented in [IPAX Scoring System](IPAX-SCORING.md).
+
+## 4. Separation of Concerns: Contrast and Ergonomics
+
+IPAX separates three responsibilities:
+
+1. **WCAG 2.x — Normative contrast evaluation.** Calculates the contrast ratio and determines the applicable WCAG contrast tier.
+2. **APCA — Perceptual contrast evaluation.** Supplies a continuous Lc value and, when its font lookup is available, typographic usage guidance.
+3. **IPAX — Scoring and ergonomic evaluation.** Combines the contrast models and applies parameterized ergonomic penalties and rewards.
+
+This separation avoids treating an APCA contrast measurement as a direct measurement of visual comfort.
+
+### APCA does not calculate IPAX ergonomic penalties
+
+The APCA algorithm produces a contrast value. It does not calculate IPAX's penalties for halation, glare, mydriasis, chromostereopsis, or other modeled ergonomic effects.
+
+Likewise, APCA font-usage recommendations should not be interpreted as ergonomic penalties.
+
+A high absolute Lc value indicates high perceptual contrast according to APCA. It does not, by itself, establish that the color pair is optimal for sustained reading.
+
+### IPAX ergonomic adjustments
+
+IPAX evaluates additional optical and perceptual phenomena using parameterized models.
+
+For example, high-luminance text on a very dark background may activate penalties associated with halation and mydriasis.
+
+These adjustments can reduce a high contrast-derived base score to a lower final IPAX score.
+
+IPAX does not directly measure an individual's visual fatigue, optical scatter, or physiological response. Its ergonomic terms are model-based estimates informed by published research and documented engineering decisions.
+
+The scientific evidence supporting a phenomenon does not necessarily validate the numerical magnitude assigned to its penalty.
+
+Parameter provenance and limitations are documented in [PARAMETERS.md](PARAMETERS.md) and [REFERENCES.md](REFERENCES.md).
+
+### Legal compliance and ergonomic quality
+
+A color pair can satisfy WCAG AAA and still receive a lower final IPAX score because of APCA disagreement or ergonomic penalties.
+
+This is intentional.
+
+WCAG conformance and modeled ergonomic quality answer different questions. IPAX reports both rather than allowing one to conceal the other.
+
+The ergonomic floor prevents penalties from reducing a sufficiently high base score below Score 2. It does not modify the WCAG classification.
+
+The final score is also capped at its unpenalized base: ergonomic rewards cannot promote a pair beyond its contrast-derived score.
 
 ## 5. References
 
-* **W3C/WCAG3 Active Discussion (Issue #221):** [https://github.com/w3c/wcag3/issues/221](https://github.com/w3c/wcag3/issues/221)"
-* **Myndex SAPC-APCA Web Tool Logic:** [Myndex/SAPC-APCA](https://github.com/Myndex/SAPC-APCA)"
+- **W3C — WCAG 2.2, Understanding Contrast (Minimum):** [Understanding SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+- **W3C — WCAG 2.2, Understanding Contrast (Enhanced):** [Understanding SC 1.4.6](https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced.html)
+- **W3C — WCAG 3 discussion:** [Issue #221](https://github.com/w3c/wcag3/issues/221)
+- **SAPC-APCA:** [Myndex/SAPC-APCA](https://github.com/Myndex/SAPC-APCA)
+- **IPAX parameter provenance:** [PARAMETERS.md](PARAMETERS.md)
+- **IPAX scientific references:** [REFERENCES.md](REFERENCES.md)
+
 
 ---
 
-_IPAX Scoring System v0.1.20 • 2026-10-22, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data)._
+*IPAX Scoring System v0.1.21 • 2026-10-26, [Santiago Bustelo](https://www.bustelo.com.ar/). [Apache-2.0](../LICENSE) (code), [CC BY 4.0](../LICENSE) (literature and data).*

@@ -1,11 +1,35 @@
 # IPAX Scoring System
-_v0.1.21 • 2026-10-23, Santiago Bustelo • [ipax.bustelo.com.ar](https://ipax.bustelo.com.ar/)_
 
-IPAX Score is an algorithmic scoring system that integrates WCAG 2.x calculations, the APCA contrast model, and optical ergonomics metrics into a 6-point scale. It evaluates baseline contrast and applies mathematical modifiers for halation, macular glare, and chromatic fatigue.
+_v0.1.21 • 2026-10-23 • Santiago Bustelo • [ipax.bustelo.com.ar](https://ipax.bustelo.com.ar/)_
+
+IPAX combines WCAG 2.x, APCA, and optical ergonomics into a single compact 0–6 scale, making it easier to evaluate color combinations, accessibility, and reading comfort. Its [scoring model](docs/IPAX-SCORING.md) integrates normative contrast requirements, perceptual contrast evaluation, and ergonomic adjustments.
+
+Contrast alone doesn't tell the whole story. Excessive contrast, glare, halation, and chromatic interference can affect visual comfort even when a color pair passes conventional accessibility checks. These concerns are particularly relevant to people with visual conditions such as astigmatism, which affects an estimated [40% of adults](https://www.researchgate.net/publication/368334523_Epidemiology_and_Burden_of_Astigmatism_A_Systematic_Literature_Review).
+
+The scoring engine is open source. Its parameters, references, design decisions, and limitations are documented for inspection and discussion.
+
+
+## Try IPAX
+
+**[Live testing environment and documentation](https://ipax.bustelo.com.ar/)**
+
+The repository includes interactive tools for exploring how the scoring model behaves across different color combinations.
+
+| Tool | What it shows | Source code |
+|---|---|---|
+| **Calculator** | Interactive color-pair evaluation, including contrast, typography, ergonomic penalties, and scoring details. | [10-calculator-en.html](examples/10-calculator-en.html) |
+| **Score Map** | IPAX scores across color combinations. | [20-map-score.html](examples/20-map-score.html) |
+| **Contrast Map** | Contrast calculations and their relationship to the scoring model. | [21-map-contrast.html](examples/21-map-contrast.html) |
+| **Score Decomposition** | Individual ergonomic contributions to the final score. | [22-map-decomposition.html](examples/22-map-decomposition.html) |
+| **Diagnostic Cases** | A sweep of 262,144 color combinations to examine thresholds, penalties, and disagreements. | [30-cases.html](examples/30-cases.html) |
+| **APCA/WCAG Semantic Alignment** | The consequences of mathematical versus semantic alignment between the two contrast models. | [31-apca-wcag-alignment.html](examples/31-apca-wcag-alignment.html) |
+
+## Integration examples
+
+- **[Minimal integration](examples/11-minimal.html):** A stripped-down example showing how to call the scoring engine without the calculator's UI and rendering logic.
+- **[Spanish calculator](examples/10-calculator-es.html):** Demonstrates the separation of the scoring algorithm from localized content through interchangeable JSON dictionaries.
 
 ## Usage
-
-*Working minimal example: [examples/11-minimal.html](examples/11-minimal.html)*
 
 ```javascript
 import { IPAXOrchestrator } from '../../dist-js/orchestrator.js';
@@ -18,64 +42,100 @@ const result = IPAXOrchestrator.getScore({
 });
 ```
 
-## Documentation and Color System Audit
+This snippet illustrates the orchestrator API. For a working browser implementation without localization dependencies, see [Minimal integration](examples/11-minimal.html).
 
-Live testing environment and documentation: [https://ipax.bustelo.com.ar/](https://ipax.bustelo.com.ar/)
+The core uses ES modules and does not bundle APCA. An APCA engine can be injected through the orchestrator; otherwise, IPAX falls back to WCAG-only calculations.
+
+## How the score works
+
+IPAX uses a continuous 0–6 scale, with discrete levels indicating different contrast and design-quality thresholds.
+
+| Score | Name | APCA | WCAG / FAA-HFDS | Description |
+|---|---|---|---|---|
+| **6** | Excellent | Gold (≥ Lc 90) | FAA-HFDS Limit (≥ 15:1) | Optimal optical comfort for continuous reading.* |
+| **5** | Very Good | Silver (≥ Lc 75) | FAA-HFDS Optimal (≥ 10:1) | Strong contrast, but potential for fatigue over extended use. |
+| **4** | Good | Bronze (≥ Lc 60) | AAA (≥ 7:1) | Maximum legal threshold; high contrast may incur overstimulation. |
+| **3** | Acceptable | Basic (≥ Lc 45) | AA (≥ 4.5:1) | Baseline legal compliance for standard text. |
+| **2** | Functional | Large (≥ Lc 30) | Large (≥ 3:1) | Restricted to large text (WCAG) or inactive/disabled text (APCA). |
+| **1** | Low | Non-text (≥ Lc 15) | Fail | Visible baseline; strictly non-text elements (icons, borders). Fails WCAG for text. |
+| **0** | Fail | Fail | Fail | No compliance: fails both WCAG and APCA minimums. |
+
+*Level 6 is reached only when no ergonomic penalties reduce the score. The FAA Human Factors Design Standard recommends character contrast between 6:1 and 10:1 for optimum legibility and warns that contrast above 15:1 may cause visual discomfort. IPAX uses 15:1 as a high-contrast reference point, not as an FAA recommendation for optimal comfort. Ergonomic penalties account for potential discomfort at high contrast.
+
+APCA and WCAG/FAA-HFDS thresholds are aligned by intended use, not through direct mathematical conversion. See [APCA/WCAG Semantic Alignment](docs/APCA-WCAG-ALIGNMENT.md).
 
 
-## Philosophy: The Legal Floor & Code Simplicity
+### Contrast requirements and ergonomic penalties
 
-IPAX Score operates under a strict separation of concerns between **legal compliance** and **design quality** (ergonomics):
+IPAX separates contrast compliance from ergonomic evaluation.
 
-1. **The Law is the Law:** As of today, WCAG 2.x is the active legislation in most jurisdictions. Therefore, WCAG 2.x acts as the absolute, non-negotiable floor for the IPAX score. If a color pair fails WCAG 2.x, it fails IPAX, even if modern continuous algorithms (like APCA) deem it ergonomically safe. IPAX will always evaluate the worst-case legal scenario.
-2. **Design quality:** APCA is a better model for human perception, rejecting pairs that WCAG 2 formula approves. On top of that, IPAX considers ergonomic penalties for halation, glare, hue induction and other documented fenomena to inform better design decisions.
+The baseline score is derived from WCAG 2.x and, when available, APCA. Ergonomic penalties and rewards then adjust the continuous score.
+
+**Ergonomic penalties cannot demote a color pair below the applicable minimum legal tier.** For example, a pair with a baseline score of 4 can be reduced to 2 by ergonomic penalties, but not to 1 or 0.
+
+This allows IPAX to preserve the distinction between contrast requirements and design quality.
 
 
-## The IPAX Score
 
-*For even more detail and examples: [IPAX-SCORING](docs/IPAX-SCORING.md)*
 
-Scores 2 to 4 indicate adherence to technical readability thresholds. Score 1 indicates *barely perceptible* contrast that fall below the legal minimum for readable text. Scores 5 and 6 go beyond legal legislation, indicating optical stability and a reduction of visual fatigue under sustained use.
 
-| IPAX Score | APCA Grade | WCAG Grade | Status |
-| --- | --- | --- | --- |
-| **6** | Gold (≥ Lc 90) | N/A (FAA-HFDS Limit)* (15.0:1) | Optimal optical comfort. |
-| **5** | Silver (≥ Lc 75) | N/A (FAA-HFDS Optimal)* (10.0:1) | Stable for sustained reading. |
-| **4** | Bronze (≥ Lc 60) | AAA (7.0:1) | Maximum compliance threshold. |
-| **3** | Basic (≥ Lc 45) | AA (4.5:1) | Baseline legal compliance. |
-| **2** | Large (≥ Lc 30) | Large (3.0:1) | Restricted to large text. |
-| **1** | Non-text (≥ Lc 15) | N/A | Visible, not legible: icons and graphics. |
-| **X** | Fail | Fail | Does not meet contrast minimums. |
 
-*\* WCAG 2.x maxes out at AAA (7.0:1). Levels 5 and 6 use FAA Human Factors Design Standard (HFDS) thresholds for optimal legibility (10:1) and maximum ergonomic contrast before visual discomfort (15:1).*
-*Note: APCA and WCAG are mathematically incompatible algorithms. IPAX aligns them semantically by use-case intent rather than mathematically, taking the strictest legal/physical minimum of both to prevent viable color spaces from collapsing. See [APCA & WCAG: Semantic Alignment](docs/APCA-WCAG-ALIGNMENT.md).*
+## Research and documentation
 
-## IPAX Algorithm Cascade
+Further documentation is available:
 
-1.  **Color Space Translation ($mTxtOklch,$mBgOklch, $nTxtY,$nBgY):** Converts the input HEX colors to OKLCH (to evaluate perceptual hue, chroma, and lightness) and Relative Luminance (Y) to maintain backward compatibility with standard normative formulas.
-2.  **WCAG Evaluation ($nWcagScore):** Calculates the standard contrast ratio (0 to 21). Segments the result into scores: 0 (Fail), 2 (Large), 3 (AA), 4 (AAA).
-3.  **APCA Evaluation ($nApcaScore):** Extracts the absolute Lc value. Segments the result into scores: 0 (Fail), 1 (Non-text), 2 (Large), 3 (Basic), 4 (Bronze), 5 (Silver), 6 (Gold).
-4.  **Normative Intersection ($nComplianceLevel):** Takes the strict **minimum** between the WCAG and APCA scores: `Math.floor(Math.min($nWcagScore, $nApcaScore))`. If _either_ system fails (0), the entire baseline compliance is immediately set to 0.
-5.  **Base Score Calculation ($nBase):** A continuous, granular base score is computed using piecewise-linear interpolation over the contrast ratios (WCAG mapping to 0/2/3/4/5/6 and APCA mapping to 0-6). This translates discrete brackets into a smooth mathematical curve (e.g., resulting in 1.4 or 2.7) without abrupt step jumps.
-6.  **Continuous Penalty Accumulation ($nTotalPenalty):** Evaluates ergonomic flaws (Jitter, Glare, Halation, Chromostereopsis, etc.) based on the OKLCH model. Penalties are driven by continuous curves (smoothsteps and gaussians) rather than hard thresholds, ensuring smooth transitions across the color space. These values are accumulated and subtracted from the base score.
-7.  **Defensive Legal Ceiling:** The core ensures that no matter the rewards applied, the final grade cannot structurally exceed the legal tier determined by WCAG. The legal level dictates the hard ceiling for the final score.
-8.  **Rewards and Ceilings:** Bonus points for fatigue reduction are considered. The final score is rigidly capped to never exceed the inherent unpenalized base score (`final ≤ base`).
+| Document | Contents |
+|---|---|
+| [IPAX-SCORING.md](docs/IPAX-SCORING.md) | Scoring levels, intended uses, and evaluated color pairs. |
+| [APCA-WCAG-ALIGNMENT.md](docs/APCA-WCAG-ALIGNMENT.md) | Semantic alignment strategy and algorithmic disagreements. |
+| [TYPOGRAPHY.md](docs/TYPOGRAPHY.md) | WCAG and APCA typography requirements and intersection logic. |
+| [PARAMETERS.md](docs/PARAMETERS.md) | Registry of 92 parameters, including values, provenance, and references. |
+| [REFERENCES.md](docs/REFERENCES.md) | Normative sources, scientific literature, verification status, and evidence limitations. |
+| [HISTORY.md](docs/HISTORY.md) | Research origins and evolution from Tricontrast and k0 to IPAX. |
+| [CHANGELOG.md](docs/CHANGELOG.md) | Version history, implementation changes, and roadmap. |
+
+### Parameter provenance
+
+IPAX distinguishes between:
+
+- **NORM:** Values defined by published standards.
+- **LIT:** Values derived from literature.
+- **IPAX1:** Empirical heuristics inherited from the original implementation.
+- **DESIGN:** Parameters introduced through documented design decisions.
+- **DISPLAY:** Presentation thresholds that do not affect the score.
+
+Scientific references support the existence or direction of the modeled effects. They do not necessarily establish the numerical magnitude of each penalty.
+
+The registry explicitly identifies parameters that remain empirical heuristics and require further calibration or validation.
+
+See [PARAMETERS.md](docs/PARAMETERS.md) and [REFERENCES.md](docs/REFERENCES.md).
 
 ## About APCA and its license
 
-APCA unlocks IPAX scores 5 and 6. Without it, IPAX still works fully: it falls back to the WCAG 2.x contrast formula, but extends the scale using the FAA-HFDS 10:1 and 15:1 ratios as upper tiers.
+APCA enables IPAX to evaluate contrast using both WCAG 2.x and APCA. Without an APCA engine, IPAX continues operating with WCAG calculations, extending its upper scoring levels using the FAA-HFDS reference ratios of 10:1 and 15:1.
 
-The official `apca-w3` library depends on `colorparsley`, licensed under AGPL. This repository never copies, bundles, or commits that source. `example/js/apca-bridge.js` fetches `apca-w3` from a public CDN (`esm.sh`) at runtime, in the browser of whoever runs the example. If that succeeds, IPAX gets APCA and can grade design quality; if it fails, IPAX degrades to WCAG-only automatically. Including IPAX in your own project doesn't pull any AGPL code into your codebase.
+The official `apca-w3` library depends on `colorparsley`, licensed under AGPL.
 
+IPAX does not copy, bundle, or distribute that code. The example bridge (`examples/js/apca-bridge.js`) loads APCA independently at runtime from `esm.sh` and injects it into the orchestrator.
 
+## Origins
 
+IPAX emerged from research begun in August 2025 into accessible color systems, contrast models, and design-system architecture.
+
+The work developed through experiments combining WCAG, APCA, and OKLCH. The need to evaluate large numbers of color pairs led to a unified scoring model; the limitations of contrast-only evaluation led to the introduction of ergonomic factors.
+
+The first stable IPAX engine was presented at Rosenverse (Rosenfeld Media) on July 2, 2026.
+
+See [HISTORY.md](docs/HISTORY.md) for the development timeline.
 
 ## ☕ Say thanks
 
-The IPAX Score system is maintained on personal time, for free, with no plan to charge for it. If you want to say thanks, you can [buy me a coffee](https://cafecito.bustelo.com.ar/).
+IPAX Scoring is developed and maintained independently as an open-source project.
+
+If you find it useful, you can [buy me a coffee](https://cafecito.bustelo.com.ar/).
 
 Entirely optional, never required.
 
 ---
 
-*IPAX v0.1.21 — 2026-10-23, Santiago Bustelo • [Apache 2.0 / CC BY 4.0 License](LICENSE).*
+_IPAX v0.1.21 • 2026-10-23 • Santiago Bustelo • [Apache 2.0 / CC BY 4.0 License](LICENSE)_
