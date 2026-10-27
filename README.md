@@ -4,7 +4,7 @@ _v0.1.21 • 2026-10-23 • Santiago Bustelo • [ipax.bustelo.com.ar](https://i
 
 > **Pre-release notice:** _Ergonomic parameters, calibration, and results are subject to change before v1.0. This version is published for experimentation, technical review, community feedback, and early adoption._
 
-IPAX combines WCAG 2.x, APCA, and optical ergonomics into a single compact 0–6 scale, making it easier to evaluate color combinations, accessibility, and reading comfort. Its [scoring model](docs/IPAX-SCORING.md) integrates normative contrast requirements, perceptual contrast evaluation, and ergonomic adjustments.
+IPAX Scoring combines WCAG 2.x, APCA (when available), and optical ergonomics into a single compact 0–6 scale, making it easier to evaluate color combinations, accessibility, and reading comfort. Its [scoring model](docs/IPAX-SCORING.md) integrates normative contrast requirements, perceptual contrast evaluation, and ergonomic adjustments.
 
 Contrast alone doesn't tell the whole story. Excessive contrast, glare, halation, and chromatic interference can affect visual comfort even when a color pair passes conventional accessibility checks. These concerns are particularly relevant to people with visual conditions such as astigmatism, which affects an estimated [40% of adults](https://www.researchgate.net/publication/368334523_Epidemiology_and_Burden_of_Astigmatism_A_Systematic_Literature_Review).
 
@@ -50,6 +50,8 @@ The core uses ES modules and does not bundle APCA. An APCA engine can be injecte
 ## How the score works
 
 IPAX uses a continuous 0–6 scale, with discrete levels indicating different contrast and design-quality thresholds.
+
+The following levels, thresholds, and descriptions are defined in the project's single source of truth, [`data/dictionary.en.json`](data/dictionary.en.json).
 
 | Score | Name | APCA | WCAG / FAA-HFDS | Description |
 |---|---|---|---|---|
@@ -149,6 +151,22 @@ questions for future research into IPAX's ergonomic model.
 
 Thank you, Øyvind, for your initiative, generosity, and thoughtful
 contributions.
+
+
+## About the IPAX System
+
+IPAX Scoring is a foundational building block of the broader **IPAX System**: an open architecture that brings design, engineering, branding, and accessibility together.
+
+IPAX applies software engineering principles such as **abstraction, composition, and encapsulation** to reduce combinatorial complexity, making Design Systems more manageable, adaptive, expressive, and accessible.
+
+The system takes its name from its color composition grammar: **Ink, Paper, Accents, and eXtended colors**. By establishing contextual roles and composition rules, IPAX reduces the number of color combinations a Design System needs to define, maintain, and evaluate.
+
+The architecture is [documented openly under CC BY 4.0, while the scoring engine is released under Apache 2.0](LICENSE).
+
+- [IPAX System Architecture](docs/IPAX-SYSTEM.md) — Principles, color grammar, composition rules, and complexity reduction.
+- [IPAX Color System Audit](https://ipax.bustelo.com.ar/audit.php) — Evaluate color systems using IPAX Scoring.
+- [IPAX Theme Builder](https://ipax.bustelo.com.ar/builder.php) — Interactive exploration of the composition architecture.
+
 
 ## ☕ Say thanks
 
