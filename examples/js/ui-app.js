@@ -61,9 +61,18 @@ const getGradeLabel = (score) => {
 	return isEs ? "Falla" : "Fail";
 };
 
+const getGradeDescription = (score) => {
+	if (dictionaryObject && dictionaryObject.scale) {
+		const match = dictionaryObject.scale.find(x => x.score === score);
+		if (match && match.description) return match.description;
+	}
+	return "";
+};
+
 const renderInterpretation = (result) => {
 	const scoreInt = Math.floor(Math.round(result.score * 10.0) / 10.0);
 	const gradeLabel = getGradeLabel(scoreInt);
+	const gradeDescription = getGradeDescription(scoreInt);
 
 	const wcagString = result.wcag.score > 0
 		? `${t.passes}: ${result.wcag.grade} (≥ ${trunc2(result.wcag.ratio)}:1)`
@@ -76,6 +85,7 @@ const renderInterpretation = (result) => {
 
 	let html = `
         <h2 class="ipx-score-title">${t.score}: ${result.score.toFixed(1)} (${gradeLabel})</h2>
+        ${gradeDescription ? `<p class="ipx-score-description">${gradeDescription}</p>` : ''}
         <p class="ipx-score-subtitle">${t.thisPair} ${wcagString}; ${apcaString}.</p>
     `;
 
