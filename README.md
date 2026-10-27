@@ -2,12 +2,13 @@
 
 _v0.1.21 • 2026-10-23 • Santiago Bustelo • [ipax.bustelo.com.ar](https://ipax.bustelo.com.ar/)_
 
+> **Pre-release notice:** _Ergonomic parameters, calibration, and results are subject to change before v1.0. This version is published for experimentation, technical review, community feedback, and early adoption._
+
 IPAX combines WCAG 2.x, APCA, and optical ergonomics into a single compact 0–6 scale, making it easier to evaluate color combinations, accessibility, and reading comfort. Its [scoring model](docs/IPAX-SCORING.md) integrates normative contrast requirements, perceptual contrast evaluation, and ergonomic adjustments.
 
 Contrast alone doesn't tell the whole story. Excessive contrast, glare, halation, and chromatic interference can affect visual comfort even when a color pair passes conventional accessibility checks. These concerns are particularly relevant to people with visual conditions such as astigmatism, which affects an estimated [40% of adults](https://www.researchgate.net/publication/368334523_Epidemiology_and_Burden_of_Astigmatism_A_Systematic_Literature_Review).
 
 The scoring engine is open source. Its parameters, references, design decisions, and limitations are documented for inspection and discussion.
-
 
 ## Try IPAX
 
@@ -127,6 +128,27 @@ The work developed through experiments combining WCAG, APCA, and OKLCH. The need
 The first stable IPAX engine was presented at Rosenverse (Rosenfeld Media) on July 2, 2026.
 
 See [HISTORY.md](docs/HISTORY.md) for the development timeline.
+
+## Community projects and contributions
+
+### [ipax-tools](https://github.com/roysland/ipax-tools) — Øyvind Røysland
+
+An independent toolkit extending IPAX to command-line applications,
+AI agents, and development workflows.
+
+The project includes a modular scoring engine, CLI and MCP server,
+Tailwind integration utilities, and experimental tools for evaluating
+color combinations.
+
+Beyond the implementation, Øyvind has contributed valuable testing
+and observations on visual sensitivity, ambient conditions, and the
+limitations of evaluating color pairs in isolation.
+
+His experiments on surrounding visual context have helped identify
+questions for future research into IPAX's ergonomic model.
+
+Thank you, Øyvind, for your initiative, generosity, and thoughtful
+contributions.
 
 ## ☕ Say thanks
 
