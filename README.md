@@ -1,4 +1,4 @@
-# IPAX Scoring System
+# IPAX Scoring Engine
 
 _v0.1.21 • 2026-10-23 • Santiago Bustelo • [ipax.bustelo.com.ar](https://ipax.bustelo.com.ar/)_
 

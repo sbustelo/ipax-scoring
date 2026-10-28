@@ -4,13 +4,13 @@
 **Status:** Open specification; implementation and validation are evolving.  
 **License:** [CC BY 4.0](../LICENSE) for this documentation. Software implementations have their own licenses.
 
-> **Scope.** This document describes the **IPAX System**: a color-role grammar and a set of architectural constraints for building adaptive Design Systems. It does **not** describe the internal software architecture of the IPAX Scoring engine, nor does it imply that every implementation of IPAX UI is included in the scoring repository.
+> **Scope.** This document describes the **IPAX System**: a color-role grammar and a set of architectural constraints for building adaptive Design Systems. It does **not** describe the internal software architecture of the [IPAX Scoring engine](../README.md), nor does it imply that any implementation of the IPAX System is included in the [scoring repository](https://github.com/sbustelo/ipax-scoring/).
 
 ## 1. The problem: combinatorial complexity
 
 A Design System has to account for themes, surfaces, semantic meanings, interaction states, and component variants. When every combination is specified independently, the number of decisions grows multiplicatively. Maintaining the resulting matrix, and checking its accessibility, becomes increasingly costly and difficult.
 
-IPAX addresses this problem **before** individual color pairs are evaluated: it defines a limited vocabulary of roles, rules for composing them, and explicit boundaries on which combinations are valid. Instead of treating every possible pair as an independent design decision, the system derives combinations from a smaller set of inputs.
+IPAX is designed to address this problem **before** individual color pairs are evaluated: it defines a limited vocabulary of roles, rules for composing them, and explicit boundaries on which combinations are valid. Instead of treating every possible pair as an independent design decision, the system derives combinations from a smaller set of inputs.
 
 This does not eliminate the need to test rendered interfaces. It reduces the number of combinations the architecture is designed to produce and makes exceptions identifiable.
 
@@ -55,7 +55,7 @@ This principle does not forbid overrides; it makes them visible and intentional 
 
 Not every theoretically possible color pairing should be a supported pairing. IPAX's composition grammar restricts the combinations that components are expected to use.
 
-This is the most powerful mechanism for reducing combinatorial complexity, as it drastically reduces the **supported decision space** from the total mathematical number of possible colors.
+This is the most powerful mechanism for reducing combinatorial complexity, as it drastically reduces the **supported decision space** from the total mathematical number of possible token combinations.
 
 
 ## 4. The IPAX color grammar
